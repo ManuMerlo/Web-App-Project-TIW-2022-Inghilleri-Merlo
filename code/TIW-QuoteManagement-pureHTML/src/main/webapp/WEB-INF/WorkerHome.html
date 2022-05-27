@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="../css/global.css"
+	th:href="@{/css/global.css}" />
+<link rel="stylesheet" type="text/css" href="../css/home.css"
+	th:href="@{/css/home.css}" />
+<title>Home</title>
+</head>
+<body>
+
+	<div class="topnav">
+		<a class="active" th:href="@{/GotoWorkerHome}">Home</a> <a
+			th:href="@{/Logout}">Logout</a>
+	</div>
+
+	<div class="home-title">
+		Welcome back to work <span th:text="${session.currentUser.username}">user!!</span>
+	</div>
+	<div class="account-div blue-div">
+		<div class="account-title">Here there are quotes managed by you</div>
+		<div th:switch="${managedQuotes.size}">
+			<div th:case="0">
+				<div class="no-accounts">You currently have managed no quotes</div>
+			</div>
+			<div th:case="*" th:remove="all-but-first">
+				<div class="card card-blue" th:each="quote:${managedQuotes}"
+					th:classappend="${quoteStat.even} ? 'even'">
+					<div class="card-title">Quote #<span th:text="${quote.id}"></span></div>
+					<div class="card-data">
+					<!--<div>
+						  <b>Client: </b><span th:text="${quote.clientId}"></span>
+					</div>-->
+						<div>
+							<b>Product: </b><span th:text="${quote.product.name}"></span>
+						</div>
+						<div>
+							<b>Price: </b><span th:text="${quote.price}"></span>
+						</div>
+						<!-- <div>
+							<b>Status: </b><span th:text="${quote.status}"></span>
+						</div>-->
+					</div>
+					<a class="btn btn-blue btn-small btn-primary"
+						th:href="@{/GotoQuoteDetails(quoteId=${quote.id})}">View
+						Details</a>
+				</div>
+				<div class="card card-blue even">
+					<div class="card-title">Quote</div>
+					<div class="card-data">
+						<div>
+							<b>Product: </b><span>prodotto</span>
+						</div>
+					</div>
+					<!-- <a class="btn btn-blue btn-small btn-primary">View Details</a> -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="account-div blue-div">
+		<div class="account-title">Here there are the quotes already
+			unmanaged</div>
+		<div th:switch="${unmanagedQuotes.size}">
+			<div th:case="0">
+				<div class="no-accounts">There are no quotes</div>
+			</div>
+			<div th:case="*" th:remove="all-but-first">
+				<div class="card card-blue" th:each="quote:${unmanagedQuotes}"
+					th:classappend="${quoteStat.even} ? 'even'">
+					<div class="card-title">Quote #<span th:text="${quote.id}"></span></div>
+					<!--<div>
+						<b>Client: </b><span th:text="${quote.clientId}"></span>
+					</div>-->
+					<div class="card-data">
+						<div>
+							<b>Product: </b><span th:text="${quote.product.code}"></span>
+						</div>
+						 <div>
+							<b>Status: Waiting </b>
+						</div>
+					</div>
+					 <a class="btn btn-blue btn-small btn-primary"
+						th:href="@{/GotoQuoteDetails(quoteId=${quote.id})}">Update Price</a>
+				</div>
+				<div class="card card-blue even">
+					<div class="card-title">Quote</div>
+					<div class="card-data">
+						<div>
+							<b>Product: </b><span>prodotto</span>
+						</div>
+					</div>
+					<a class="btn btn-blue btn-small btn-primary">Update Price</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>>

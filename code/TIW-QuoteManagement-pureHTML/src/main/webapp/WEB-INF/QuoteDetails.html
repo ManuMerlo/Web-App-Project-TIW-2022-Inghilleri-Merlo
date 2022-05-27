@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="../css/global.css"
+	th:href="@{/css/global.css}" />
+<link rel="stylesheet" type="text/css" href="../css/home.css"
+	th:href="@{/css/home.css}" />
+<link rel="stylesheet" type="text/css" href="css/login.css"
+	th:href="@{css/login.css}" />
+
+<title>Quote Details</title>
+</head>
+<body>
+
+	<div class="topnav">
+		<div th:switch="${session.currentUser.role}">
+			<a th:case="'client'" class="active" th:href="@{/GotoClientHome}">Home</a>
+			<a th:case="'worker'" class="active" th:href="@{/GotoWorkerHome}">Home</a>
+		</div>
+		<a th:href="@{/Logout}">Logout</a>
+	</div>
+
+	<div class="account-div blue-div">
+		<div class="account-title">Here is quote's details</div>
+
+		<div class="card-title" th:text="${product.name}">Product name</div>
+		<div class="card-data">
+			<div th:if="${client}">
+				<b>Client username: </b><span th:text="${client.username}"></span>
+			</div>
+
+
+			<div th:switch="${quote.workerId}">
+				<div th:case="0">
+					<b>Status:</b> Waiting
+				</div>
+				<div th:case="*">
+					<b>Status:</b>Processed
+				</div>
+			</div>
+		</div>
+		<!-- <img alt="product_image" src="${product.image}"> -->
+		<div th:remove="all-but-first">
+			<div th:each="option:${options}">
+				<div class="card-data">
+					<div>
+						<b>Option name: </b><span th:text="${option.name}"></span>
+					</div>
+				</div>
+				<div class="card-data">
+					<div>
+						<b>Type: </b><span th:text="${option.type}"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card-data" th:switch="${quote.price}">
+			<div th:case="0">
+				<div th:if="${session.currentUser.role=='worker'}">
+					<form class="login-form" method="POST" action="UpdatePrice"
+						th:action="@{/UpdatePrice(quoteId=${quote.id})}">
+						<div class="form-group">
+							<label for="username">Price</label> <input type="number" min="0"
+								placeholder="Update Price" name="price" required>
+						</div>
+						<button class="btn btn-large btn-blue" type="submit">Update
+							Price</button>
+					</form>
+				</div>
+			</div>
+			<div th:case="*">
+				<b>Price:</b><span th:text="${quote.price}"></span>
+			</div>
+		</div>
+		<span class="warning-message" th:text="${warning}"></span>
+	</div>
+
+</body>
+</html>

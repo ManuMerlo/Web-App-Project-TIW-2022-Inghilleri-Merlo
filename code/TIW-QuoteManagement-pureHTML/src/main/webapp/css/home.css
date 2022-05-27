@@ -1,0 +1,85 @@
+.home-title{
+    font-size: 2rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+.home-subtitle{
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+.home-div{
+    padding: 0 2rem 2rem 2rem;
+    margin: 0 auto;
+    position: relative;
+}
+.create-div{
+    margin-top: 20px;
+    text-align: center;
+    max-width: 50%;
+}
+.create-title{
+    font-size: 1.2rem;
+    line-height: 2rem;
+    margin-bottom: 1rem;
+}
+.home-form{
+    margin-bottom: 20px;
+}
+.account-div{
+    margin-top: 20px;
+    max-width: 75%;
+}
+.account-title{
+    font-size: 1.2rem;
+    line-height: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+.even{
+    background-color: #ecf2f9;
+}
+.no-accounts{
+    font-size: 1.5rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+
+body{
+	font-size:100%;
+	color:#333;
+	font-family:sans-serif;
+}
+
+.topnav {
+    background-color: #005b79;
+    overflow: hidden;
+    z-index: 1000;
+    border-radius: 15px;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: #006587;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+    background-color: #004055;
+    color: white;
+}

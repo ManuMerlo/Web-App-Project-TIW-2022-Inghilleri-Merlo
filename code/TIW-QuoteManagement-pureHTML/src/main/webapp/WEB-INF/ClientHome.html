@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="../css/global.css"
+	th:href="@{/css/global.css}" />
+<link rel="stylesheet" type="text/css" href="../css/home.css"
+	th:href="@{/css/home.css}" />
+<title>Home</title>
+</head>
+<body>
+
+	<div class="topnav">
+		<a class="active" th:href="@{/GotoClientHome}">Home</a> <a
+			th:href="@{/Logout}">Logout</a>
+	</div>
+
+	<div class="home-title">
+		Welcome to your home, <span th:text="${session.currentUser.username}">user</span>
+	</div>
+	<div class="home-subtitle">Nice to see you!</div>
+
+	<div class="home-div">
+		<div class="create-div blue-div">
+			<div class="create-title">Here you can create a new quote</div>
+
+
+			<form class="home-form" name="createQuote" method="POST"
+				th:action="@{/GotoClientHome}">
+				<div class="form-group">
+					<label for="products">Choose a Product</label> 
+					<select id="products" th:name="productCode" th:remove="all-but-first"
+						required>
+						<option th:each="product:${products}" th:text="${product.name}"
+							th:value="${product.code}"
+							th:selected="(${selectedProduct} == *{product.code})" required>Product1</option>
+						<option value="2">Product2</option>
+						<option value="3">Product3</option>
+						<option value="4">Product4</option>
+					</select>
+					<button class="btn btn-blue btn-small btn-primary" type="submit">Choose</button>
+				</div>
+			</form>
+			<form class="home-form" method="POST"
+				th:action="@{/CreateQuote(productCode=${selectedProduct})}">
+				<div class="form-group" th:if="${visibilityOptions}">
+					<label for="options">Choose options</label> 
+					<select id="options" name="chosenOptions" th:remove="all-but-first" multiple="multiple"
+						required>
+						<option th:each="option:${options}" th:value="${option.code}"
+							th:text="${option.name}">Option1</option>
+						<option value="2">Option2</option>
+						<option value="3">Option3</option>
+						<option value="4">Option4</option>
+					</select>
+
+					<button class="btn btn-large btn-blue" type="submit">Send
+						Quote</button>
+				</div>
+			</form>
+			<div class="warning-message" th:if="${warning}">
+				<span th:text="${warning}">Warning message</span>
+			</div>
+		</div>
+	</div>
+	<div class="account-div blue-div">
+		<div class="account-title">Here there are your quotes</div>
+		<div th:switch="${quotes.size}">
+			<div th:case="0">
+				<div class="no-accounts">You currently have no quotes</div>
+			</div>
+			<div th:case="*" th:remove="all-but-first">
+				<div class="card card-blue" th:each="quote:${quotes}"
+					th:classappend="${quoteStat.even} ? 'even'">
+					<div class="card-title">
+						Quote # <span th:text="${quote.id}"></span>
+					</div>
+					<div class="card-data">
+						<b> Product : <span th:text="${quote.product.name}"></span></b>
+							<!-- <div th:each="product:${products}">
+							<b th:if="${quote.productCode == product.code}">Product: </b><span
+								th:if="${quote.productCode == product.code}"
+								th:text="${product.name}"></span> 
+								</div>-->
+						
+						<div th:switch="${quote.workerId}">
+							<div th:case="0">
+								<b>Status:</b> Waiting
+							</div>
+							<div th:case="*">
+								<b>Status:</b>Processed
+							</div>
+						</div>
+					</div>
+						<a class="btn btn-blue btn-small btn-primary"
+							th:href="@{/GotoQuoteDetails(quoteId=${quote.id})}">View
+							Details</a>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<link rel="stylesheet" type="text/css" href="css/global.css" th:href="@{css/global.css}"/>
+	<link rel="stylesheet" type="text/css" href="css/home.css" th:href="@{css/home.css}" />
+	<link rel="stylesheet" type="text/css" href="css/login.css" th:href="@{css/login.css}" />
+	<title>LoginPage</title>
+</head>
+
+<body>
+	<div class="home-title" >Quote Management Software</div>
+	<div class="home-subtitle">Create and manage your quotes in a few clicks</div>
+
+	<div class="blue-div login-div" >
+		<div class="login-title">Insert your credentials to Login</div>
+		<form class="login-form" method="POST" action="CheckLogin" th:action="@{/CheckLogin}">
+			<div class="form-group">
+				<label for="username">Username</label>
+				<input type="text" placeholder="Enter your username" name="username" minlength="1" required>
+			</div>
+			<div class="form-group">
+				<label for="password">Password</label>
+				<input type="password" placeholder="Enter your password" name="password"  required>
+			</div>
+			<button class="btn btn-large btn-blue" type="submit" name="role" value="client">Client Login</button>
+			<button class="btn btn-large btn-blue" type="submit" name="role" value="worker">Worker Login</button>
+		</form>
+			<span class="warning-message" th:text="${warning}"></span>
+		<hr>
+	<a href="Register.html"	th:href="@{/Register.html}">Register Now</a>
+	</div>
+</body>
+</html>
