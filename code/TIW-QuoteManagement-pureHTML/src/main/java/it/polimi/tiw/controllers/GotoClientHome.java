@@ -80,11 +80,9 @@ public class GotoClientHome extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
-		if (request.getParameter("warning") != null) {
+		/*if (request.getAttribute("warning")!=null) {
 			ctx.setVariable("warning", "Please choose at least one Option");
-		}
-
-		else if (request.getParameter("productCode") != null) {
+		} else */if (request.getAttribute("warning")==null && request.getParameter("productCode") != null) {
 			OptionDAO optionDAO = new OptionDAO(connection);
 			List<Option> options;
 			productCode = Integer.parseInt(request.getParameter("productCode"));
@@ -94,9 +92,12 @@ public class GotoClientHome extends HttpServlet {
 				e.printStackTrace();
 				return;
 			}
-			request.setAttribute("selectedProduct", productCode);
-			request.setAttribute("visibilityOptions", true);
-			request.setAttribute("options", options);
+			//request.setAttribute("selectedProduct", productCode);
+			//request.setAttribute("visibilityOptions", true);
+			//request.setAttribute("options", options);
+			ctx.setVariable("selectedProduct", productCode);
+			ctx.setVariable("visibilityOptions", true);
+			ctx.setVariable("options", options);
 		}
 
 		try {
@@ -109,9 +110,10 @@ public class GotoClientHome extends HttpServlet {
 			e.printStackTrace();
 			return;
 		}
-		request.setAttribute("products", products);
-		request.setAttribute("quotes", quotes);
-
+		//request.setAttribute("products", products);
+		//request.setAttribute("quotes", quotes);
+		ctx.setVariable("products", products);
+		ctx.setVariable("quotes", quotes);
 		templateEngine.process("/WEB-INF/ClientHome.html", ctx, response.getWriter());
 	}
 

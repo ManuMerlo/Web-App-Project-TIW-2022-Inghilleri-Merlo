@@ -16,6 +16,38 @@ public class OptionDAO {
 	public OptionDAO(Connection connection) {
 		this.connection = connection;
 	}
+	
+	public boolean hasOptionByCode(int productCode, int optionCode) throws SQLException {
+		String performedAction = " finding option by product code and option code";
+		String query = "SELECT * FROM quotemanagement.productoptions WHERE productCode=? AND optionCode=?";
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		boolean result=false;
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, productCode);
+			preparedStatement.setInt(2, optionCode);
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				result=true;
+			}
+		} catch (SQLException e) {
+			throw new SQLException("Error accessing the DB when" + performedAction);
+		} finally {
+			try {
+				resultSet.close();
+			} catch (Exception e) {
+				throw new SQLException("Error closing the result set when" + performedAction);
+			}
+			try {
+				preparedStatement.close();
+			} catch (Exception e) {
+				throw new SQLException("Error closing the statement when" + performedAction);
+			}
+		}
+		return result;
+	}
 
 	public List<Option> findOptionsByProductCode(int productCode) throws SQLException {
 		List<Option> options = new ArrayList<>();

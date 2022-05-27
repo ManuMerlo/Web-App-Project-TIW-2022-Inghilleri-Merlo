@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -22,7 +21,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.OptionDAO;
-
+import it.polimi.tiw.dao.ProductDAO;
 import it.polimi.tiw.dao.QuoteDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
 
@@ -74,31 +73,42 @@ public class CreateQuote extends HttpServlet {
 		User currentUser = (User) session.getAttribute("currentUser");
 		QuoteDAO quoteDAO = new QuoteDAO(connection);
 		OptionDAO optionDAO = new OptionDAO(connection);
-		List<String> chosenOptions = new ArrayList<>();
+		ProductDAO productDAO = new ProductDAO(connection);
+		List<Integer> chosenOptions = new ArrayList<>();
 		int clientId = currentUser.getId();
-		Integer productCode;
+		Integer productCode = null;
 		try {
-			productCode = Integer.parseInt(request.getParameter("productCode"));
-			chosenOptions = Arrays.asList(request.getParameterValues("chosenOptions"));
-			if (productCode==null || chosenOptions == null || chosenOptions.contains(null) || chosenOptions.isEmpty()
-					|| chosenOptions.size() == 0)
+			if (request.getParameter("productCode") == null || request.getParameter("productCode")=="")
 				throw new Exception();
+			productCode = Integer.parseInt(request.getParameter("productCode"));
+			if (productDAO.findProductByCode(productCode) == null) {
+				throw new Exception();
+			}
 		} catch (Exception e) {
-			request.setAttribute("warning", "Please choose at least one option");
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/GotoClientHome");
-			dispatcher.forward(request, response);
+			warning(request,response,"Invalid product");
 			return;
 		}
-
+		try {
+			if (request.getParameter("chosenOptions") == null || request.getParameter("chosenOptions").equals(""))
+				throw new Exception();
+			for (String s : request.getParameterValues("chosenOptions")) {
+				if (s == null || s.equals("") || !optionDAO.hasOptionByCode(productCode, Integer.parseInt(s)))
+					throw new Exception();
+				chosenOptions.add(Integer.parseInt(s));
+			}
+			// chosenOptions = Arrays.asList(request.getParameterValues("chosenOptions"));
+		} catch (Exception e) {
+			warning(request,response,"Invalid options");
+			return;
+		}
 		try {
 			int quoteId = quoteDAO.insertQuote(clientId, productCode);
-			for (String s : chosenOptions) {
-				optionDAO.insertOption(quoteId, Integer.parseInt(s));
+			for (Integer optionCode : chosenOptions) {
+				optionDAO.insertOption(quoteId, optionCode);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		response.sendRedirect(getServletContext().getContextPath() + "/GotoClientHome");
 	}
 
@@ -109,5 +119,16 @@ public class CreateQuote extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);
+	}
+	
+	private void warning(HttpServletRequest request, HttpServletResponse response, String warning) throws ServletException, IOException {
+		request.setAttribute("warning", warning);
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/GotoClientHome");
+		dispatcher.forward(request, response);
+		/*ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		ctx.setVariable("warning", "Incorrect username or password");
+		response.sendRedirect(getServletContext().getContextPath() + "/GotoClientHome");*/
+		
 	}
 }

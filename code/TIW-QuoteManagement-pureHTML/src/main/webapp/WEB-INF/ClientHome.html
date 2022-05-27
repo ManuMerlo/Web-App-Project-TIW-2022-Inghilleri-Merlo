@@ -36,7 +36,7 @@
 						required>
 						<option th:each="product:${products}" th:text="${product.name}"
 							th:value="${product.code}"
-							th:selected="(${selectedProduct} == *{product.code})" required>Product1</option>
+							th:selected="(${selectedProduct} == *{product.code})">Product1</option>
 						<option value="2">Product2</option>
 						<option value="3">Product3</option>
 						<option value="4">Product4</option>
