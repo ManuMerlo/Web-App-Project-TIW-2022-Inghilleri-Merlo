@@ -1,0 +1,49 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+
+%Risolve il problema di Adobe Reader che vedevo i caratteri dell'indice un po' grigi, non riuscendo a leggerli bene
+\usepackage{lmodern}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\usepackage{color}
+\definecolor{myGreen}{rgb}{0,0.69,0.313}
+
+%Tabelle
+\usepackage{tabularx}
+\usepackage{booktabs}
+
+%Serve per avere l'indice cliccabile. Con questi parametri inoltre non spuntano i riquadri rossi di default
+%TODO Non dimenticare di togliere il commento su hyperref quando finisco la relazione
+%\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black]{hyperref}
+
+% Impostazioni di pagina e margini
+\usepackage[a4paper, margin=2.54cm]{geometry}
+
+%Header and Footer
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Prova Finale di Reti Logiche - a.a. 2021/2022}
+\cfoot{\thepage}
+
+% Titolo e informazioni
+\title{Prova Finale di Reti Logiche}
+\author{Riccardo Inghilleri - Matricola n. 937011}
+\date{Anno Accademico 2021/2022}
+
+\begin{document}
+\input{titlepage}
+\tableofcontents
+\newpage
+\section{Gestione Preventivi}
+\subsection{Analisi dei dati per il database}
+Un’applicazione web consente la gestione di richieste di preventivi per prodotti personalizzati. L’applicazione supporta registrazione e login di clienti e impiegati mediante una pagina pubblica con opportune form. La registrazione controlla l’unicità dello username. Un preventivo è associato a un prodotto, al cliente che l’ha richiesto e all’impiegato che l’ha gestito. Il preventivo comprende una o più opzioni per il prodotto a cui è associato, che devono essere tra quelle disponibili per il prodotto. Un prodotto ha un codice, un’immagine e un nome. Un’opzione ha un codice, un tipo (“normale”, “in offerta”) e un nome. Un preventivo ha un prezzo, definito dall’impiegato. Quando l’utente (cliente o impiegato) accede all’applicazione, appare una LOGIN PAGE, mediante la quale l’utente si autentica con username e password. Quando un cliente fa login, accede a una pagina HOME PAGE CLIENTE che contiene una form per creare un preventivo e l’elenco dei preventivi creati dal cliente. Selezionando uno dei preventivi il cliente ne visualizza i dettagli. Mediante la form di creazione di un preventivo l’utente per prima cosa sceglie il prodotto; scelto il prodotto, la form mostra le opzioni di quel prodotto. L’utente sceglie le opzioni (almeno una) e conferma l’invio del preventivo mediante il bottone INVIA PREVENTIVO. Quando un impiegato effettua il login, accede a una pagina HOME PAGE IMPIEGATO che contiene l’elenco dei preventivi gestiti da lui in precedenza e quello dei preventivi non ancora associati a nessun impiegato. Quando l’impiegato seleziona un elemento dall’elenco dei preventivi non ancora associati a nessuno, compare una pagina PREZZA PREVENTIVO che mostra i dati del cliente (username) e del preventivo e una form per inserire il prezzo del preventivo. Quando l’impiegato inserisce il prezzo e invia i dati con il bottone INVIA PREZZO, compare di nuovo la pagina HOME PAGE IMPIEGATO con gli elenchi dei preventivi aggiornati. Il prezzo definito dall’impiegato risulta visibile al cliente quando questi accede all’elenco dei propri preventivi e visualizza i dettagli del preventivo. La pagina PREZZA PREVENTIVO contiene anche un collegamento per tornare alla HOME PAGE IMPIEGATO. L’applicazione consente il logout dell’utente.\\
+
+\noindent \textcolor{red}{Entities}, \textcolor{myGreen}{attributes}, \textcolor{blue}{relationships}
+\subsection{Database Design}
+\subsection{Analisi dei dati per i requisiti dell'applicazione}
+\end{document}
