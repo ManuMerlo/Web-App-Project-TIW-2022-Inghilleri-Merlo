@@ -136,7 +136,7 @@ public class QuoteDAO {
 		return quotes;
 	}
 
-	public int insertQuote(int clientId, int productCode, String[] chosenOptions) throws SQLException {
+	public int insertQuote(int clientId, int productCode) throws SQLException {
 		String performedAction = " inserting quote";
 		String insert_quote_query = "INSERT INTO quotemanagement.quote (clientId,productCode) VALUES (?,?)";
 		String id_quote_query = "SELECT COUNT(*) AS quoteId FROM quotemanagement.quote";

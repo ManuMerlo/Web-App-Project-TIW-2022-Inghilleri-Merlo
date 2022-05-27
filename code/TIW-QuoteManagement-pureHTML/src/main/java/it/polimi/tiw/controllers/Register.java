@@ -72,11 +72,12 @@ public class Register extends HttpServlet {
 		String password = request.getParameter("password");
 		String role = request.getParameter("role");
 		
-		if(username == null || password == null || username.isEmpty() || password.isEmpty()) {
+		if(username == null || password == null || role==null || username.isEmpty() || password.isEmpty()) {
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("warning", "Null username or password. Please try again.");
 			templateEngine.process("Register.html", ctx, response.getWriter());
+			return;
 		
 		}
 			

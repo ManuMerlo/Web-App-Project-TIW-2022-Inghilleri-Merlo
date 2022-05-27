@@ -51,19 +51,19 @@ public class QuoteChecker implements Filter {
 		HttpSession session = req.getSession();
 		QuoteDAO quoteDAO = new QuoteDAO(connection);
 		User user = null;
-		String loginpath = null;
+		String path = null;
 		user = (User) session.getAttribute("currentUser");
 		if (user.getRole().equals("client")) {
-			loginpath = req.getServletContext().getContextPath() + "/GotoClientHome";
+			path = req.getServletContext().getContextPath() + "/GotoClientHome";
 		} else if (user.getRole().equals("worker")) {
-			loginpath = req.getServletContext().getContextPath() + "/GotoWorkerHome";
+			path = req.getServletContext().getContextPath() + "/GotoWorkerHome";
 		}
 		try {
 			if ((user.getRole().equals("client") && user.getId() != quoteDAO
 					.findQuoteById(Integer.parseInt(req.getParameter("quoteId"))).getClientId())
 					|| (user.getRole().equals("worker") && user.getId() != quoteDAO
 							.findQuoteById(Integer.parseInt(req.getParameter("quoteId"))).getWorkerId())) {
-				res.sendRedirect(loginpath);
+				res.sendRedirect(path);
 				return;
 			}
 		} catch (SQLException e) {

@@ -25,7 +25,8 @@
 	<div class="account-div blue-div">
 		<div class="account-title">Here is quote's details</div>
 
-		<div class="card-title" th:text="${product.name}">Product name</div>
+		<div class="card-title" th:text="${product.name} ">Product name</div>
+		<div class="card-title" th:text="${product.code} ">Product code</div>
 		<div class="card-data">
 			<div th:if="${client}">
 				<b>Client username: </b><span th:text="${client.username}"></span>

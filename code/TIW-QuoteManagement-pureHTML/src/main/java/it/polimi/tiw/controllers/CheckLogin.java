@@ -79,7 +79,7 @@ public class CheckLogin extends HttpServlet {
 			username = request.getParameter("username");
 			password = request.getParameter("password");
 			role = request.getParameter("role");
-			if(username == null || password == null || username.isEmpty() || password.isEmpty()) {
+			if(username == null || role==null || password == null || username.isEmpty() || password.isEmpty()) {
 				throw new Exception("Missing or empty credential value");
 			}
 		} catch (Exception e) {

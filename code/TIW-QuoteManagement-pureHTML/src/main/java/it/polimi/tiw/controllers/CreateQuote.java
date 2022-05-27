@@ -3,6 +3,9 @@ package it.polimi.tiw.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -14,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
@@ -72,15 +74,16 @@ public class CreateQuote extends HttpServlet {
 		User currentUser = (User) session.getAttribute("currentUser");
 		QuoteDAO quoteDAO = new QuoteDAO(connection);
 		OptionDAO optionDAO = new OptionDAO(connection);
-		String[] chosenOptions = null;
+		List<String> chosenOptions = new ArrayList<>();
 		int clientId = currentUser.getId();
-		int productCode = Integer.parseInt(request.getParameter("productCode"));
+		Integer productCode;
 		try {
-		chosenOptions = request.getParameterValues("chosenOptions");
-		if (chosenOptions == null || chosenOptions.length == 0 )
-			throw new Exception();
-		}
-		catch(Exception e) {
+			productCode = Integer.parseInt(request.getParameter("productCode"));
+			chosenOptions = Arrays.asList(request.getParameterValues("chosenOptions"));
+			if (productCode==null || chosenOptions == null || chosenOptions.contains(null) || chosenOptions.isEmpty()
+					|| chosenOptions.size() == 0)
+				throw new Exception();
+		} catch (Exception e) {
 			request.setAttribute("warning", "Please choose at least one option");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/GotoClientHome");
 			dispatcher.forward(request, response);
@@ -88,7 +91,7 @@ public class CreateQuote extends HttpServlet {
 		}
 
 		try {
-			int quoteId = quoteDAO.insertQuote(clientId, productCode, chosenOptions);
+			int quoteId = quoteDAO.insertQuote(clientId, productCode);
 			for (String s : chosenOptions) {
 				optionDAO.insertOption(quoteId, Integer.parseInt(s));
 			}
