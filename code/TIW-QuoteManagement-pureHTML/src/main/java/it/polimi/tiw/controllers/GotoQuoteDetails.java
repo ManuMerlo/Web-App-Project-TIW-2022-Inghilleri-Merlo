@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,7 +44,6 @@ public class GotoQuoteDetails extends HttpServlet {
 	 */
 	public GotoQuoteDetails() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -81,42 +81,52 @@ public class GotoQuoteDetails extends HttpServlet {
 			response.sendRedirect(loginpath);
 			return;
 		}
-		if (request.getParameter("warning") != null) {
-			ctx.setVariable("warning", "Please choose at least one Option");
-		}
 
-		int quoteId = Integer.parseInt(request.getParameter("quoteId"));
+		int quoteId;
 		OptionDAO optionDAO = new OptionDAO(connection);
 		ProductDAO productDAO = new ProductDAO(connection);
 		QuoteDAO quoteDAO = new QuoteDAO(connection);
 		List<Option> options = new ArrayList<>();
-		Product product;
-		Quote quote;
+		Product product = null;
+		Quote quote = null;
+		User user = (User) session.getAttribute("currentUser");
 
 		try {
+			quoteId = Integer.parseInt(request.getParameter("quoteId"));
 			quote = quoteDAO.findQuoteById(quoteId);
+			if(quote==null) throw new Exception();
 			product = productDAO.findProductByCode(quote.getProductCode());
 			options = optionDAO.findOptionsByQuoteId(quoteId);
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return;
+		} catch (Exception e) {
+			warning(request, response, user.getRole(), "Invalid quote id");
+			return;
 		}
-		User user = (User) session.getAttribute("currentUser");
+		try {
+			if ((user.getRole().equalsIgnoreCase("client") && user.getId() != quote.getClientId())
+					|| (user.getRole().equalsIgnoreCase("worker") && quote.getWorkerId()!=0 && user.getId() != quote.getWorkerId())) {
+				throw new Exception();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		} catch (Exception e) {
+			warning(request, response, user.getRole(), "You cannot see this quote");
+			return;
+		}
+
 		if (user.getRole().equalsIgnoreCase("worker")) {
 			UserDAO userDAO = new UserDAO(connection);
 			try {
 				User client = userDAO.findClientById(quote.getClientId());
-				// request.setAttribute("client",client);
 				ctx.setVariable("client", client);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return;
 			}
 		}
-		// request.setAttribute("product", product);
-		// request.setAttribute("options",options);
-		// request.setAttribute("quote",quote);
 		ctx.setVariable("product", product);
 		ctx.setVariable("options", options);
 		ctx.setVariable("quote", quote);
@@ -130,7 +140,20 @@ public class GotoQuoteDetails extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doPost(request, response);
+	}
+
+	private void warning(HttpServletRequest request, HttpServletResponse response, String role, String warning)
+			throws ServletException, IOException {
+		String path = null;
+		request.setAttribute("warning", warning);
+		if (role.equals("client")) {
+			path = "/GotoClientHome";
+		} else if (role.equals("worker")) {
+			path = "/GotoWorkerHome";
+		}
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);
+		dispatcher.forward(request, response);
+
 	}
 }

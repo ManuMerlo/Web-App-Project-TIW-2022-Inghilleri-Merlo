@@ -103,7 +103,6 @@ public class GotoClientHome extends HttpServlet {
 			ctx.setVariable("visibilityOptions", true);
 			ctx.setVariable("options", options);
 		}
-
 		try {
 			quotes = quoteDAO.findQuotesByUserId(currentUser.getId(), currentUser.getRole());
 			for (Quote q : quotes) {
@@ -127,7 +126,6 @@ public class GotoClientHome extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

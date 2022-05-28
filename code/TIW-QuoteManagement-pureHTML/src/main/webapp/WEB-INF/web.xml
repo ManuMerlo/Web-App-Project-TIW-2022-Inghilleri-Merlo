@@ -32,10 +32,6 @@
 		<filter-name>WorkerChecker</filter-name>
 		<filter-class>it.polimi.tiw.filters.WorkerChecker</filter-class>
 	</filter>
-	<filter>
-		<filter-name>QuoteChecker</filter-name>
-		<filter-class>it.polimi.tiw.filters.QuoteChecker</filter-class>
-	</filter>
 	<filter-mapping>
 		<filter-name>SessionChecker</filter-name>
 		<url-pattern>/GotoClientHome</url-pattern>
@@ -54,10 +50,6 @@
 		<filter-name>WorkerChecker</filter-name>
 		<url-pattern>/GotoWorkerHome</url-pattern>
 		<url-pattern>/UpdatePrice</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>QuoteChecker</filter-name>
-		<url-pattern>/GotoQuoteDetails</url-pattern>
 	</filter-mapping>
 	<welcome-file-list>
 		<welcome-file>Login.html</welcome-file>

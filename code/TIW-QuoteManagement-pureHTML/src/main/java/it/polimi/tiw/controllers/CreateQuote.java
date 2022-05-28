@@ -78,10 +78,10 @@ public class CreateQuote extends HttpServlet {
 		int clientId = currentUser.getId();
 		Integer productCode = null;
 		try {
-			if (request.getParameter("productCode") == null || request.getParameter("productCode").equals(""))
-				throw new Exception();
+			/*if (request.getParameter("productCode") == null || request.getParameter("productCode").equals(""))
+				throw new Exception();*/
 			productCode = Integer.parseInt(request.getParameter("productCode"));
-			if (productDAO.findProductByCode(productCode) == null) {
+			if (productCode==null || productDAO.findProductByCode(productCode) == null) {
 				throw new Exception();
 			}
 		} catch (Exception e) {

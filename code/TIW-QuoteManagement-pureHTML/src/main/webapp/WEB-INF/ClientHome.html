@@ -27,7 +27,6 @@
 		<div class="create-div blue-div">
 			<div class="create-title">Here you can create a new quote</div>
 
-
 			<form class="home-form" name="createQuote" method="POST"
 				th:action="@{/GotoClientHome}">
 				<div class="form-group">
@@ -44,9 +43,10 @@
 					<button class="btn btn-blue btn-small btn-primary" type="submit">Choose</button>
 				</div>
 			</form>
+		
 			<form class="home-form" method="POST"
 				th:action="@{/CreateQuote(productCode=${selectedProduct})}">
-				<div class="form-group" th:if="${visibilityOptions}">
+				<div class="form-group" th:if="${visibilityOptions}" ><!-- th:if="${#ctx.containsVariable('visibilityOptions')}"-->
 					<label for="options">Choose options</label> 
 					<select id="options" name="chosenOptions" th:remove="all-but-first" multiple="multiple"
 						required>
