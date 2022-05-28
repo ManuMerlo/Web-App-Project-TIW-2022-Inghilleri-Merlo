@@ -80,29 +80,33 @@ public class GotoClientHome extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
-		/*if (request.getAttribute("warning")!=null) {
-			ctx.setVariable("warning", "Please choose at least one Option");
-		} else */if (request.getAttribute("warning")==null && request.getParameter("productCode") != null) {
+		if (request.getAttribute("warning") == null && request.getParameter("productCode") != null) {
 			OptionDAO optionDAO = new OptionDAO(connection);
-			List<Option> options;
-			productCode = Integer.parseInt(request.getParameter("productCode"));
+			List<Option> options = null;
 			try {
+				productCode = Integer.parseInt(request.getParameter("productCode"));
+				if (productDAO.findProductByCode(productCode) == null) {
+					throw new Exception();
+				}
 				options = optionDAO.findOptionsByProductCode(productCode);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return;
+			} catch (Exception e) {
+				ctx.setVariable("warning", "Invalid Product");
+				//ctx.removeVariable("visibilityOptions"); // TODO non funziona
 			}
-			//request.setAttribute("selectedProduct", productCode);
-			//request.setAttribute("visibilityOptions", true);
-			//request.setAttribute("options", options);
+			// request.setAttribute("selectedProduct", productCode);
+			// request.setAttribute("visibilityOptions", true);
+			// request.setAttribute("options", options);
 			ctx.setVariable("selectedProduct", productCode);
 			ctx.setVariable("visibilityOptions", true);
 			ctx.setVariable("options", options);
 		}
 
 		try {
-			quotes = quoteDAO.findQuotesByUserId(currentUser.getId(),currentUser.getRole());
-			for(Quote q:quotes) {
+			quotes = quoteDAO.findQuotesByUserId(currentUser.getId(), currentUser.getRole());
+			for (Quote q : quotes) {
 				q.setProduct(productDAO.findProductByCode(q.getProductCode()));
 			}
 			products = productDAO.findAllProducts();
@@ -110,8 +114,8 @@ public class GotoClientHome extends HttpServlet {
 			e.printStackTrace();
 			return;
 		}
-		//request.setAttribute("products", products);
-		//request.setAttribute("quotes", quotes);
+		// request.setAttribute("products", products);
+		// request.setAttribute("quotes", quotes);
 		ctx.setVariable("products", products);
 		ctx.setVariable("quotes", quotes);
 		templateEngine.process("/WEB-INF/ClientHome.html", ctx, response.getWriter());

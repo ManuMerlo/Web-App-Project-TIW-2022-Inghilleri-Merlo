@@ -23,14 +23,12 @@ public class ClientChecker implements Filter {
 	 * Default constructor.
 	 */
 	public ClientChecker() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
 	 * @see Filter#destroy()
 	 */
 	public void destroy() {
-		// TODO Auto-generated method stub
 	}
 
 	/**
@@ -38,7 +36,7 @@ public class ClientChecker implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		System.out.print("Client filter executing ..\n");
+		System.out.print("Client filter executing ...\n");
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		String loginpath = req.getServletContext().getContextPath() + "/Login.html";
@@ -58,7 +56,6 @@ public class ClientChecker implements Filter {
 	 * @see Filter#init(FilterConfig)
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
-		// TODO Auto-generated method stub
 	}
 
 }

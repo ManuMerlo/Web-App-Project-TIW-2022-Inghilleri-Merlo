@@ -250,6 +250,7 @@ hr{
     Warning
 */
 .warning-message{
+	text-align: center;
     color: #e74a3b;
     font-family: Arial, Helvetica, sans-serif;
 }

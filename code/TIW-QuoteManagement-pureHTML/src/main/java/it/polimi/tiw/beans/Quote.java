@@ -1,6 +1,5 @@
 package it.polimi.tiw.beans;
 
-import it.polimi.tiw.dao.ProductDAO;
 
 public class Quote {
 	private int id;

@@ -36,7 +36,8 @@ public class UserDAO {
 				user = new User();
 				user.setId(resultSet.getInt("id"));
 				user.setUsername(resultSet.getString("username"));
-				user.setRole(role);			}
+				user.setRole(role);
+			}
 
 		} catch (SQLException e) {
 			throw new SQLException("Error accessing the DB when" + performedAction);
@@ -54,8 +55,8 @@ public class UserDAO {
 		}
 		return user;
 	}
-	
-	public User findUser(String username,String role) throws SQLException {
+
+	public User findUser(String username, String role) throws SQLException {
 		User user = null;
 		String performedAction = "finding a user by username and password";
 		String query = null;
@@ -94,10 +95,11 @@ public class UserDAO {
 		}
 		return user;
 	}
+
 	public User findClientById(int clientId) throws SQLException {
 		User user = null;
 		String performedAction = "finding a client by Id";
-		String query =  "SELECT * FROM quotemanagement.client WHERE id = ?";
+		String query = "SELECT * FROM quotemanagement.client WHERE id = ?";
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
@@ -128,29 +130,28 @@ public class UserDAO {
 		}
 		return user;
 	}
-	
+
 	public void registerUser(String username, String password, String role) throws SQLException {
-		
+
 		String performedAction = " registering a new user in the database";
-		String query;
-		if(role.equalsIgnoreCase("client"))
-		query= "INSERT INTO quotemanagement.client (username,password) VALUES(?,?)";
-		else query= "INSERT INTO quotemanagement.worker (username,password) VALUES(?,?)";
+		String query = null;
+		if (role.equalsIgnoreCase("client"))
+			query = "INSERT INTO quotemanagement.client (username,password) VALUES(?,?)";
+		else if (role.equalsIgnoreCase("worker"))
+			query = "INSERT INTO quotemanagement.worker (username,password) VALUES(?,?)";
 		PreparedStatement preparedStatementAddUser = null;
-		
+
 		try {
-			
 			preparedStatementAddUser = connection.prepareStatement(query);
 			preparedStatementAddUser.setString(1, username);
 			preparedStatementAddUser.setString(2, password);
 			preparedStatementAddUser.executeUpdate();
-			
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new SQLException("Error accessing the DB when" + performedAction);
-		}finally {
+		} finally {
 			try {
 				preparedStatementAddUser.close();
-			}catch (Exception e) {
+			} catch (Exception e) {
 				throw new SQLException("Error closing the statement when" + performedAction);
 			}
 		}

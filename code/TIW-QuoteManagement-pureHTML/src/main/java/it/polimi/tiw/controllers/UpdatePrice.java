@@ -17,6 +17,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.tiw.beans.Quote;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.QuoteDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
@@ -76,34 +77,60 @@ public class UpdatePrice extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		User currentUser = (User) session.getAttribute("currentUser");
 		QuoteDAO quoteDAO = new QuoteDAO(connection);
-		int quoteId = Integer.parseInt(request.getParameter("quoteId"));
+		Quote quote = null;
+		String path = null;
+		int quoteId = -1;
 		int price = -1;
 		try {
+			/*if (request.getParameter("quoteId") == null || request.getParameter("quoteId").equals("")) {
+				path = "/GotoWorkerHome";
+				throw new Exception();
+			}*/
+			quoteId = Integer.parseInt(request.getParameter("quoteId"));
+		} catch (Exception e) {
+			path = "/GotoWorkerHome";
+			warning(request, response, "Incorrect quote id", path);
+			return;
+		}
+		try {
+			quote = quoteDAO.findQuoteById(quoteId);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		if (quote.getWorkerId() != 0) {
+			path = "/GotoQuoteDetails";
+			warning(request, response, "This quote is already priced", path);
+			return;
+		}
+
+		try {
+			// if(request.getParameter("price")==null)
+			path = "/GotoQuoteDetails";
 			price = Integer.parseInt(request.getParameter("price"));
 			if (price <= 0)
 				throw new Exception();
-		}catch (NumberFormatException e) {
-			request.setAttribute("warning", "Invalid format! Please insert number");
-			request.setAttribute("quoteId", quoteId);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/GotoQuoteDetails");
-			dispatcher.forward(request, response);
+		} catch (NumberFormatException e) {
+			warning(request, response, "Invalid format! Please insert number", path);
 			return;
-		}catch (Exception e) {
-			request.setAttribute("warning", "Please insert a correct price");
-			request.setAttribute("quoteId", quoteId);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/GotoQuoteDetails");
-			dispatcher.forward(request, response);
+		} catch (Exception e) {
+			warning(request, response, "Please insert a correct price", path);
 			return;
-		} 
-		
+		}
 
 		try {
-			quoteDAO.updateQuote(quoteId,currentUser.getId(),price);
+			quoteDAO.updateQuote(quoteId, currentUser.getId(), price);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		response.sendRedirect(getServletContext().getContextPath() + "/GotoWorkerHome");
+	}
+
+	private void warning(HttpServletRequest request, HttpServletResponse response, String warning, String path)
+			throws ServletException, IOException {
+		request.setAttribute("warning", warning);
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);
+		dispatcher.forward(request, response);
 	}
 
 }

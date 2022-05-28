@@ -18,6 +18,9 @@
 	<div class="home-title">
 		Welcome back to work <span th:text="${session.currentUser.username}">user!!</span>
 	</div>
+	<div class="warning-message" th:if="${warning}">
+		<span th:text="${warning}">Warning message</span>
+	</div>
 	<div class="account-div blue-div">
 		<div class="account-title">Here there are quotes managed by you</div>
 		<div th:switch="${managedQuotes.size}">
@@ -27,9 +30,11 @@
 			<div th:case="*" th:remove="all-but-first">
 				<div class="card card-blue" th:each="quote:${managedQuotes}"
 					th:classappend="${quoteStat.even} ? 'even'">
-					<div class="card-title">Quote #<span th:text="${quote.id}"></span></div>
+					<div class="card-title">
+						Quote #<span th:text="${quote.id}"></span>
+					</div>
 					<div class="card-data">
-					<!--<div>
+						<!--<div>
 						  <b>Client: </b><span th:text="${quote.clientId}"></span>
 					</div>-->
 						<div>
@@ -68,20 +73,23 @@
 			<div th:case="*" th:remove="all-but-first">
 				<div class="card card-blue" th:each="quote:${unmanagedQuotes}"
 					th:classappend="${quoteStat.even} ? 'even'">
-					<div class="card-title">Quote #<span th:text="${quote.id}"></span></div>
+					<div class="card-title">
+						Quote #<span th:text="${quote.id}"></span>
+					</div>
 					<!--<div>
 						<b>Client: </b><span th:text="${quote.clientId}"></span>
 					</div>-->
 					<div class="card-data">
 						<div>
-							<b>Product: </b><span th:text="${quote.product.code}"></span>
+							<b>Product: </b><span th:text="${quote.product.name}"></span>
 						</div>
-						 <div>
+						<div>
 							<b>Status: Waiting </b>
 						</div>
 					</div>
-					 <a class="btn btn-blue btn-small btn-primary"
-						th:href="@{/GotoQuoteDetails(quoteId=${quote.id})}">Update Price</a>
+					<a class="btn btn-blue btn-small btn-primary"
+						th:href="@{/GotoQuoteDetails(quoteId=${quote.id})}">Update
+						Price</a>
 				</div>
 				<div class="card card-blue even">
 					<div class="card-title">Quote</div>
@@ -98,4 +106,5 @@
 
 
 </body>
-</html>>
+</html>
+>

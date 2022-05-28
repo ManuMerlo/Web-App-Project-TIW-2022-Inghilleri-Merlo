@@ -155,8 +155,6 @@ public class QuoteDAO {
 			preparedStatement2 = connection.prepareStatement(id_quote_query);
 			resultSet = preparedStatement2.executeQuery();
 			while(resultSet.next()) quoteId = resultSet.getInt("quoteId");
-			
-			
 			/*
 			 * preparedStatement3 = connection.prepareStatement(insert_option_query);
 			 * 

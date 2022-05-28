@@ -78,7 +78,7 @@ public class CreateQuote extends HttpServlet {
 		int clientId = currentUser.getId();
 		Integer productCode = null;
 		try {
-			if (request.getParameter("productCode") == null || request.getParameter("productCode")=="")
+			if (request.getParameter("productCode") == null || request.getParameter("productCode").equals(""))
 				throw new Exception();
 			productCode = Integer.parseInt(request.getParameter("productCode"));
 			if (productDAO.findProductByCode(productCode) == null) {
@@ -96,7 +96,6 @@ public class CreateQuote extends HttpServlet {
 					throw new Exception();
 				chosenOptions.add(Integer.parseInt(s));
 			}
-			// chosenOptions = Arrays.asList(request.getParameterValues("chosenOptions"));
 		} catch (Exception e) {
 			warning(request,response,"Invalid options");
 			return;
