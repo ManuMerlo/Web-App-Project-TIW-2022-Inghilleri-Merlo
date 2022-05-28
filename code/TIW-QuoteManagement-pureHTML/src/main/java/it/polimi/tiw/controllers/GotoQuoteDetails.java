@@ -73,7 +73,7 @@ public class GotoQuoteDetails extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String loginpath = getServletContext().getContextPath() + "/Login.html";
+		String loginpath = getServletContext().getContextPath() + "/WEB-INF/Login.html";
 		HttpSession session = request.getSession();
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
@@ -94,7 +94,8 @@ public class GotoQuoteDetails extends HttpServlet {
 		try {
 			quoteId = Integer.parseInt(request.getParameter("quoteId"));
 			quote = quoteDAO.findQuoteById(quoteId);
-			if(quote==null) throw new Exception();
+			if (quote == null)
+				throw new Exception();
 			product = productDAO.findProductByCode(quote.getProductCode());
 			options = optionDAO.findOptionsByQuoteId(quoteId);
 		} catch (SQLException e) {
@@ -106,7 +107,8 @@ public class GotoQuoteDetails extends HttpServlet {
 		}
 		try {
 			if ((user.getRole().equalsIgnoreCase("client") && user.getId() != quote.getClientId())
-					|| (user.getRole().equalsIgnoreCase("worker") && quote.getWorkerId()!=0 && user.getId() != quote.getWorkerId())) {
+					|| (user.getRole().equalsIgnoreCase("worker") && quote.getWorkerId() != 0
+							&& user.getId() != quote.getWorkerId())) {
 				throw new Exception();
 			}
 		} catch (SQLException e) {

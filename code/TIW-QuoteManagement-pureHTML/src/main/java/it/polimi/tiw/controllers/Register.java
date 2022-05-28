@@ -95,7 +95,7 @@ public class Register extends HttpServlet {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			response.sendRedirect(getServletContext().getContextPath() + "/Login.html");
+			response.sendRedirect(getServletContext().getContextPath() + "/GotoLogin");
 		}
 	}
 

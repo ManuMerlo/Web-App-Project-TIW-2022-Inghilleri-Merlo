@@ -110,6 +110,6 @@ public class CheckLogin extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("warning", warning);
-		templateEngine.process("Login.html", ctx, response.getWriter());
+		templateEngine.process("/WEB-INF/Login.html", ctx, response.getWriter());
 	}
 }

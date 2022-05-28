@@ -40,7 +40,7 @@ public class SessionChecker implements Filter {
 
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
-		String loginpath = req.getServletContext().getContextPath() + "/Login.html";
+		String loginpath = req.getServletContext().getContextPath() + "/GotoLogin";
 
 		HttpSession session = req.getSession();
 		if (session.isNew() || session.getAttribute("currentUser") == null) {

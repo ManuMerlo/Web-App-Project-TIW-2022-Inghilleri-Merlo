@@ -3,7 +3,6 @@ package it.polimi.tiw.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -18,17 +17,14 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.tiw.beans.Quote;
 import it.polimi.tiw.beans.User;
-import it.polimi.tiw.dao.QuoteDAO;
-import it.polimi.tiw.dao.ProductDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
 
 /**
- * Servlet implementation class GotoWorkerHome
+ * Servlet implementation class GotoLogin
  */
-@WebServlet("/GotoWorkerHome")
-public class GotoWorkerHome extends HttpServlet {
+@WebServlet("/GotoLogin")
+public class GotoLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	private Connection connection;
@@ -36,9 +32,8 @@ public class GotoWorkerHome extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public GotoWorkerHome() {
+	public GotoLogin() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -67,30 +62,7 @@ public class GotoWorkerHome extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		User currentUser = (User) session.getAttribute("currentUser");
-		QuoteDAO quoteDAO = new QuoteDAO(connection);
-		ProductDAO productDAO =new ProductDAO(connection);
-		List<Quote> managedQuotes;
-		List<Quote> unmanagedQuotes;
-		try {
-			managedQuotes = quoteDAO.findQuotesByUserId(currentUser.getId(),currentUser.getRole());
-			for(Quote q:managedQuotes) {
-				q.setProduct(productDAO.findProductByCode(q.getProductCode()));
-			}
-			unmanagedQuotes = quoteDAO.findUnmanagedQuotes();
-			for(Quote q:unmanagedQuotes) {
-				q.setProduct(productDAO.findProductByCode(q.getProductCode()));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return;
-		}
-		request.setAttribute("managedQuotes", managedQuotes);
-		request.setAttribute("unmanagedQuotes", unmanagedQuotes);
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		templateEngine.process("/WEB-INF/WorkerHome.html", ctx, response.getWriter());
+		doPost(request, response);
 	}
 
 	/**
@@ -99,7 +71,23 @@ public class GotoWorkerHome extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		doGet(request, response);
+		HttpSession session = request.getSession(false);
+
+		String path = null;
+		if (session!=null && !session.isNew() && session.getAttribute("currentUser") != null) {
+			User currentUser = (User) session.getAttribute("currentUser");
+			if (currentUser.getRole().equalsIgnoreCase("client")) {
+				path = getServletContext().getContextPath() + "/GotoClientHome";
+			} else if (currentUser.getRole().equalsIgnoreCase("worker"))
+				path = getServletContext().getContextPath() + "/GotoWorkerHome";
+			response.sendRedirect(path);
+		} else {
+			/*path = getServletContext().getContextPath() +  "/WEB-INF/Login.html";
+			response.sendRedirect(path);*/
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			templateEngine.process("/WEB-INF/Login.html", ctx, response.getWriter());
+		}
 	}
 
 }

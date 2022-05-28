@@ -39,7 +39,6 @@ public class CreateQuote extends HttpServlet {
 	 */
 	public CreateQuote() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
