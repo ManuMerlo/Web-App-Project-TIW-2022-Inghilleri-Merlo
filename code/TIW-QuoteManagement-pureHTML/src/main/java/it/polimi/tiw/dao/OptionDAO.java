@@ -84,7 +84,7 @@ public class OptionDAO {
 		}
 		return options;
 	}
-	public List<Option> findOptionsByQuoteId(int productCode) throws SQLException {
+	public List<Option> findOptionsByQuoteId(int quoteId) throws SQLException {
 		List<Option> options = new ArrayList<>();
 		String performedAction = " finding options by quote id";
 		String query = "SELECT * FROM quotemanagement.quoteoptions JOIN quotemanagement.option ON option.code=quoteoptions.optionCode WHERE quoteId=?";
@@ -93,7 +93,7 @@ public class OptionDAO {
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, productCode);
+			preparedStatement.setInt(1, quoteId);
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {

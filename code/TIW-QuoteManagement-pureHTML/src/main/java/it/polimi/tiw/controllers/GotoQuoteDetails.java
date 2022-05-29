@@ -73,14 +73,14 @@ public class GotoQuoteDetails extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String loginpath = getServletContext().getContextPath() + "/WEB-INF/Login.html";
+		//String loginpath = getServletContext().getContextPath() + "/WEB-INF/Login.html";
 		HttpSession session = request.getSession();
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		if (session.isNew() || session.getAttribute("currentUser") == null) {
+		/*if (session.isNew() || session.getAttribute("currentUser") == null) {
 			response.sendRedirect(loginpath);
 			return;
-		}
+		}*/
 
 		int quoteId;
 		OptionDAO optionDAO = new OptionDAO(connection);
@@ -94,7 +94,9 @@ public class GotoQuoteDetails extends HttpServlet {
 		try {
 			quoteId = Integer.parseInt(request.getParameter("quoteId"));
 			quote = quoteDAO.findQuoteById(quoteId);
-			if (quote == null)
+			if (quote == null || (user.getRole().equalsIgnoreCase("client") && user.getId() != quote.getClientId())
+					|| (user.getRole().equalsIgnoreCase("worker") && quote.getWorkerId() != 0
+					&& user.getId() != quote.getWorkerId()))
 				throw new Exception();
 			product = productDAO.findProductByCode(quote.getProductCode());
 			options = optionDAO.findOptionsByQuoteId(quoteId);
@@ -105,7 +107,7 @@ public class GotoQuoteDetails extends HttpServlet {
 			warning(request, response, user.getRole(), "Invalid quote id");
 			return;
 		}
-		try {
+		/*try {
 			if ((user.getRole().equalsIgnoreCase("client") && user.getId() != quote.getClientId())
 					|| (user.getRole().equalsIgnoreCase("worker") && quote.getWorkerId() != 0
 							&& user.getId() != quote.getWorkerId())) {
@@ -117,7 +119,7 @@ public class GotoQuoteDetails extends HttpServlet {
 		} catch (Exception e) {
 			warning(request, response, user.getRole(), "You cannot see this quote");
 			return;
-		}
+		}*/
 
 		if (user.getRole().equalsIgnoreCase("worker")) {
 			UserDAO userDAO = new UserDAO(connection);

@@ -36,7 +36,6 @@ public class UpdatePrice extends HttpServlet {
 	 */
 	public UpdatePrice() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -87,16 +86,18 @@ public class UpdatePrice extends HttpServlet {
 				throw new Exception();
 			}*/
 			quoteId = Integer.parseInt(request.getParameter("quoteId"));
-		} catch (Exception e) {
+			quote = quoteDAO.findQuoteById(quoteId);
+			if(quote==null) {
+				throw new Exception();
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}catch (Exception e) {
 			path = "/GotoWorkerHome";
 			warning(request, response, "Incorrect quote id", path);
 			return;
 		}
-		try {
-			quote = quoteDAO.findQuoteById(quoteId);
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
+		
 		if (quote.getWorkerId() != 0) {
 			path = "/GotoQuoteDetails";
 			warning(request, response, "This quote is already priced", path);
