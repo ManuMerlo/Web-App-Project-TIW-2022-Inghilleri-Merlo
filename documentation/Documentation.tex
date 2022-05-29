@@ -43,9 +43,11 @@
 \fancyhf{}
 \lhead{TIW - Gestione Preventivi - a.a. 2021/2022}
 \cfoot{\thepage}
-
+%warning per 12pt del carattere
+\setlength{\headheight}{14.49998pt}
+\addtolength{\topmargin}{-2.49998pt}
 % Titolo e informazioni
-\title{Prova Finale di Reti Logiche}
+\title{TIW - Gestione Preventivi}
 \author{Riccardo Inghilleri - Matricola n. 937011\\Manuela Merlo - Matricola n. 936925}
 \date{Anno Accademico 2021/2022}
 
@@ -211,23 +213,104 @@ Un’applicazione web consente la gestione di richieste di preventivi per prodot
 \item QuoteDetails.html
 \end{itemize}
 \end{itemize}
+
 \subsection{Events}
+I filtri utilizzati sono i seguenti:\\
+
+\noindent \textbf{SessionChecker:}
+\begin{itemize}
+\item \textbf{Controllo:} session.isNew() || session.getAttribute("currentUser") == null 
+\item \textbf{Azione:} redirect alla Login Page
+\item \textbf{Quando:} prima di ogni Servlet
+\end{itemize}
+\textbf{ClientChecker:} controlla che lo user corrente sia un Client
+\begin{itemize}
+\item \textbf{Controllo:} !user.getRole().equals("client")
+\item \textbf{Azione:} redirect alla Login Page
+\item \textbf{Quando:} prima di /GotoClientHome e /CreateQuote
+\end{itemize}
+\textbf{WorkerChecker:} controlla che lo user corrente sia un Worker
+\begin{itemize}
+\item \textbf{Controllo:} !user.getRole().equals("worker")
+\item \textbf{Azione:} redirect alla Login Page
+\item \textbf{Quando:} prima di /GotoWorkerHome e /UpdatePrice
+\end{itemize}
+\newpage
 \subsubsection{Go to Login}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{PureHTML_images/GotoLogin.png}
+	\caption{Event - Go to Login}
+	\label{figure:gotologin_sd}
+\end{figure}
 \subsubsection{Login}
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=1\textwidth]{PureHTML_images/Login.png}
-	\caption{Event:Login}
+	\caption{Event - Login}
 	\label{figure:login_sd}
 \end{figure}
-\subsubsection{GotoClientHome}
+\noindent \textbf{Controlli:}
+
+\noindent \textbf{HTML:} \\ lo username e la password sono obbligatori
+
+\noindent \textbf{Server:} 
+
+\noindent Viene controllato che i parametri della Form non sia nulli, vuoti o invalidi:
+
+\begin{lstlisting}[language=java] 
+(username = null || role = null ||
+(!role.equalsIgnoreCase("client") && 
+!role.equalsIgnoreCase("worker")) ||
+password = null || username.isEmpty() ||
+password.isEmpty())
+\end{lstlisting}
+	\subsubsection{GotoClientHome}
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=1\textwidth]{PureHTML_images/GotoClientHome.png}
-	\caption{Event:Go to Client Home}
+	\caption{Event - Go to Client Home}
 	\label{figure:gotoclienthome_sd}
 \end{figure}
+\newpage
 \subsubsection{GotoWorkerHome}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{PureHTML_images/GotoWorkerHome.png}
+	\caption{Event - Go to Worker Home}
+	\label{figure:gotoworkerhome_sd}
+\end{figure}
+\newpage
+\subsubsection{GotoQuoteDetails}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{PureHTML_images/GotoQuoteDetails.png}
+	\caption{Event - Go to Quote Details}
+	\label{figure:gotoquotedetails_sd}
+\end{figure}
+\newpage
+\subsubsection{CreateQuote}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{PureHTML_images/CreateQuote1.png}
+	\label{figure:createquote1_sd}
+\end{figure}
+\newpage
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{PureHTML_images/CreateQuote2.png}
+	\caption{Event - Create Quote}
+	\label{figure:createquote2_sd}
+\end{figure}
+\newpage
+\subsubsection{UpdatePrice}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{PureHTML_images/UpdatePrice.png}
+	\caption{Event - Update Price}
+	\label{figure:updateprice_sd}
+\end{figure}
+
 \newpage
 \section{Gestione Preventivi - RIA}
 
