@@ -73,6 +73,8 @@ public class GotoWorkerHome extends HttpServlet {
 		ProductDAO productDAO =new ProductDAO(connection);
 		List<Quote> managedQuotes;
 		List<Quote> unmanagedQuotes;
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		try {
 			managedQuotes = quoteDAO.findQuotesByUserId(currentUser.getId(),currentUser.getRole());
 			for(Quote q:managedQuotes) {
@@ -86,10 +88,9 @@ public class GotoWorkerHome extends HttpServlet {
 			e.printStackTrace();
 			return;
 		}
-		request.setAttribute("managedQuotes", managedQuotes);
-		request.setAttribute("unmanagedQuotes", unmanagedQuotes);
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		ctx.setVariable("managedQuotes", managedQuotes);
+		ctx.setVariable("unmanagedQuotes", unmanagedQuotes);
+		
 		templateEngine.process("/WEB-INF/WorkerHome.html", ctx, response.getWriter());
 	}
 

@@ -1,4 +1,4 @@
-\documentclass[a4paper, 11pt]{article}
+\documentclass[a4paper, 12pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[italian]{babel}
@@ -11,7 +11,21 @@
 
 \usepackage{color}
 \definecolor{myGreen}{rgb}{0,0.69,0.313}
+\definecolor{myBlue}{rgb}{0.2157,0.3765,0.5725}
+\definecolor{myBrown}{rgb}{0.59215,0.28235,0.02353}
 
+\usepackage{listings}
+\lstdefinelanguage{SQL}
+{ keywords={CREATE, SCHEMA, TABLE, AUTHORIZATION, REFERENCES, UNIQUE, PRIMARY, KEY, FOREIGN, DOMAIN, DELETE, ON, UPDATE, DEFAULT, CONSTRAINT, NOT, NULL, CHECK, AND, OR, CASCADE, SELECT, FROM, WHERE},
+	keywordstyle={\bfseries},
+	columns=fixed,
+	sensitive=false,
+	showtabs=false,
+	showspaces=false,
+	tabsize=4,
+	captionpos=b,
+	basicstyle={\sffamily}
+}
 %Tabelle
 \usepackage{tabularx}
 \usepackage{booktabs}
@@ -27,23 +41,121 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
-\lhead{Prova Finale di Reti Logiche - a.a. 2021/2022}
+\lhead{TIW - Gestione Preventivi - a.a. 2021/2022}
 \cfoot{\thepage}
 
 % Titolo e informazioni
 \title{Prova Finale di Reti Logiche}
-\author{Riccardo Inghilleri - Matricola n. 937011}
+\author{Riccardo Inghilleri - Matricola n. 937011\\Manuela Merlo - Matricola n. 936925}
 \date{Anno Accademico 2021/2022}
 
 \begin{document}
 \input{titlepage}
 \tableofcontents
 \newpage
-\section{Gestione Preventivi}
+\section{Gestione Preventivi - Pure HTML}
 \subsection{Analisi dei dati per il database}
-Un’applicazione web consente la gestione di richieste di preventivi per prodotti personalizzati. L’applicazione supporta registrazione e login di clienti e impiegati mediante una pagina pubblica con opportune form. La registrazione controlla l’unicità dello username. Un preventivo è associato a un prodotto, al cliente che l’ha richiesto e all’impiegato che l’ha gestito. Il preventivo comprende una o più opzioni per il prodotto a cui è associato, che devono essere tra quelle disponibili per il prodotto. Un prodotto ha un codice, un’immagine e un nome. Un’opzione ha un codice, un tipo (“normale”, “in offerta”) e un nome. Un preventivo ha un prezzo, definito dall’impiegato. Quando l’utente (cliente o impiegato) accede all’applicazione, appare una LOGIN PAGE, mediante la quale l’utente si autentica con username e password. Quando un cliente fa login, accede a una pagina HOME PAGE CLIENTE che contiene una form per creare un preventivo e l’elenco dei preventivi creati dal cliente. Selezionando uno dei preventivi il cliente ne visualizza i dettagli. Mediante la form di creazione di un preventivo l’utente per prima cosa sceglie il prodotto; scelto il prodotto, la form mostra le opzioni di quel prodotto. L’utente sceglie le opzioni (almeno una) e conferma l’invio del preventivo mediante il bottone INVIA PREVENTIVO. Quando un impiegato effettua il login, accede a una pagina HOME PAGE IMPIEGATO che contiene l’elenco dei preventivi gestiti da lui in precedenza e quello dei preventivi non ancora associati a nessun impiegato. Quando l’impiegato seleziona un elemento dall’elenco dei preventivi non ancora associati a nessuno, compare una pagina PREZZA PREVENTIVO che mostra i dati del cliente (username) e del preventivo e una form per inserire il prezzo del preventivo. Quando l’impiegato inserisce il prezzo e invia i dati con il bottone INVIA PREZZO, compare di nuovo la pagina HOME PAGE IMPIEGATO con gli elenchi dei preventivi aggiornati. Il prezzo definito dall’impiegato risulta visibile al cliente quando questi accede all’elenco dei propri preventivi e visualizza i dettagli del preventivo. La pagina PREZZA PREVENTIVO contiene anche un collegamento per tornare alla HOME PAGE IMPIEGATO. L’applicazione consente il logout dell’utente.\\
+Un’applicazione web consente la gestione di richieste di preventivi per prodotti personalizzati. L’applicazione supporta registrazione e login di \textbf{\textcolor{red}{clienti}} e \textbf{\textcolor{red}{impiegati}} mediante una pagina pubblica con opportune form. La registrazione controlla l’unicità dello \textbf{\textcolor{myGreen}{username}}. Un \textbf{\textcolor{red}{preventivo}} \textbf{\textcolor{myBlue}{è associato a un}} \textbf{\textcolor{red}{prodotto}}, \textbf{\textcolor{myBlue}{al cliente che l’ha richiesto}} e \textbf{\textcolor{myBlue}{all’impiegato che l’ha gestito}}. Il preventivo \textbf{\textcolor{myBlue}{comprende una o più} \textcolor{red}{opzioni} \textcolor{myBlue}{per il prodotto a cui è associato}}, che devono essere tra quelle disponibili per il prodotto. Un prodotto ha un \textbf{\textcolor{myGreen}{codice}}, un’\textbf{\textcolor{myGreen}{immagine}} e un \textbf{\textcolor{myGreen}{nome}}. Un’opzione ha un \textbf{\textcolor{myGreen}{codice}}, un \textbf{\textcolor{myGreen}{tipo}} (“normale”, “in offerta”) e un \textbf{\textcolor{myGreen}{nome}}. Un preventivo ha un \textbf{\textcolor{myGreen}{prezzo}}, definito dall’impiegato. Quando l’utente (cliente o impiegato) accede all’applicazione, appare una LOGIN PAGE, mediante la quale l’utente si autentica con username e \textbf{\textcolor{myGreen}{password}}. Quando un cliente fa login, accede a una pagina HOME PAGE CLIENTE che contiene una form per creare un preventivo e l’elenco dei preventivi creati dal cliente. Selezionando uno dei preventivi il cliente ne visualizza i dettagli. Mediante la form di creazione di un preventivo l’utente per prima cosa sceglie il prodotto; scelto il prodotto, la form mostra le opzioni di quel prodotto. L’utente sceglie le opzioni (almeno una) e conferma l’invio del preventivo mediante il bottone INVIA PREVENTIVO. Quando un impiegato effettua il login, accede a una pagina HOME PAGE IMPIEGATO che contiene l’elenco dei preventivi gestiti da lui in precedenza e quello dei preventivi non ancora associati a nessun impiegato. Quando l’impiegato seleziona un elemento dall’elenco dei preventivi non ancora associati a nessuno, compare una pagina PREZZA PREVENTIVO che mostra i dati del cliente (username) e del preventivo e una form per inserire il prezzo del preventivo. Quando l’impiegato inserisce il prezzo e invia i dati con il bottone INVIA PREZZO, compare di nuovo la pagina HOME PAGE IMPIEGATO con gli elenchi dei preventivi aggiornati. Il prezzo definito dall’impiegato risulta visibile al cliente quando questi accede all’elenco dei propri preventivi e visualizza i dettagli del preventivo. La pagina PREZZA PREVENTIVO contiene anche un collegamento per tornare alla HOME PAGE IMPIEGATO. L’applicazione consente il logout dell’utente.\\
 
-\noindent \textcolor{red}{Entities}, \textcolor{myGreen}{attributes}, \textcolor{blue}{relationships}
+\noindent \textbf{\textcolor{red}{Entities}, \textcolor{myGreen}{attributes}, \textcolor{myBlue}{relationships}}
+\newpage
 \subsection{Database Design}
-\subsection{Analisi dei dati per i requisiti dell'applicazione}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{quotemanagementdesign.png}
+	\caption{Database Desing}
+	\label{figure:database_design}
+\end{figure}
+\subsection{Local Database schema}
+\begin{lstlisting}[language=SQL]
+CREATE TABLE `client` (
+`id` int AUTO_INCREMENT,
+`username` varchar(45) UNIQUE NOT NULL,
+`password` varchar(45) NOT NULL,
+PRIMARY KEY (`id`))
+
+
+CREATE TABLE `worker` (
+`id` int AUTO_INCREMENT,
+`username` varchar(45) UNIQUE NOT NULL,
+`password` varchar(45) NOT NULL,
+PRIMARY KEY (`id`))
+CREATE TABLE `product` (
+`code` int AUTO_INCREMENT,
+`image` varchar(45) NOT NULL,
+`name` varchar(45) NOT NULL,
+PRIMARY KEY (`code`))
+
+
+CREATE TABLE `option` (
+`code` int AUTO_INCREMENT,
+`type` varchar(45) NOT NULL,
+`name` varchar(45) NOT NULL,
+PRIMARY KEY (`code`))
+
+
+CREATE TABLE `quote` (
+`id` int auto_increment,
+`clientId` int NOT NULL,
+`workerId` int,
+`productCode` int NOT NULL,
+`price` int default null,
+PRIMARY KEY (`id`),
+CONSTRAINT `asstoclient` FOREIGN KEY (`clientId`) 
+REFERENCES `client` (`id`) ON DELETE CASCADE,
+CONSTRAINT `asstoworker` FOREIGN KEY (`workerId`) 
+REFERENCES `worker` (`id`) ON DELETE CASCADE,
+CONSTRAINT `asstoproduct` FOREIGN KEY (`productCode`) 
+REFERENCES `product` (`code`) ON DELETE CASCADE)
+
+
+CREATE TABLE `productoptions`(
+`productCode` int,
+`optionCode` int,
+PRIMARY KEY (`productCode`,`optionCode`),
+CONSTRAINT `relwithproduct` FOREIGN KEY (`productCode`) 
+REFERENCES `product` (`code`) ON DELETE CASCADE,
+CONSTRAINT `relwithoption` FOREIGN KEY (`optionCode`) 
+REFERENCES `option` (`code`) ON DELETE CASCADE)
+
+
+CREATE TABLE `quoteoptions`(
+`quoteId` int NOT NULL,
+`optionCode` int NOT NULL,
+PRIMARY KEY (`quoteId`,`optionCode`),
+CONSTRAINT `relwithquote` FOREIGN KEY (`quoteId`) 
+REFERENCES `quote` (`id`) ON DELETE CASCADE,
+CONSTRAINT `selectedoption` FOREIGN KEY (`optionCode`) 
+REFERENCES `option` (`code`) ON DELETE CASCADE)
+\end{lstlisting}
+\subsection{Analisi dei dati per i requisiti dell'applicazione} %TODO sistemare insieme
+Un’applicazione web consente la gestione di richieste di preventivi per prodotti personalizzati. L’applicazione supporta \textbf{\textcolor{myBrown}{registrazione}} e \textbf{\textcolor{myBrown}{login}} di clienti e impiegati mediante una pagina pubblica con opportune \textbf{\textcolor{myGreen}{form}}. La registrazione controlla l’unicità dello username. Un preventivo è associato a un prodotto, al cliente che l’ha richiesto e all’impiegato che l’ha gestito. Il preventivo comprende una o più opzioni per il prodotto a cui è associato, che devono essere tra quelle disponibili per il prodotto. Un prodotto ha un codice, un’immagine e un nome. Un’opzione ha un codice, un tipo (“normale”, “in offerta”) e un nome. Un preventivo ha un prezzo, definito dall’impiegato. Quando l’utente (cliente o impiegato) accede all’applicazione, appare una \textbf{\textcolor{red}{LOGIN PAGE}}, mediante la quale \textbf{\textcolor{myBlue}{l’utente si autentica}} con username e password. Quando un cliente fa login, accede a una pagina \textbf{\textcolor{red}{HOME PAGE CLIENTE}} che contiene una \textbf{\textcolor{myGreen}{form}} \textbf{\textcolor{myBrown}{per creare un preventivo}} e \textbf{\textcolor{myGreen}{l’elenco dei preventivi}} creati dal cliente. \textbf{\textcolor{myBlue}{Selezionando uno dei preventivi}} il cliente ne \textbf{\textcolor{myGreen}{visualizza i dettagli}}. Mediante la form di creazione di un preventivo l’utente per prima cosa sceglie il prodotto; scelto il prodotto, la form mostra \textbf{\textcolor{myGreen}{le opzioni di quel prodotto}}. L’utente sceglie le opzioni (almeno una) e conferma l’invio del preventivo mediante il \textbf{\textcolor{myGreen}{bottone INVIA PREVENTIVO}}. Quando un impiegato effettua il login, accede a una pagina \textbf{\textcolor{red}{HOME PAGE IMPIEGATO}} che contiene l’elenco dei preventivi gestiti da lui in precedenza e quello dei preventivi non ancora associati a nessun impiegato. Quando l’impiegato \textbf{\textcolor{myBlue}{seleziona un elemento}} dall’elenco dei preventivi non ancora associati a nessuno, compare una \textbf{\textcolor{red}{pagina PREZZA PREVENTIVO}} che mostra i dati del cliente (username) e del preventivo e una \textbf{\textcolor{myGreen}{form}} \textbf{\textcolor{myBrown}{per inserire il prezzo del preventivo}}. Quando l’impiegato \textbf{\textcolor{myBlue}{inserisce il prezzo e invia i dati}} con il \textbf{\textcolor{myGreen}{bottone INVIA PREZZO}}, compare di nuovo la pagina HOME PAGE IMPIEGATO con gli elenchi dei preventivi aggiornati. Il prezzo definito dall’impiegato risulta visibile al cliente quando questi \textbf{\textcolor{myBlue}{accede all’elenco dei propri preventivi}} e visualizza i dettagli del preventivo. La pagina PREZZA PREVENTIVO contiene anche un collegamento per tornare alla HOME PAGE IMPIEGATO. L’applicazione consente il \textbf{\textcolor{myBrown}{logout}} dell’utente.\\
+
+\noindent \textbf{\textcolor{red}{Pages(views)}, \textcolor{myGreen}{views components}, \textcolor{myBlue}{events}, \textcolor{myBrown}{actions}}
+\subsection{Completamento delle specifiche}
+\begin{itemize}
+	\item La \textbf{\textcolor{red}{pagina di default}} contiene la \textbf{\textcolor{myGreen}{form di login}}
+	\item 
+\end{itemize}
+\subsection{Application Desing}
+\subsection{Components}
+\subsection{Events}
+\subsubsection{Login}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{Login.png}
+	\caption{Event:Login}
+	\label{figure:login_sd}
+\end{figure}
+\subsubsection{GotoClientHome}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{GotoClientHome.png}
+	\caption{Event:Go to Client Home}
+	\label{figure:gotoclienthome_sd}
+\end{figure}
+\subsubsection{GotoWorkerHome}
+\newpage
+\section{Gestione Preventivi - RIA}
+
 \end{document}
