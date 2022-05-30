@@ -39,7 +39,7 @@ public class ClientChecker implements Filter {
 		System.out.print("Client filter executing ...\n");
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
-		String loginpath = req.getServletContext().getContextPath() + "/Login.html";
+		String loginpath = req.getServletContext().getContextPath() + "/GotoLogin";
 		
 		HttpSession session = req.getSession();
 		User user = null;

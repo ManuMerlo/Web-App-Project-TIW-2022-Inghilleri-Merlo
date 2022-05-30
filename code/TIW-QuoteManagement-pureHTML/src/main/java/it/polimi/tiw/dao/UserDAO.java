@@ -16,13 +16,14 @@ public class UserDAO {
 
 	public User findUser(String username, String password, String role) throws SQLException {
 		User user = null;
-		String performedAction = "finding a user by username and password";
-		String query = null;
-		if (role.equalsIgnoreCase("client")) {
-			query = "SELECT * FROM quotemanagement.client WHERE username = ? AND password = ?";
-		} else {
-			query = "SELECT * FROM quotemanagement.worker WHERE username = ? AND password = ?";
-		}
+		String performedAction = "finding a user by username, password and role";
+		String query = "SELECT * FROM quotemanagement.user WHERE username = ? AND password = ? AND role = ?";
+		/*
+		 * if (role.equalsIgnoreCase("client")) { query =
+		 * "SELECT * FROM quotemanagement.client WHERE username = ? AND password = ?"; }
+		 * else { query =
+		 * "SELECT * FROM quotemanagement.worker WHERE username = ? AND password = ?"; }
+		 */
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
@@ -30,12 +31,13 @@ public class UserDAO {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, username);
 			preparedStatement.setString(2, password);
+			preparedStatement.setString(3, role);
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
 				user = new User();
 				user.setId(resultSet.getInt("id"));
-				user.setUsername(resultSet.getString("username"));
+				user.setUsername(username);
 				user.setRole(role);
 			}
 
@@ -58,19 +60,20 @@ public class UserDAO {
 
 	public User findUser(String username, String role) throws SQLException {
 		User user = null;
-		String performedAction = "finding a user by username and password";
-		String query = null;
-		if (role.equalsIgnoreCase("client")) {
-			query = "SELECT * FROM quotemanagement.client WHERE username = ?";
-		} else {
-			query = "SELECT * FROM quotemanagement.worker WHERE username = ? ";
-		}
+		String performedAction = "finding a user by username and role";
+		String query = "SELECT * FROM quotemanagement.user WHERE username = ? AND role = ?";
+		/*
+		 * if (role.equalsIgnoreCase("client")) { query =
+		 * "SELECT * FROM quotemanagement.client WHERE username = ?"; } else { query =
+		 * "SELECT * FROM quotemanagement.worker WHERE username = ? "; }
+		 */
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, username);
+			preparedStatement.setString(2, role);
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
@@ -99,7 +102,7 @@ public class UserDAO {
 	public User findClientById(int clientId) throws SQLException {
 		User user = null;
 		String performedAction = "finding a client by Id";
-		String query = "SELECT * FROM quotemanagement.client WHERE id = ?";
+		String query = "SELECT * FROM quotemanagement.user WHERE id = ? AND role = 'client'";
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
@@ -110,8 +113,9 @@ public class UserDAO {
 
 			while (resultSet.next()) {
 				user = new User();
-				user.setId(resultSet.getInt("id"));
+				user.setId(clientId);
 				user.setUsername(resultSet.getString("username"));
+				user.setRole("client");
 			}
 
 		} catch (SQLException e) {
@@ -134,17 +138,20 @@ public class UserDAO {
 	public void registerUser(String username, String password, String role) throws SQLException {
 
 		String performedAction = " registering a new user in the database";
-		String query = null;
-		if (role.equalsIgnoreCase("client"))
-			query = "INSERT INTO quotemanagement.client (username,password) VALUES(?,?)";
-		else if (role.equalsIgnoreCase("worker"))
-			query = "INSERT INTO quotemanagement.worker (username,password) VALUES(?,?)";
+		String query = "INSERT INTO quotemanagement.user (username,password,role) VALUES(?,?,?)";
+		/*
+		 * if (role.equalsIgnoreCase("client")) query =
+		 * "INSERT INTO quotemanagement.client (username,password) VALUES(?,?)"; else if
+		 * (role.equalsIgnoreCase("worker")) query =
+		 * "INSERT INTO quotemanagement.worker (username,password) VALUES(?,?)";
+		 */
 		PreparedStatement preparedStatementAddUser = null;
 
 		try {
 			preparedStatementAddUser = connection.prepareStatement(query);
 			preparedStatementAddUser.setString(1, username);
 			preparedStatementAddUser.setString(2, password);
+			preparedStatementAddUser.setString(2, role);
 			preparedStatementAddUser.executeUpdate();
 		} catch (SQLException e) {
 			throw new SQLException("Error accessing the DB when" + performedAction);

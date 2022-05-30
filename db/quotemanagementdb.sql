@@ -1,47 +1,38 @@
 CREATE DATABASE IF NOT EXISTS `quotemanagement`;
 USE `quotemanagement`;
 
-
 DROP TABLE IF EXISTS `productoptions`;
 DROP TABLE IF EXISTS `quoteoptions`;
 DROP TABLE IF EXISTS `quote`;
 DROP TABLE IF EXISTS `product`;
-DROP TABLE IF EXISTS `client`;
-DROP TABLE IF EXISTS `worker`;
+DROP TABLE IF EXISTS `user`;
 DROP TABLE IF EXISTS `option`;
 
-CREATE TABLE `client` (
+CREATE TABLE `user` (
   `id` int AUTO_INCREMENT,
-  `username` varchar(45) UNIQUE NOT NULL,
+  `username` varchar(45),
+  `email` varchar(255),
   `password` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `role` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE(`email`),
+  CONSTRAINT `UC_UsernameRole` UNIQUE (`username`,`role`),
+  CONSTRAINT `NN_UsernameORRole` CHECK (`username` is not null OR `email` is not null)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-LOCK TABLES `client` WRITE;
-INSERT INTO `client` VALUES (1,'Dani','dani1'),(2,'Motta','motta2'),(3,'Mormi','mormi3');
+LOCK TABLES `user` WRITE;
+INSERT INTO `user` VALUES (1,'c1',null,'c1','client'),(2,'c2',null,'c2','client'),(3,'c3',null,'c3','client'),(4,'w1',null,'w1','worker'),(5,'w2',null,'w2','worker'),(6,'w3',null,'w3','worker');
 UNLOCK TABLES;
-
-CREATE TABLE `worker` (
-  `id` int AUTO_INCREMENT,
-  `username` varchar(45) UNIQUE NOT NULL,
-  `password` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-LOCK TABLES `worker` WRITE;
-INSERT INTO `worker` VALUES (1,'Teo','teo1'),(2,'Roby','roby2'),(3,'Max','max3');
-UNLOCK TABLES;
-
 
 CREATE TABLE `product` (
   `code` int AUTO_INCREMENT,
   `image` varchar(45) NOT NULL,
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `product` WRITE;
-INSERT INTO `product` VALUES (1,'product1','Zaino'),(2,'product2','Auto'),(3,'product3','Moto');
+INSERT INTO `product` VALUES (1,'product1','Zaino'),(2,'product2','Auto'),(3,'product3','Moto'),(4,'product4','Bici');
 UNLOCK TABLES;
 
 CREATE TABLE `option` (
@@ -52,18 +43,18 @@ CREATE TABLE `option` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `option` WRITE;
-INSERT INTO `option` VALUES (1,'normal','cerchi in lega'),(2,'on sale','porta bottiglie');
+INSERT INTO `option` VALUES (1,'normal','cerchi in lega'),(2,'on sale','porta bottiglie'),(3,'on sale','fari led');
 UNLOCK TABLES;
 
 CREATE TABLE `quote` (
   `id` int auto_increment,
   `clientId` int NOT NULL,
-  `workerId` int,
+  `workerId` int default null,
   `productCode` int NOT NULL,
   `price` int default null,
   PRIMARY KEY (`id`),
-  CONSTRAINT `asstoclient` FOREIGN KEY (`clientId`) REFERENCES `client` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `asstoworker` FOREIGN KEY (`workerId`) REFERENCES `worker` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `asstoclient` FOREIGN KEY (`clientId`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `asstoworker` FOREIGN KEY (`workerId`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `asstoproduct` FOREIGN KEY (`productCode`) REFERENCES `product` (`code`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
  
@@ -80,9 +71,8 @@ CREATE TABLE `productoptions`(
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `productoptions` WRITE;
-INSERT INTO `productoptions` VALUES (1,2),(2,1),(3,1),(2,2);
+INSERT INTO `productoptions` VALUES (1,2),(2,1),(2,2),(2,3),(3,1),(4,2);
 UNLOCK TABLES;
-
 
 CREATE TABLE `quoteoptions`(
   `quoteId` int NOT NULL,

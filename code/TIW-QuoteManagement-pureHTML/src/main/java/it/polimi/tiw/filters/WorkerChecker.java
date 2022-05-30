@@ -23,14 +23,12 @@ public class WorkerChecker implements Filter {
 	 * Default constructor.
 	 */
 	public WorkerChecker() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
 	 * @see Filter#destroy()
 	 */
 	public void destroy() {
-		// TODO Auto-generated method stub
 	}
 
 	/**
@@ -38,10 +36,10 @@ public class WorkerChecker implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		System.out.print("Worker filter executing ..\n");
+		System.out.print("Worker filter executing ...\n");
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
-		String loginpath = req.getServletContext().getContextPath() + "/Login.html";
+		String loginpath = req.getServletContext().getContextPath() + "/GotoLogin";
 		
 		HttpSession session = req.getSession();
 		User user = null;
