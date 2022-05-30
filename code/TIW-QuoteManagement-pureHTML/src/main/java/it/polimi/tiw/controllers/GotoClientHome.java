@@ -74,6 +74,7 @@ public class GotoClientHome extends HttpServlet {
 		User currentUser = (User) session.getAttribute("currentUser");
 		int productCode = -1;
 		List<Product> products;
+		String selectedProductName= null;
 		ProductDAO productDAO = new ProductDAO(connection);
 		QuoteDAO quoteDAO = new QuoteDAO(connection);
 		List<Quote> quotes;
@@ -87,8 +88,10 @@ public class GotoClientHome extends HttpServlet {
 				if (productDAO.findProductByCode(productCode) == null) {
 					throw new Exception();
 				}
+				selectedProductName = productDAO.findProductByCode(productCode).getName();
 				options = optionDAO.findOptionsByProductCode(productCode);
-				ctx.setVariable("selectedProduct", productCode);
+				ctx.setVariable("selectedProductName", selectedProductName);
+				ctx.setVariable("selectedProductCode", productCode);
 				ctx.setVariable("visibilityOptions", true);
 				ctx.setVariable("options", options);
 			} catch (SQLException e) {

@@ -91,14 +91,14 @@ hr{
     border-style: solid;
     padding: 0.5rem;
     border-radius: 0 5px 5px 0;
-    color: #495057;
+    color:  #495057;
     white-space: nowrap; /* no new line for white spaces */
-    background-color: #99ccff;
+    background-color: #e9ecef;
     border: 1px solid #ced4da;
-    border-right: 0; /* reset border right, as input's one is already present */
     font-weight: 400;
     font-size: 0.75rem;
     width: 200px;	
+    height:32px;
 }
 .btn-inverted-blue{
     color:#000;

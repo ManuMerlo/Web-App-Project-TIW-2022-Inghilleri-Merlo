@@ -47,7 +47,9 @@
 			</form>-->
 			<label class ="btn-label" >Choose a Product</label> 
 			<div class="dropdown">
-  				<button class="btn-grey">sssssss</button>
+  				<button class="btn-grey">
+  				<span th:text="${selectedProductName}"></span>
+  				</button>
   				<div class="dropdown-content">
     			<a th:each="product:${products}" th:text="${product.name}"
 				 th:href="@{/GotoClientHome(productCode=${product.code})}">product1</a>
@@ -55,7 +57,7 @@
 			</div>
 			<p>
 			<form class="home-form" method="POST"
-				th:action="@{/CreateQuote(productCode=${selectedProduct})}">
+				th:action="@{/CreateQuote(productCode=${selectedProductCode})}">
 				<div class="form-group" th:if="${visibilityOptions}" ><!-- th:if="${#ctx.containsVariable('visibilityOptions')}"-->
 					<label for="options">Choose options</label> 
 					<select id="options" name="chosenOptions" th:remove="all-but-first" multiple="multiple"
