@@ -9,6 +9,8 @@
 	th:href="@{/css/global.css}" />
 <link rel="stylesheet" type="text/css" href="../css/home.css"
 	th:href="@{/css/home.css}" />
+	<link rel="stylesheet" type="text/css" href="../css/home.css"
+	th:href="@{/css/dropdown.css}" />
 <title>Home</title>
 </head>
 <body>
@@ -27,7 +29,7 @@
 		<div class="create-div blue-div">
 			<div class="create-title">Here you can create a new quote</div>
 
-			<form class="home-form" name="createQuote" method="POST"
+			<!--  <form class="home-form" name="createQuote" method="POST"
 				th:action="@{/GotoClientHome}">
 				<div class="form-group">
 					<label for="products">Choose a Product</label> 
@@ -42,8 +44,16 @@
 					</select>
 					<button class="btn btn-blue btn-small btn-primary" type="submit">Choose</button>
 				</div>
-			</form>
-		
+			</form>-->
+			<label class ="btn-label" >Choose a Product</label> 
+			<div class="dropdown">
+  				<button class="btn-grey">sssssss</button>
+  				<div class="dropdown-content">
+    			<a th:each="product:${products}" th:text="${product.name}"
+				 th:href="@{/GotoClientHome(productCode=${product.code})}">product1</a>
+ 				 </div>
+			</div>
+			<p>
 			<form class="home-form" method="POST"
 				th:action="@{/CreateQuote(productCode=${selectedProduct})}">
 				<div class="form-group" th:if="${visibilityOptions}" ><!-- th:if="${#ctx.containsVariable('visibilityOptions')}"-->
@@ -61,6 +71,7 @@
 						Quote</button>
 				</div>
 			</form>
+			</p>
 			<div class="warning-message" th:if="${warning}">
 				<span th:text="${warning}">Warning message</span>
 			</div>

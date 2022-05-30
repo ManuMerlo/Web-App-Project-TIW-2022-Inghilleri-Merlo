@@ -85,6 +85,21 @@ hr{
     border-color: #004055;
     cursor: pointer;
 }
+.btn-grey{
+	text-align: center;
+    vertical-align: middle;
+    border-style: solid;
+    padding: 0.5rem;
+    border-radius: 0 5px 5px 0;
+    color: #495057;
+    white-space: nowrap; /* no new line for white spaces */
+    background-color: #99ccff;
+    border: 1px solid #ced4da;
+    border-right: 0; /* reset border right, as input's one is already present */
+    font-weight: 400;
+    font-size: 0.75rem;
+    width: 200px;	
+}
 .btn-inverted-blue{
     color:#000;
     background-color: #fff;
@@ -144,6 +159,19 @@ hr{
     width: 80%;
 }
 .form-group > label {
+    padding: 0.5rem;
+    border-radius: 5px 0 0 5px;
+    color: #495057;
+    text-align: center;
+    white-space: nowrap; /* no new line for white spaces */
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-right: 0; /* reset border right, as input's one is already present */
+    font-weight: 400;
+    font-size: 0.75rem;
+    width: 20%;
+}
+.btn-label {
     padding: 0.5rem;
     border-radius: 5px 0 0 5px;
     color: #495057;

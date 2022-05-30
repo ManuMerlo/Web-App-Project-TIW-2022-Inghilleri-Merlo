@@ -64,24 +64,24 @@ Un’applicazione web consente la gestione di richieste di preventivi per prodot
 \subsection{Database Design}
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1\textwidth]{PureHTML_images/quotemanagementdesign.png}
+	\includegraphics[width=1\textwidth]{PureHTML_images/quotemanagementdesign1.png}
 	\caption{Database Desing}
 	\label{figure:database_design}
 \end{figure}
 \subsection{Local Database schema}
 \begin{lstlisting}[language=SQL]
-CREATE TABLE `client` (
+CREATE TABLE `user` (
 `id` int AUTO_INCREMENT,
-`username` varchar(45) UNIQUE NOT NULL,
+`username` varchar(45),
+`email` varchar(255),
 `password` varchar(45) NOT NULL,
-PRIMARY KEY (`id`))
+`role` varchar(45) NOT NULL,
+PRIMARY KEY (`id`),
+UNIQUE(`email`),
+CONSTRAINT `UC_UsernameRole` UNIQUE (`username`,`role`),
+CONSTRAINT `NN_UsernameORRole` 
+CHECK (`username` is not null OR `email` is not null))
 
-
-CREATE TABLE `worker` (
-`id` int AUTO_INCREMENT,
-`username` varchar(45) UNIQUE NOT NULL,
-`password` varchar(45) NOT NULL,
-PRIMARY KEY (`id`))
 CREATE TABLE `product` (
 `code` int AUTO_INCREMENT,
 `image` varchar(45) NOT NULL,
@@ -142,6 +142,7 @@ Un’applicazione web consente la gestione di richieste di preventivi per prodot
 	\item Il prezzo non può essere negativo;
 	\item \'E permesso al client di richiedere preventivi dello stesso prodotto con le stesse opzioni;
 	\item Nel caso di riapertura del sito da parte di un utente che precedentemente non ha effettuato il logout, non viene richiesta una nuova autenticazione e viene aperta direttamente la sua home page.
+ 
 \end{itemize}
 \newpage
 \subsection{Application Desing}
@@ -204,6 +205,12 @@ Un’applicazione web consente la gestione di richieste di preventivi per prodot
 	\item UpdatePrice
 	\item Logout
 \end{itemize}
+\item \textbf{Filters}
+\begin{itemize}
+	\item SessionChecker
+	\item ClientChecker
+	\item WorkerChecker
+\end{itemize}
 \item \textbf{Views (Templates)}
 \begin{itemize}
 \item Login.html
@@ -252,26 +259,49 @@ I filtri utilizzati sono i seguenti:\\
 \end{figure}
 \noindent \textbf{Controlli:}
 
-\noindent \textbf{HTML:} \\ lo username e la password sono obbligatori
+\noindent \textbf{HTML:} \\ Lo username e la password sono obbligatori.
 
 \noindent \textbf{Server:} 
 
 \noindent Viene controllato che i parametri della Form non sia nulli, vuoti o invalidi:
 
 \begin{lstlisting}[language=java] 
-(username = null || role = null ||
-(!role.equalsIgnoreCase("client") && 
-!role.equalsIgnoreCase("worker")) ||
-password = null || username.isEmpty() ||
-password.isEmpty())
+(username = null || role = null || 
+(!role.equalsIgnoreCase("client") && !role.equalsIgnoreCase("worker")) 
+|| password = null || 
+username.isEmpty() || password.isEmpty())
 \end{lstlisting}
-	\subsubsection{GotoClientHome}
+
+\subsubsection{Register}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{PureHTML_images/Register.png}
+	\caption{Event - Register}
+	\label{figure:register_sd}
+\end{figure}
+\noindent \textbf{Controlli:}\\
+\noindent \textbf{Server:} 
+\noindent Viene controllato che :
+\begin{enumerate}
+\item I parametri della form non siano nulli o vuoti ( username - password - ruolo ).
+\item Che all'interno del DB non esista un altro utente con lo stesso ruolo, avente lo stesso username.
+\end{enumerate}
+
+
+
+\subsubsection{GotoClientHome}
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=1\textwidth]{PureHTML_images/GotoClientHome.png}
 	\caption{Event - Go to Client Home}
 	\label{figure:gotoclienthome_sd}
 \end{figure}
+\noindent \textbf{Controlli:}\\
+\noindent \textbf{Server:} 
+\noindent Al ricaricamento della pagina, dopo la selezione del prodotto per la richiesta di un nuovo preventivo, viene controllato che :
+\begin{enumerate}
+\item L'id del prodotto, se selezionato, sia in un formato numerico e corrisponda ad un id effetivamente presente nel DB.
+\end{enumerate}
 \newpage
 \subsubsection{GotoWorkerHome}
 \begin{figure}[h!]
@@ -280,6 +310,10 @@ password.isEmpty())
 	\caption{Event - Go to Worker Home}
 	\label{figure:gotoworkerhome_sd}
 \end{figure}
+\noindent \textbf{Controlli:}\\
+\noindent \textbf{Server:} 
+\noindent Dato che la raccolta dei dati necessari per la visualizzazione della pagina non dipendono da nessun parametro di input, ma solo dall'id dello user presente nella sessione, non vengono effettuati controlli aggiuntivi a quelli 
+già fatti dai filtri ovvero: che un utente sia effettivamente loggato e che quest'ultimo sia effetivamente un worker.
 \newpage
 \subsubsection{GotoQuoteDetails}
 \begin{figure}[h!]
@@ -288,6 +322,13 @@ password.isEmpty())
 	\caption{Event - Go to Quote Details}
 	\label{figure:gotoquotedetails_sd}
 \end{figure}
+\noindent \textbf{Controlli:}\\
+\noindent \textbf{Server:} 
+\noindent Viene controllato che :
+\begin{enumerate}
+\item L'id del prodotto non sia nullo, vuoto, sia in un formato numerico e che corrisponda ad un id effetivamente presente nel DB.
+\item Che lo user presente nella sessione abbia l'autorizzazione per visualizzare i dettagli del preventivo.
+\end{enumerate}
 \newpage
 \subsubsection{CreateQuote}
 \begin{figure}[h!]
@@ -302,6 +343,18 @@ password.isEmpty())
 	\caption{Event - Create Quote}
 	\label{figure:createquote2_sd}
 \end{figure}
+\noindent \textbf{Controlli:}
+
+\noindent \textbf{HTML:} \\ La scelta di almeno un'opzione per la creazione del preventivo è obbligatoria.
+
+\noindent \textbf{Server:} 
+
+\noindent Viene controllato che :
+\begin{enumerate}
+\item L'id del prodotto non sia nullo, vuoto, sia in un formato numerico e che corrisponda ad un id effetivamente presente nel DB.
+\item Il parametro \verb|chosenOption| non sia nullo o vuoto. Inoltre viene controllato che ogni elemento dell'array non sia nullo, vuoto , sia in formato numerico e corrisponda effetivamente ad una opzione
+disponibile per il prodotto selezionato.
+\end{enumerate}
 \newpage
 \subsubsection{UpdatePrice}
 \begin{figure}[h!]
@@ -310,6 +363,14 @@ password.isEmpty())
 	\caption{Event - Update Price}
 	\label{figure:updateprice_sd}
 \end{figure}
+\noindent \textbf{Controlli:}\\
+\noindent \textbf{Server:} 
+\noindent Viene controllato che :
+\begin{enumerate}
+\item L'id del prodotto non sia nullo, vuoto, sia in un formato numerico e che corrisponda ad un id effetivamente presente nel DB.
+\item Che il preventivo non sia già stato prezzato da un altro worker.
+\item Che il prezzo inserito non sia nullo,vuoto, sia in un formato numerico e maggiore di 0.
+\end{enumerate}
 
 \newpage
 \section{Gestione Preventivi - RIA}
