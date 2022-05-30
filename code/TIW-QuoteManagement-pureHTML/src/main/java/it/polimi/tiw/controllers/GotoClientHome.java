@@ -79,7 +79,6 @@ public class GotoClientHome extends HttpServlet {
 		List<Quote> quotes;
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		boolean err = false;
 		if (request.getAttribute("warning") == null && request.getParameter("productCode") != null) {
 			OptionDAO optionDAO = new OptionDAO(connection);
 			List<Option> options = null;
@@ -89,18 +88,15 @@ public class GotoClientHome extends HttpServlet {
 					throw new Exception();
 				}
 				options = optionDAO.findOptionsByProductCode(productCode);
+				ctx.setVariable("selectedProduct", productCode);
+				ctx.setVariable("visibilityOptions", true);
+				ctx.setVariable("options", options);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return;
 			} catch (Exception e) {
 				ctx.setVariable("warning", "Invalid Product");
 				ctx.setVariable("visibilityOptions", false);
-				err = true;
-			}
-			if (!err) {
-				ctx.setVariable("selectedProduct", productCode);
-				ctx.setVariable("visibilityOptions", true);
-				ctx.setVariable("options", options);
 			}
 		}
 		try {
