@@ -151,7 +151,7 @@ public class UserDAO {
 			preparedStatementAddUser = connection.prepareStatement(query);
 			preparedStatementAddUser.setString(1, username);
 			preparedStatementAddUser.setString(2, password);
-			preparedStatementAddUser.setString(2, role);
+			preparedStatementAddUser.setString(3, role);
 			preparedStatementAddUser.executeUpdate();
 		} catch (SQLException e) {
 			throw new SQLException("Error accessing the DB when" + performedAction);

@@ -18,10 +18,10 @@ CREATE TABLE `user` (
   UNIQUE(`email`),
   CONSTRAINT `UC_UsernameRole` UNIQUE (`username`,`role`),
   CONSTRAINT `NN_UsernameORRole` CHECK (`username` is not null OR `email` is not null)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `user` WRITE;
-INSERT INTO `user` VALUES (1,'c1',null,'c1','client'),(2,'c2',null,'c2','client'),(3,'c3',null,'c3','client'),(4,'w1',null,'w1','worker'),(5,'w2',null,'w2','worker'),(6,'w3',null,'w3','worker');
+INSERT INTO `user` VALUES (1,'c1',null,'c1','client'),(2,'c2',null,'c2','client'),(3,'c3',null,'c3','client'),(4,'w1',null,'w1','worker'),(5,'w2',null,'w2','worker'),(6,'w3',null,'w3','worker'),(7,null,'c4@gmail.com','c4','client'),(8,null,'c5@gmail.com','c5','client'),(9,null,'c6@gmail.com','c6','client'),(10,null,'w4@gmail.com','w4','worker'),(11,null,'w5@gmail.com','w5','worker'),(12,null,'w6@gmail.com','w6','worker');
 UNLOCK TABLES;
 
 CREATE TABLE `product` (
