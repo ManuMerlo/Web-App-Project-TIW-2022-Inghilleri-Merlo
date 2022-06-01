@@ -1,10 +1,56 @@
+
 <!DOCTYPE html>
+
 <html>
+
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="css/global.css">
+<link rel="stylesheet" type="text/css" href="css/home.css">
+<link rel="stylesheet" type="text/css" href="css/dropdown.css">
+<script src="utils.js" charset="utf-8" defer></script>
+<script src="loginManagement.js" charset="utf-8" defer></script>
+<script src="clientPageHandler.js" charset="utf-8" defer></script>
+
+<title>Client Home</title>
 </head>
 <body>
-client
+
+	<div class="topnav" id="topnav">
+		<a class="active" href="ClientHome.html">Home</a> 
+		<a href="Logout">Logout</a>
+	</div>
+
+	<div class="home-title" id="id_title">
+		Welcome to your home, <span id="id_username">user</span>
+	</div>
+	<div class="home-subtitle" id="id_subtitle">Nice to see you!</div>
+
+	<div class="home-div" id="id_createQuoteContainer">
+		<div class="create-div blue-div">
+			<div class="create-title">Here you can create a new quote</div>
+			<form class="home-form" action="#" id="createQuoteForm">
+				<label class="btn-label">Choose a Product</label>
+				<div class="dropdown">
+					<button class="btn-grey" id="id_dropdownBtn"></button>
+					<div class="dropdown-content" id="id_productContainer"></div>
+				</div>
+				<p>
+				<div class="form-group" id="id_selectContainer">
+					<label for="options" id="chooseOptionLabel">Choose a option</label> 
+					<select name="chosenOptions" multiple="multiple" id="id_selectOptions" required> </select>
+					<button class="btn btn-large btn-blue" type="submit" id="id_requestQuoteBtn"> Request Quote</button>
+				</div>
+			</form>
+			<div class="warning-message">
+				<span id="id_warning"></span>
+			</div>
+		</div>
+	</div>
+	<div class="account-div blue-div">
+		<div class="account-title">Here there are your quotes</div>
+		<div class="no-accounts" id="id_noQuotes" >You currently have no quotes</div>
+		<div id="id_quotesList"></div>
+	</div>
 </body>
 </html>

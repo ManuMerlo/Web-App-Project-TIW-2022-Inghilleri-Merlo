@@ -4,7 +4,7 @@
 
 (function() { // avoid variables ending up in the global scope
 
-  document.getElementById("loginButton").addEventListener('click', (e) => {
+  document.getElementById("id_loginButton").addEventListener('click', (e) => {
     var form = e.target.closest("form");
     if (form.checkValidity()) {
       makeCall("POST", 'CheckLogin', e.target.closest("form"),
@@ -15,6 +15,7 @@
               case 200:
                 data = JSON.parse(x.responseText)
             	sessionStorage.setItem('username', data.username);
+            	sessionStorage.setItem('userId',data.id);
             	if(data.role==="client")
                 window.location.href = "ClientHome.html";
                 else if (data.role==="worker")
