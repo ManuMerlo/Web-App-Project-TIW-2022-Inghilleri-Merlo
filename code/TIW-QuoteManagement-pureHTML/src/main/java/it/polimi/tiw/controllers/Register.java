@@ -71,9 +71,12 @@ public class Register extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		String role = request.getParameter("role");
+		String username = null;
+		String password = null;
+		String role = null;
+		username = request.getParameter("username");
+		password = request.getParameter("password");
+		role = request.getParameter("role");
 		if (username == null || password == null || role == null
 				|| (!role.equalsIgnoreCase("client") && !role.equalsIgnoreCase("worker")) || username.isEmpty()
 				|| password.isEmpty()) {

@@ -53,22 +53,19 @@ public class UserDAO {
 		return user;
 	}
 
-	public User findUser(String email, String role) throws SQLException {
+	public User findUserToRegister(String username, String email, String role) throws SQLException {
 		User user = null;
-		String performedAction = "finding a user by email and role";
-		String query = "SELECT * FROM quotemanagement.user WHERE email = ? AND role = ?";
-		/*
-		 * if (role.equalsIgnoreCase("client")) { query =
-		 * "SELECT * FROM quotemanagement.client WHERE email = ?"; } else { query =
-		 * "SELECT * FROM quotemanagement.worker WHERE email = ? "; }
-		 */
+		String performedAction = "finding a user by username, email and role";
+		String query = "SELECT * FROM quotemanagement.user WHERE username=? AND email = ? AND role = ?";
+		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, email);
-			preparedStatement.setString(2, role);
+			preparedStatement.setString(1, username);
+			preparedStatement.setString(2, email);
+			preparedStatement.setString(3, role);
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
@@ -136,12 +133,7 @@ public class UserDAO {
 
 		String performedAction = " registering a new user in the database";
 		String query = "INSERT INTO quotemanagement.user (username,email,password,role) VALUES(?,?,?,?)";
-		/*
-		 * if (role.equalsIgnoreCase("client")) query =
-		 * "INSERT INTO quotemanagement.client (email,password) VALUES(?,?)"; else if
-		 * (role.equalsIgnoreCase("worker")) query =
-		 * "INSERT INTO quotemanagement.worker (email,password) VALUES(?,?)";
-		 */
+		
 		PreparedStatement preparedStatementAddUser = null;
 
 		try {
