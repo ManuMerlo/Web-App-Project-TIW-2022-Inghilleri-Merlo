@@ -5,9 +5,9 @@
 (function() { // avoid variables ending up in the global scope
 
 	var open_register = document.getElementById("open_register");
-	var loginButton = document.getElementById("loginButton");
 	var title = document.getElementById("title");
 	var form = document.getElementById("f1");
+	var loginButton = document.getElementById("loginButton");
 	//var passwordInput = loginButton.closest("form").querySelector('input[name="password"]');
 	//var repeatPasswordInput = loginButton.closest("form").querySelector('input[name="repeatPassword"]');
 	var warning = document.getElementById("warning");
