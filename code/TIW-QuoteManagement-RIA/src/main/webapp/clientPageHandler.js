@@ -9,7 +9,7 @@
 			window.location.href = "Login.html";
 		} else {
 			clientHandler.start(); // initialize the components
-		} 
+		}
 	}, false);
 
 
@@ -270,7 +270,7 @@
 								self.noQuotes.style.visibility = "visible";
 							else {
 								self.noQuotes.style.visibility = "hidden";
-								if (update===true)
+								if (update === true)
 									self.update(quotes[quotes.length - 1]);
 								else {
 									quotes.forEach(function(quote) {
@@ -291,7 +291,7 @@
 
 		this.update = (quote) => {
 			self = this;
-			var card, card_title, card_data, text, b1, b1, viewBtn;
+			var card, card_title, card_data, text, b1, b1, viewBtn, details;
 			card = document.createElement("div");
 			card.className = "card card-blue";
 			if (self.i % 2 === 0)
@@ -300,7 +300,8 @@
 			card_title.className = "card-title";
 			card_title.textContent = "Quote #" + quote.id;
 			card.appendChild(card_title);
-			card_data = document.createElement("div");
+
+			/*card_data = document.createElement("div");
 			card_data.className = "card-data";
 
 			b1 = document.createElement("b");
@@ -316,13 +317,35 @@
 			b2.textContent = "Status: " + text;
 			card_data.appendChild(b2);
 
+				card.appendChild(card_data);*/
 
-			card.appendChild(card_data);
+
 			viewBtn = document.createElement("a");
-			viewBtn.className = "btn btn-purple btn-small btn-primary";
+			viewBtn.className = "btn btn-purple btn-small btn-primary ";
+			//viewBtn.style.position="right";
 			viewBtn.textContent = "ViewDetails";
 			viewBtn.setAttribute('quoteId', quote.id);
 			viewBtn.addEventListener("click", (e) => {
+				if (e.target.textContent === "ViewDetails") {
+					e.target.textContent = "Hide";
+				} else {
+					e.target.textContent = "ViewDetails";
+				}
+				var panel = e.target.nextElementSibling;
+				if (panel.style.maxHeight) {
+					panel.style.maxHeight = null;
+				} else {
+					panel.style.maxHeight = panel.scrollHeight + "px";
+				}
+			});
+
+			card.appendChild(viewBtn);
+			details = document.createElement("div");
+			details.className = "accordion_panel";
+			card.appendChild(details);
+			this.addDetails(details, quote, this.warning);
+
+			/*viewBtn.addEventListener("click", (e) => {
 				if (e.target.textContent === "ViewDetails") {
 					e.target.textContent = "Hide";
 					//quoteList.showDetails(e.target.getAttribute("quoteId"));
@@ -330,14 +353,65 @@
 					e.target.textContent = "ViewDetails";
 					//quoteList.hide(e.target.getAttribute("quoteId");
 				}
-			});
-			card.appendChild(viewBtn);
+			});*/
 			this.i++;
 			this.quotesContainer.appendChild(card);
 			this.quotesContainer.style.display = "block";
 			this.quotesContainer.style.visibility = "visible";
 		};
 
+		this.addDetails = (container, quote, warning) => {
+			self = this;
+			makeCall("GET", "GetQuoteDetails?quoteId=" + quote.id, null,
+				function(req) {
+					if (req.readyState == 4) {
+						var message = req.responseText;
+						if (req.status == 200) {
+							var data = JSON.parse(req.responseText)
+							self.updateDetails(quote, data.product, data.options, container); // self visible by closure
+						} else {
+							warning.textContent = message;
+						}
+					}
+				}
+			);
+		};
+		
+		this.updateDetails = (quote, product, options, container)=>{
+			card_data = document.createElement("div");
+			card_data.className = "card-data";
+
+			b1 = document.createElement("b");
+			b1.textContent = "Product: " + product.name;
+			container.appendChild(b1);
+			br = document.createElement("br");
+			container.appendChild(br);
+
+			for (var i = 0; i < options.length; i++) {
+				var elem = options[i];
+				b2 = document.createElement("b");
+				text = quote.workerId === 0 ? "waiting" : "processed";
+				b2.textContent = "Options: " + elem.name;
+				container.appendChild(b2);
+				br = document.createElement("br");
+				container.appendChild(br);
+			}
+
+			b3 = document.createElement("b");
+			text = quote.workerId === 0 ? "waiting" : "processed";
+			b3.textContent = "Status: " + text;
+			container.appendChild(b3);
+			br = document.createElement("br");
+			container.appendChild(br);
+
+			if (quote.workerId !== 0) {
+				b4 = document.createElement("b");
+				b4.textContent = "Price: " + quote.price;
+				container.appendChild(b4);
+				br = document.createElement("br");
+				container.appendChild(br);
+			}
+		};
 
 		this.clear = () => {
 			var self = this;
