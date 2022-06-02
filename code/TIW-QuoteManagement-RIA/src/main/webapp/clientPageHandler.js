@@ -271,10 +271,10 @@
 							else {
 								self.noQuotes.style.visibility = "hidden";
 								if (update === true)
-									self.update(quotes[quotes.length - 1]);
+									self.update(self.quotesContainer, quotes[quotes.length - 1]);
 								else {
 									quotes.forEach(function(quote) {
-										self.update(quote);
+										self.update(self.quotesContainer, quote);
 									});
 								}
 								self.quotesContainer.style.visibility = "visible";
@@ -289,128 +289,101 @@
 			);
 		};
 
-		this.update = (quote) => {
+		this.update = (quotesContainer, quote) => {
 			self = this;
-			var card, card_title, card_data, text, b1, b1, viewBtn, details;
-			card = document.createElement("div");
-			card.className = "card card-blue";
-			if (self.i % 2 === 0)
-				card.className += " even";
-			card_title = document.createElement("div");
-			card_title.className = "card-title";
-			card_title.textContent = "Quote #" + quote.id;
-			card.appendChild(card_title);
-
-			/*card_data = document.createElement("div");
-			card_data.className = "card-data";
-
-			b1 = document.createElement("b");
-			b1.textContent = "Product: " + quote.productCode;
-			card_data.appendChild(b1);
-
-
-			br = document.createElement("br");
-			card_data.appendChild(br);
-
-			b2 = document.createElement("b");
-			text = quote.workerId === 0 ? "waiting" : "processed";
-			b2.textContent = "Status: " + text;
-			card_data.appendChild(b2);
-
-				card.appendChild(card_data);*/
-
-
-			viewBtn = document.createElement("a");
-			viewBtn.className = "btn btn-purple btn-small btn-primary ";
-			//viewBtn.style.position="right";
-			viewBtn.textContent = "ViewDetails";
-			viewBtn.setAttribute('quoteId', quote.id);
-			viewBtn.addEventListener("click", (e) => {
-				if (e.target.textContent === "ViewDetails") {
-					e.target.textContent = "Hide";
-				} else {
-					e.target.textContent = "ViewDetails";
-				}
-				var panel = e.target.nextElementSibling;
-				if (panel.style.maxHeight) {
-					panel.style.maxHeight = null;
-				} else {
-					panel.style.maxHeight = panel.scrollHeight + "px";
-				}
+			var button, panel;
+			button = document.createElement("button");
+			button.textContent = "Quote#" + quote.id;
+			button.className = "accordion";
+			button.setAttribute("quoteid", quote.id);
+			quotesContainer.appendChild(button);
+			panel = document.createElement("div");
+			panel.className = "panel";
+			quotesContainer.appendChild(panel);
+			button.addEventListener("click", e => {
+				e.target.classList.toggle("active");
+				panel = e.target.nextElementSibling;
+				self.addDetails(panel, e.target.getAttribute("quoteId"));
 			});
-
-			card.appendChild(viewBtn);
-			details = document.createElement("div");
-			details.className = "accordion_panel";
-			card.appendChild(details);
-			this.addDetails(details, quote, this.warning);
-
-			/*viewBtn.addEventListener("click", (e) => {
-				if (e.target.textContent === "ViewDetails") {
-					e.target.textContent = "Hide";
-					//quoteList.showDetails(e.target.getAttribute("quoteId"));
-				} else {
-					e.target.textContent = "ViewDetails";
-					//quoteList.hide(e.target.getAttribute("quoteId");
-				}
-			});*/
-			this.i++;
-			this.quotesContainer.appendChild(card);
-			this.quotesContainer.style.display = "block";
-			this.quotesContainer.style.visibility = "visible";
 		};
 
-		this.addDetails = (container, quote, warning) => {
+		this.addDetails = (panel, quoteId) => {
 			self = this;
-			makeCall("GET", "GetQuoteDetails?quoteId=" + quote.id, null,
+			makeCall("GET", "GetQuoteDetails?quoteId=" + quoteId, null,
 				function(req) {
 					if (req.readyState == 4) {
 						var message = req.responseText;
 						if (req.status == 200) {
 							var data = JSON.parse(req.responseText)
-							self.updateDetails(quote, data.product, data.options, container); // self visible by closure
+							self.updateDetails(data.quote, data.product, data.options, panel); // self visible by closure
 						} else {
-							warning.textContent = message;
+							self.warning.textContent = message;
 						}
 					}
 				}
 			);
 		};
-		
-		this.updateDetails = (quote, product, options, container)=>{
+
+		this.updateDetails = (quote, product, options, panel) => {
+			let card, card_title, card_data, b1, b2, br;
+			while(panel.firstChild){
+				panel.firstChild.remove();
+			}
+			/*var details = panel.querySelectorAll("div");
+			if (details.length > 0) {
+				details.forEach((function(detail) {
+					panel.removeChild(detail);
+				}))
+			}*/
+			card = document.createElement("div");
+			card_title = document.createElement("div");
+			card_title.className = "card-title";
+			card_title.textContent = product.name;
+			card.appendChild(card_title);
 			card_data = document.createElement("div");
 			card_data.className = "card-data";
 
-			b1 = document.createElement("b");
-			b1.textContent = "Product: " + product.name;
-			container.appendChild(b1);
-			br = document.createElement("br");
-			container.appendChild(br);
+			options.forEach((function(option) {
 
-			for (var i = 0; i < options.length; i++) {
-				var elem = options[i];
-				b2 = document.createElement("b");
-				text = quote.workerId === 0 ? "waiting" : "processed";
-				b2.textContent = "Options: " + elem.name;
-				container.appendChild(b2);
+				b1 = document.createElement("b");
+				b1.textContent = "Option: ";
+				card_data.appendChild(b1);
+				card_data.appendChild(document.createTextNode(option.name));
+
 				br = document.createElement("br");
-				container.appendChild(br);
-			}
+				card_data.appendChild(br);
 
-			b3 = document.createElement("b");
-			text = quote.workerId === 0 ? "waiting" : "processed";
-			b3.textContent = "Status: " + text;
-			container.appendChild(b3);
-			br = document.createElement("br");
-			container.appendChild(br);
+				b2 = document.createElement("b");
+				b2.textContent = "Type: ";
+				card_data.appendChild(b2);
+				card_data.appendChild(document.createTextNode(option.type));
+				br = document.createElement("br");
+				card_data.appendChild(br);
+
+
+			}
+			))
+
+			b2 = document.createElement("b");
+			b2.textContent = "Status: ";
+			card_data.appendChild(b2);
+			card_data.appendChild(document.createTextNode(quote.workerId === 0 ? "waiting" : "processed"));
 
 			if (quote.workerId !== 0) {
-				b4 = document.createElement("b");
-				b4.textContent = "Price: " + quote.price;
-				container.appendChild(b4);
 				br = document.createElement("br");
-				container.appendChild(br);
+				card_data.appendChild(br);
+				b4 = document.createElement("b");
+				b4.textContent = "Price: ";
+				card_data.appendChild(b4);
+				card_data.appendChild(document.createTextNode(quote.price));
 			}
+			card.appendChild(card_data)
+			panel.appendChild(card);
+			if (panel.style.maxHeight) {
+					panel.style.maxHeight = null;
+				} else {
+					panel.style.maxHeight = panel.scrollHeight + "px"
+				}
 		};
 
 		this.clear = () => {

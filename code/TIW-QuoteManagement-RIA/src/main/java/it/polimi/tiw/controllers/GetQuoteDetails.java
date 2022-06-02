@@ -49,11 +49,12 @@ public class GetQuoteDetails extends HttpServlet {
 		QuoteDAO quoteDAO = new QuoteDAO(connection);
 		List<Option> options = new ArrayList<>();
 		Product product = null;
+		Quote quote = null;
 		User user = (User) session.getAttribute("currentUser");
 		
 		try {
 			quoteId = Integer.parseInt(request.getParameter("quoteId"));
-			Quote quote = quoteDAO.findQuoteById(quoteId);
+			quote = quoteDAO.findQuoteById(quoteId);
 			if (quote == null || (user.getRole().equalsIgnoreCase("client") && user.getId() != quote.getClientId())
 					|| (user.getRole().equalsIgnoreCase("worker") && quote.getWorkerId() != 0
 					&& user.getId() != quote.getWorkerId()))
@@ -69,7 +70,7 @@ public class GetQuoteDetails extends HttpServlet {
 			return;
 		}
 
-		String json = new Gson().toJson(new QuoteDetails(product,options));
+		String json = new Gson().toJson(new QuoteDetails(quote,product,options));
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
