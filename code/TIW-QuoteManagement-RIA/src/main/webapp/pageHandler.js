@@ -2,13 +2,13 @@
 
 	// page components
 	let personalMessage, createQuoteForm, quoteList, optionsList,
-		clientHandler = new ClientPageHandler(); // main controller
+		pageHandler = new PageHandler(); // main controller
 
 	window.addEventListener("load", () => {
 		if (sessionStorage.getItem("username") == null) {
 			window.location.href = "Login.html";
 		} else {
-			clientHandler.start(); // initialize the components
+			pageHandler.start(); // initialize the components
 		}
 	}, false);
 
@@ -257,19 +257,22 @@
 			);
 		};*/
 
-		this.show = (update) => {
+		this.show = update => {
 			var self = this;
 			this.clear;
 			makeCall("GET", "GetQuotesData", null,
-				function(req) {
+				req => {
 					if (req.readyState == 4) {
 						var message = req.responseText;
 						if (req.status == 200) {
 							var quotes = JSON.parse(req.responseText);
-							if (quotes.length === 0)
-								self.noQuotes.style.visibility = "visible";
+							if (quotes.length === 0) {
+								self.noQuotes.textContent = "You currently have no quotes";
+								//self.noQuotes.style.visibility = "visible";
+							}
 							else {
-								self.noQuotes.style.visibility = "hidden";
+								self.noQuotes.textContent = "";
+								//self.noQuotes.style.visibility = "hidden";
 								if (update === true)
 									self.update(self.quotesContainer, quotes[quotes.length - 1]);
 								else {
@@ -293,7 +296,7 @@
 			self = this;
 			var button, panel;
 			button = document.createElement("button");
-			button.textContent = "Quote#" + quote.id;
+			button.textContent = "Quote #" + quote.id;
 			button.className = "accordion";
 			button.setAttribute("quoteid", quote.id);
 			quotesContainer.appendChild(button);
@@ -310,12 +313,12 @@
 		this.addDetails = (panel, quoteId) => {
 			self = this;
 			makeCall("GET", "GetQuoteDetails?quoteId=" + quoteId, null,
-				function(req) {
+				req => {
 					if (req.readyState == 4) {
 						var message = req.responseText;
 						if (req.status == 200) {
 							var data = JSON.parse(req.responseText)
-							self.updateDetails(data.quote, data.product, data.options, panel); // self visible by closure
+							self.updateDetails(data.quote, data.product, data.options, data.clientUsername, panel); // self visible by closure
 						} else {
 							self.warning.textContent = message;
 						}
@@ -324,9 +327,10 @@
 			);
 		};
 
-		this.updateDetails = (quote, product, options, panel) => {
+
+		this.updateDetails = (quote, product, options, clientUsername, panel) => {
 			let card, card_title, card_data, b1, b2, br;
-			while(panel.firstChild){
+			while (panel.firstChild) {
 				panel.firstChild.remove();
 			}
 			/*var details = panel.querySelectorAll("div");
@@ -336,12 +340,32 @@
 				}))
 			}*/
 			card = document.createElement("div");
+			
+			br = document.createElement("br");
+			card.appendChild(br);
+			
 			card_title = document.createElement("div");
 			card_title.className = "card-title";
 			card_title.textContent = product.name;
 			card.appendChild(card_title);
 			card_data = document.createElement("div");
 			card_data.className = "card-data";
+
+			b2 = document.createElement("b");
+			b2.textContent = "Product code: ";
+			card_data.appendChild(b2);
+			card_data.appendChild(document.createTextNode(product.code));
+			br = document.createElement("br");
+			card_data.appendChild(br);
+
+			if (sessionStorage.getItem("role") === "worker") {
+				b2 = document.createElement("b");
+				b2.textContent = "Client username: ";
+				card_data.appendChild(b2);
+				card_data.appendChild(document.createTextNode(clientUsername));
+				br = document.createElement("br");
+				card_data.appendChild(br);
+			}
 
 			options.forEach((function(option) {
 
@@ -377,13 +401,18 @@
 				card_data.appendChild(b4);
 				card_data.appendChild(document.createTextNode(quote.price));
 			}
-			card.appendChild(card_data)
+			
+			card.appendChild(card_data);
+			br = document.createElement("br");
+			card.appendChild(br);
 			panel.appendChild(card);
+			
+			
 			if (panel.style.maxHeight) {
-					panel.style.maxHeight = null;
-				} else {
-					panel.style.maxHeight = panel.scrollHeight + "px"
-				}
+				panel.style.maxHeight = null;
+			} else {
+				panel.style.maxHeight = panel.scrollHeight + "px"
+			}
 		};
 
 		this.clear = () => {
@@ -401,32 +430,32 @@
 
 
 
-	function ClientPageHandler() {
+	function PageHandler() {
 		var warningContainer = document.getElementById("id_warning");
 
 		this.start = function() {
 			personalMessage = new PersonalMessage(sessionStorage.getItem('username'), document.getElementById("id_username"));
 			personalMessage.show();
-
-			createQuoteForm = new CreateQuoteForm(
-				warningContainer,
-				document.getElementById("id_createQuoteContainer"),
-				document.getElementById("id_productContainer"),
-				document.getElementById("id_dropdownBtn"));
-			createQuoteForm.show(null);
-			optionsList = new OptionsList(
-				warningContainer,
-				document.getElementById("id_selectContainer"),
-				document.getElementById("id_selectOptions"),
-				document.getElementById("id_requestQuoteBtn"));
-			optionsList.reset();
-
+			if (sessionStorage.getItem('role') === "client") {
+				createQuoteForm = new CreateQuoteForm(
+					warningContainer,
+					document.getElementById("id_createQuoteContainer"),
+					document.getElementById("id_productContainer"),
+					document.getElementById("id_dropdownBtn"));
+				createQuoteForm.show(null);
+				optionsList = new OptionsList(
+					warningContainer,
+					document.getElementById("id_selectContainer"),
+					document.getElementById("id_selectOptions"),
+					document.getElementById("id_requestQuoteBtn"));
+				optionsList.reset();
+			}
 			quoteList = new QuoteList(
 				warningContainer,
 				document.getElementById("id_quotesList"),
-				document.getElementById("id_noQuotes")
-			);
+				document.getElementById("id_noQuotes"));
 			quoteList.show(false);
+
 
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
 				window.sessionStorage.removeItem('username');

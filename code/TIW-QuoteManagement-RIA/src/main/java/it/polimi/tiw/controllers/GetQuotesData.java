@@ -44,6 +44,7 @@ public class GetQuotesData extends HttpServlet {
 		List<Quote> quotes = new ArrayList<Quote>();
 
 		try {
+			
 			quotes = QuoteDAO.findQuotesByUserId(user.getId(),user.getRole());
 		} catch (SQLException e) {
 			e.printStackTrace();

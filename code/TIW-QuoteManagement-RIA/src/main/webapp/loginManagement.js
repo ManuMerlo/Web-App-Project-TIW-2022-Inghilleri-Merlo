@@ -26,6 +26,7 @@
 								case 200:
 									data = JSON.parse(x.responseText)
 									sessionStorage.setItem('username', data.username);
+									sessionStorage.setItem('role', data.role);
 									if (data.role === "client")
 										window.location.href = "ClientHome.html";
 									else if (data.role === "worker")

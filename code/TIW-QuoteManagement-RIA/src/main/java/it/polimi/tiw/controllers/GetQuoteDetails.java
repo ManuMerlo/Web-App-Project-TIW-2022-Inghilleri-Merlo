@@ -23,6 +23,7 @@ import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.OptionDAO;
 import it.polimi.tiw.dao.ProductDAO;
 import it.polimi.tiw.dao.QuoteDAO;
+import it.polimi.tiw.dao.UserDAO;
 import it.polimi.tiw.packets.QuoteDetails;
 import it.polimi.tiw.utils.ConnectionHandler;
 
@@ -47,10 +48,12 @@ public class GetQuoteDetails extends HttpServlet {
 		OptionDAO optionDAO = new OptionDAO(connection);
 		ProductDAO productDAO = new ProductDAO(connection);
 		QuoteDAO quoteDAO = new QuoteDAO(connection);
+		UserDAO userDAO = new UserDAO(connection);
 		List<Option> options = new ArrayList<>();
 		Product product = null;
 		Quote quote = null;
 		User user = (User) session.getAttribute("currentUser");
+		User client=null;
 		
 		try {
 			quoteId = Integer.parseInt(request.getParameter("quoteId"));
@@ -61,6 +64,7 @@ public class GetQuoteDetails extends HttpServlet {
 				throw new Exception();
 			product = productDAO.findProductByCode(quote.getProductCode());
 			options = optionDAO.findOptionsByQuoteId(quoteId);
+			client= userDAO.findClientById(quote.getClientId());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return;
@@ -70,7 +74,7 @@ public class GetQuoteDetails extends HttpServlet {
 			return;
 		}
 
-		String json = new Gson().toJson(new QuoteDetails(quote,product,options));
+		String json = new Gson().toJson(new QuoteDetails(quote,product,options,client.getUsername()));
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");

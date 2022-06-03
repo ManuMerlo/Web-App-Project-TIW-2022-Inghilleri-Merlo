@@ -59,7 +59,7 @@ CREATE TABLE `quote` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
  
 LOCK TABLES `quote` WRITE;
-INSERT INTO `quote` VALUES (1,1,2,1,1000),(2,1,null,2,null),(3,3,2,2,3000),(4,3,null,1,null);
+INSERT INTO `quote` VALUES (1,1,10,1,1000),(2,1,null,2,null),(3,3,10,2,3000),(4,3,null,1,null);
 UNLOCK TABLES;
 
 CREATE TABLE `productoptions`(
