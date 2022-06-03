@@ -1,7 +1,7 @@
 { // avoid variables ending up in the global scope
 
 	// page components
-	let personalMessage, createQuoteForm, quoteList, optionsList,
+	let personalMessage, createQuoteForm, quotesList, optionsList, unmanagedQuotesList,
 		pageHandler = new PageHandler(); // main controller
 
 	window.addEventListener("load", () => {
@@ -40,7 +40,7 @@
 		this.clear = () => {
 			var self = this;
 			var links = this.optionContainer.querySelectorAll("option");
-			links.forEach((function(link) {
+			links.forEach((link => {
 				self.optionContainer.removeChild(link);
 			}))
 		};
@@ -83,7 +83,7 @@
 			this.selectContainer.style.visibility = "visible";
 		};
 
-		this.createQuote = (e) => {
+		this.createQuote = e => {
 			var form = e.target.closest("form");
 			if (form.checkValidity()) {
 				var self = this;
@@ -93,7 +93,7 @@
 							var message = req.responseText;
 							if (req.status == 200) {
 								self.warning.textContent = "you have correctly requested a quote";
-								quoteList.show(true);
+								quotesList.show(true, false);
 							} else if (req.status == 403) {
 								window.location.href = req.getResponseHeader("Location");
 								window.sessionStorage.removeItem('username');
@@ -126,10 +126,10 @@
 			return this.dropdownBtn;
 		}
 
-		this.show = (selectedProduct) => {
+		this.show = selectedProduct => {
 			var self = this;
 			makeCall("GET", "GetProductsData", null,
-				function(req) {
+				req => {
 					if (req.readyState == 4) {
 						var message = req.responseText;
 						if (req.status == 200) {
@@ -146,10 +146,10 @@
 			);
 		};
 
-		this.update = (products) => {
+		this.update = products => {
 			var anchor;
 			var self = this;
-			products.forEach(function(product) {
+			products.forEach(product => {
 				anchor = document.createElement("a");
 				linkText = document.createTextNode(product.name);
 				anchor.appendChild(linkText);
@@ -180,11 +180,11 @@
 
 
 
-	function QuoteList(_warning, _quotesContainer, _noQuotes) {
+	function QuotesList(_warning, _quotesContainer, _noQuotes) {
 		this.warning = _warning;
 		this.quotesContainer = _quotesContainer;
 		this.noQuotes = _noQuotes;
-		this.i = 0;
+		//this.i = 0;
 
 		/*this.show = () => {
 			var self = this;
@@ -234,10 +234,10 @@
 									viewBtn.addEventListener("click", (e) => {
 										if (e.target.textContent === "ViewDetails") {
 											e.target.textContent = "Hide";
-											//quoteList.showDetails(e.target.getAttribute("quoteId"));
+											//quotesList.showDetails(e.target.getAttribute("quoteId"));
 										} else {
 											e.target.textContent = "ViewDetails";
-											//quoteList.hide(e.target.getAttribute("quoteId");
+											//quotesList.hide(e.target.getAttribute("quoteId");
 										}
 									});
 									card.appendChild(viewBtn);
@@ -257,26 +257,30 @@
 			);
 		};*/
 
-		this.show = update => {
+		this.show = (update, unmanaged) => {
 			var self = this;
 			this.clear;
-			makeCall("GET", "GetQuotesData", null,
+			var servlet = "GetQuotesData";
+			if (unmanaged) {
+				servlet = "GetQuotesData?workerId=0";
+			}
+			makeCall("GET", servlet, null,
 				req => {
 					if (req.readyState == 4) {
 						var message = req.responseText;
 						if (req.status == 200) {
 							var quotes = JSON.parse(req.responseText);
 							if (quotes.length === 0) {
-								self.noQuotes.textContent = "You currently have no quotes";
+								self.noQuotes.textContent = "There are no quotes";
 								//self.noQuotes.style.visibility = "visible";
 							}
 							else {
 								self.noQuotes.textContent = "";
 								//self.noQuotes.style.visibility = "hidden";
-								if (update === true)
+								if (update)
 									self.update(self.quotesContainer, quotes[quotes.length - 1]);
 								else {
-									quotes.forEach(function(quote) {
+									quotes.forEach(quote => {
 										self.update(self.quotesContainer, quote);
 									});
 								}
@@ -285,7 +289,6 @@
 						}
 						else {
 							self.warning.textContent = message;
-
 						}
 					}
 				}
@@ -298,6 +301,7 @@
 			button = document.createElement("button");
 			button.textContent = "Quote #" + quote.id;
 			button.className = "accordion";
+			button.id = quote.id;
 			button.setAttribute("quoteid", quote.id);
 			quotesContainer.appendChild(button);
 			panel = document.createElement("div");
@@ -329,7 +333,8 @@
 
 
 		this.updateDetails = (quote, product, options, clientUsername, panel) => {
-			let card, card_title, card_data, b1, b2, br;
+			
+			let card, card_title, card_data, b1, b2, b3, br, form, d1;
 			while (panel.firstChild) {
 				panel.firstChild.remove();
 			}
@@ -340,10 +345,10 @@
 				}))
 			}*/
 			card = document.createElement("div");
-			
+
 			br = document.createElement("br");
 			card.appendChild(br);
-			
+
 			card_title = document.createElement("div");
 			card_title.className = "card-title";
 			card_title.textContent = product.name;
@@ -367,7 +372,7 @@
 				card_data.appendChild(br);
 			}
 
-			options.forEach((function(option) {
+			options.forEach((option => {
 
 				b1 = document.createElement("b");
 				b1.textContent = "Option: ";
@@ -383,8 +388,6 @@
 				card_data.appendChild(document.createTextNode(option.type));
 				br = document.createElement("br");
 				card_data.appendChild(br);
-
-
 			}
 			))
 
@@ -400,14 +403,45 @@
 				b4.textContent = "Price: ";
 				card_data.appendChild(b4);
 				card_data.appendChild(document.createTextNode(quote.price));
+			} else if (sessionStorage.getItem('role') === "worker") {
+				br = document.createElement("p");
+				card_data.appendChild(br);
+				form = document.createElement("form");
+				form.className = "login-form";
+				form.action = "#";
+				d1 = document.createElement("div");
+				d1.className = "form-group";
+				b1 = document.createElement("label");
+				b1.textContent = "Price";
+
+				b2 = document.createElement("input");
+				b2.type = "number";
+				b2.min = "0";
+				b2.placeholder = "Enter a price";
+				b2.required = "true";
+				b2.name = "price";
+
+				b3 = document.createElement("button");
+				b3.className = "btn btn-large btn-blue";
+				b3.type = "submit";
+				b3.textContent = "Update";
+				b3.id = "id_updatePriceBtn";
+				b3.addEventListener("click", e => {
+					this.updatePrice(e,quote);
+				}, false);
+				d1.appendChild(b1);
+				d1.appendChild(b2);
+				d1.appendChild(b3);
+				form.appendChild(d1);
+				card_data.appendChild(form);
 			}
-			
+
 			card.appendChild(card_data);
 			br = document.createElement("br");
 			card.appendChild(br);
 			panel.appendChild(card);
-			
-			
+
+
 			if (panel.style.maxHeight) {
 				panel.style.maxHeight = null;
 			} else {
@@ -415,10 +449,43 @@
 			}
 		};
 
+		this.updatePrice = (e,quote) => {
+			var form = e.target.closest("form");
+			var self = this;
+			if (form.checkValidity()) {
+				makeCall("POST", "UpdatePrice1?quoteId=" + quote.id, form,
+					req => {
+						if (req.readyState == 4) {
+							var message = req.responseText;
+							var elem;
+							if (req.status == 200) {
+								self.warning.textContent = "you have correctly priced a quote";
+								quotesList.clear();
+								quotesList.show(false, false);
+								elem=document.getElementById((String)(quote.id)).nextElementSibling;
+								unmanagedQuotesList.quotesContainer.removeChild(elem);
+								elem=document.getElementById((String)(quote.id));
+								unmanagedQuotesList.quotesContainer.removeChild(elem);
+							} else if (req.status == 403) {
+								window.location.href = req.getResponseHeader("Location");
+								window.sessionStorage.removeItem('username');
+							}
+							else {
+								self.warning.textContent = message;
+							}
+						}
+					}
+				);
+			} else {
+				form.reportValidity();
+			}
+			//this.reset();
+		};
+
 		this.clear = () => {
 			var self = this;
-			var quotes = this.quotesContainer.querySelectorAll("div");
-			quotes.forEach((function(quote) {
+			var quotes = this.quotesContainer.querySelectorAll("div,button");
+			quotes.forEach((quote => {
 				self.quotesContainer.removeChild(quote);
 			}))
 		};
@@ -429,11 +496,10 @@
 	}
 
 
-
 	function PageHandler() {
 		var warningContainer = document.getElementById("id_warning");
 
-		this.start = function() {
+		this.start = () => {
 			personalMessage = new PersonalMessage(sessionStorage.getItem('username'), document.getElementById("id_username"));
 			personalMessage.show();
 			if (sessionStorage.getItem('role') === "client") {
@@ -449,13 +515,18 @@
 					document.getElementById("id_selectOptions"),
 					document.getElementById("id_requestQuoteBtn"));
 				optionsList.reset();
+			} else if ((sessionStorage.getItem('role') === "worker")) {
+				unmanagedQuotesList = new QuotesList(
+					warningContainer,
+					document.getElementById("id_unmanagedQuotesList"),
+					document.getElementById("id_noUnmanagedQuotes"));
+				unmanagedQuotesList.show(false, true);
 			}
-			quoteList = new QuoteList(
+			quotesList = new QuotesList(
 				warningContainer,
 				document.getElementById("id_quotesList"),
 				document.getElementById("id_noQuotes"));
-			quoteList.show(false);
-
+			quotesList.show(false, false);
 
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
 				window.sessionStorage.removeItem('username');

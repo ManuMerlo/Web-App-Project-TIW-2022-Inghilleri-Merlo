@@ -42,10 +42,13 @@ public class GetQuotesData extends HttpServlet {
 		User user = (User) session.getAttribute("currentUser");
 		QuoteDAO QuoteDAO = new QuoteDAO(connection);
 		List<Quote> quotes = new ArrayList<Quote>();
-
+		int workerId=-1;
 		try {
-			
-			quotes = QuoteDAO.findQuotesByUserId(user.getId(),user.getRole());
+			if(request.getParameter("workerId")!=null && request.getParameter("workerId")!="")
+				workerId=Integer.parseInt(request.getParameter("workerId"));
+			if(workerId==0) {
+				quotes = QuoteDAO.findUnmanagedQuotes();
+			} else quotes = QuoteDAO.findQuotesByUserId(user.getId(),user.getRole());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
