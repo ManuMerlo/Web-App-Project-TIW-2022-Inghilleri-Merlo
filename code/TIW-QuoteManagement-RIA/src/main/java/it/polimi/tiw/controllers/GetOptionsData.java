@@ -12,12 +12,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import it.polimi.tiw.beans.Option;
 import it.polimi.tiw.dao.OptionDAO;
-import it.polimi.tiw.beans.Product;
 import it.polimi.tiw.dao.ProductDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
 
@@ -36,7 +34,7 @@ public class GetOptionsData extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession();
+		
 		OptionDAO optionDAO = new OptionDAO(connection);
 		ProductDAO productDAO = new ProductDAO(connection);
 		List<Option> options = new ArrayList<Option>();

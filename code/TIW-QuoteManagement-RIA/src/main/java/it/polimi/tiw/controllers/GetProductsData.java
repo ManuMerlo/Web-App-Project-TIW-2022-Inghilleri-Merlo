@@ -8,11 +8,11 @@ import java.util.List;
 import java.lang.String;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import it.polimi.tiw.beans.Product;
@@ -20,6 +20,7 @@ import it.polimi.tiw.dao.ProductDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
 
 @WebServlet("/GetProductsData")
+@MultipartConfig
 public class GetProductsData extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
@@ -34,7 +35,7 @@ public class GetProductsData extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession();
+		
 		ProductDAO productDAO = new ProductDAO(connection);
 		List<Product> products = new ArrayList<Product>();
 

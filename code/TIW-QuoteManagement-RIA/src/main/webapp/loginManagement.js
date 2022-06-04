@@ -2,24 +2,24 @@
  * Login management
  */
 
-(function() { // avoid variables ending up in the global scope
+(() => {
 
-	var open_register = document.getElementById("open_register");
-	var title = document.getElementById("title");
-	var form = document.getElementById("f1");
-	var loginButton = document.getElementById("loginButton");
+	var open_register = document.getElementById("open_register"),
+		title = document.getElementById("title"),
+		form = document.getElementById("f1"),
+		loginButton = document.getElementById("loginButton"),
+		warning = document.getElementById("warning");
 	//var passwordInput = loginButton.closest("form").querySelector('input[name="password"]');
 	//var repeatPasswordInput = loginButton.closest("form").querySelector('input[name="repeatPassword"]');
-	var warning = document.getElementById("warning");
 
-	//TODO ci sono 2 variabili che si chiamano form
+	
 
 	loginButton.addEventListener('click', e => {
-		var form = e.target.closest("form");
-		if (form.checkValidity()) {
+		//var form = e.target.closest("form");
+		if (form.checkValidity() && checkEmail(document.getElementById("emailInput").textContent)) {
 			if (loginButton.textContent === "Login") {
 				makeCall("POST", 'CheckLogin', e.target.closest("form"),
-					function(x) {
+					x => {
 						if (x.readyState == XMLHttpRequest.DONE) {
 							var data;
 							switch (x.status) {
@@ -43,12 +43,13 @@
 					}
 				);
 			} else {
-				if (document.getElementById("passwordInput").value != document.getElementById("repeatPassword").value) {
+				if (document.getElementById("passwordInput").value != document.getElementById("repeatPasswordInput").value) {
 					warning.textContent = "Passwords do not match";
+					e.preventDefault();
 					return;
 				}
 				makeCall("POST", 'Register', e.target.closest("form"),
-					function(x) {
+					x => {
 						if (x.readyState == XMLHttpRequest.DONE) {
 							var data;
 							switch (x.status) {
@@ -60,7 +61,7 @@
 								case 401: // unauthorized
 								case 500: // server error
 									data = x.responseText;
-									document.getElementById("warning").textContent = data;
+									warning.textContent = data;
 									break;
 							}
 						}
@@ -69,6 +70,7 @@
 			}
 
 		} else {
+			e.preventDefault();
 			form.reportValidity();
 		}
 	});
@@ -80,8 +82,21 @@
 	function returnToLogin() {
 		title.textContent = "Insert your credentials to Login";
 		loginButton.textContent = "Login";
+		warning.textContent = "";
 		form.removeChild(document.getElementById("username"));
 		form.removeChild(document.getElementById("repeatPwd"));
+	}
+
+	function checkEmail(email) {
+		// recupero il valore della email indicata nel form
+		var email = form.email.value;
+		// se non ho inserito nulla nel campo
+		if (email == '' || !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+			warning.textContent = "Invalid email";
+			return false;
+		}
+
+		return true;
 	}
 
 	open_register.addEventListener("click", e => {
@@ -93,11 +108,12 @@
 			usernameDiv.id = "username";
 			usernameDiv.className = "form-group";
 			var label = document.createElement("Label");
-			label.setAttribute("for", "username");
+			label.setAttribute("for", "usernameInput");
 			label.textContent = "Username";
 			usernameDiv.appendChild(label);
 			var input = document.createElement("input");
-			input.name = "username";
+			input.name = "usernameInput";
+			input.id="usernameInput";
 			input.type = "text";
 			input.placeholder = "Enter your username";
 			input.required = true;
@@ -108,12 +124,12 @@
 			repeatPwdDiv.id = "repeatPwd";
 			repeatPwdDiv.className = "form-group";
 			label = document.createElement("Label");
-			label.setAttribute("for", "repeatPassword");
+			label.setAttribute("for", "repeatPasswordInput");
 			label.textContent = "Repeat Password";
 			repeatPwdDiv.appendChild(label);
 			input = document.createElement("input");
-			input.name = "repeatPassword";
-			input.id = "repeatPassword";
+			input.name = "repeatPasswordInput";
+			input.id = "repeatPasswordInput";
 			input.type = "password";
 			input.placeholder = "Repeat your password";
 			input.required = true;
@@ -132,3 +148,4 @@
 	});
 
 })();
+

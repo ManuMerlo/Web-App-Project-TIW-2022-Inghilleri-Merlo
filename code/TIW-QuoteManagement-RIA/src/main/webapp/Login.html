@@ -18,19 +18,21 @@
 	<div class="blue-div login-div">
 		<div id="title" class="login-title">Insert your credentials to
 			Login</div>
-		<form id="f1" class="login-form" action="#" accept-charset=utf-8>
+		<form id="f1" name="f1" class="login-form" action="#"
+			accept-charset=utf-8>
 			<div id="email" class="form-group">
-				<label for="email">Email</label> <input type="text"
-					placeholder="Enter your email" name="email" required />
-			</div>
-			<div id="password" class="form-group">
-				<label for="password">Password</label> <input id="passwordInput"
-					type="password" placeholder="Enter your password" name="password"
+				<label for="emailInput">Email</label> <input type="email"
+					placeholder="Enter your email" name="emailInput" id="emailInput"
 					required />
 			</div>
+			<div id="password" class="form-group">
+				<label for="passwordInput">Password</label> <input
+					id="passwordInput" type="password"
+					placeholder="Enter your password" name="passwordInput" required />
+			</div>
 			Client<input type="radio" name="role" value="client"
-				checked="checked"> Worker<input type="radio" name="role"
-				value="worker">
+				checked="checked" /> Worker<input type="radio" name="role"
+				value="worker" />
 			<p>
 				<button class="btn btn-large btn-blue" type="submit"
 					id="loginButton">Login</button>

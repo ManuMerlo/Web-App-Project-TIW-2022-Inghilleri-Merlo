@@ -17,11 +17,11 @@
 		<form class="login-form" method="POST" action="CheckLogin" th:action="@{/CheckLogin}">
 			<div class="form-group">
 				<label for="username">Username</label>
-				<input type="text" placeholder="Enter your username" name="username" required>
+				<input id="username" type="text" placeholder="Enter your username" name="username" required>
 			</div>
 			<div class="form-group">
 				<label for="password">Password</label>
-				<input type="password" placeholder="Enter your password" name="password" required>
+				<input id="password" type="password" placeholder="Enter your password" name="password" required>
 			</div>
 			<button class="btn btn-large btn-blue" type="submit" name="role" value="client">Client Login</button>
 			<button class="btn btn-large btn-blue" type="submit" name="role" value="worker">Worker Login</button>

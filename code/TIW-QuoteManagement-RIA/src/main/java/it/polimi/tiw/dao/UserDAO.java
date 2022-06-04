@@ -56,7 +56,7 @@ public class UserDAO {
 	public User findUserToRegister(String username, String email, String role) throws SQLException {
 		User user = null;
 		String performedAction = "finding a user by username, email and role";
-		String query = "SELECT * FROM quotemanagement.user WHERE username=? AND email = ? AND role = ?";
+		String query = "SELECT * FROM quotemanagement.user WHERE (username=? AND role = ?) OR email = ?";
 		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -64,8 +64,8 @@ public class UserDAO {
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, username);
-			preparedStatement.setString(2, email);
-			preparedStatement.setString(3, role);
+			preparedStatement.setString(2, role);
+			preparedStatement.setString(3, email);
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {

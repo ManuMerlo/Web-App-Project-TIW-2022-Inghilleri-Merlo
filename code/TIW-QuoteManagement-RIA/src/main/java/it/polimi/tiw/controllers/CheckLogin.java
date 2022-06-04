@@ -3,6 +3,10 @@ package it.polimi.tiw.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.annotation.MultipartConfig;
@@ -32,17 +36,21 @@ public class CheckLogin extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// obtain and escape params
+
 		String email = null;
 		String password = null;
 		String role = null;
-		email = request.getParameter("email");
-		password = request.getParameter("password");
+		email = request.getParameter("emailInput");
+		password = request.getParameter("passwordInput");
 		role = request.getParameter("role");
 		if (email == null || role == null || (!role.equalsIgnoreCase("client") && !role.equalsIgnoreCase("worker"))
 				|| password == null || email.isEmpty() || password.isEmpty() || role.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Null email, password or role");
+			return;
+		} else if(!checkEmail(email)) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Invalid email");
 			return;
 		}
 		// query db to authenticate for user
@@ -82,5 +90,31 @@ public class CheckLogin extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private boolean checkEmail(String email) {
+		// Create the Pattern using the regex
+		Pattern p = Pattern.compile(
+				"^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:.[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$");
+
+		// Match the given string with the pattern
+		Matcher m = p.matcher(email);
+
+		// check whether match is found
+		boolean matchFound = m.matches();
+
+		StringTokenizer st = new StringTokenizer(email, ".");
+		String lastToken = null;
+		while (st.hasMoreTokens()) {
+			lastToken = st.nextToken();
+		}
+
+		// validate the country code
+		if (matchFound && lastToken.length() >= 2 && email.length() - 1 != lastToken.length()) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 }
