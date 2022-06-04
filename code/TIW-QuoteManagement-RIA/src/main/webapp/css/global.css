@@ -172,6 +172,8 @@ hr{
     width: 20%;
 }
 .btn-label {
+	margin-left: auto;
+    margin-right: auto;
     padding: 0.5rem;
     border-radius: 5px 0 0 5px;
     color: #495057;

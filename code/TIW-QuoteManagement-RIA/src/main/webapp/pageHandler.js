@@ -32,9 +32,10 @@
 		this.selectedProduct = -1;
 
 		this.reset = () => {
-			this.selectContainer.style.visibility = "hidden";
-			this.optionContainer.style.visibility = "hidden";
-			this.requestQuoteBtn.style.visibility = "hidden";
+			//this.selectContainer.style.visibility = "hidden";
+			this.selectContainer.style.display = "none";
+			//this.optionContainer.style.visibility = "hidden";
+			//this.requestQuoteBtn.style.visibility = "hidden";
 		};
 
 		this.clear = () => {
@@ -49,7 +50,7 @@
 			var self = this;
 			this.selectedProduct = selectedProduct;
 			makeCall("GET", "GetOptionsData?productCode=" + selectedProduct, null,
-				function(req) {
+				req => {
 					if (req.readyState == 4) {
 						var message = req.responseText;
 						if (req.status == 200) {
@@ -64,35 +65,36 @@
 		};
 
 
-		this.update = (options) => {
+		this.update = options => {
 			var elem;
 			// build updated list
 			var self = this;
-			options.forEach(function(option) {
+			options.forEach(option => {
 				elem = document.createElement("option");
 				elem.textContent = option.name;
 				elem.setAttribute("value", option.code);
 				self.optionContainer.appendChild(elem);
 			});
-			this.requestQuoteBtn.style.visibility = "visible";
-			this.requestQuoteBtn.addEventListener("click", (e) => {
+			//this.requestQuoteBtn.style.visibility = "visible";
+			this.requestQuoteBtn.addEventListener("click", e => {
 				this.createQuote(e);
 			}, false);
 
-			this.optionContainer.style.visibility = "visible";
-			this.selectContainer.style.visibility = "visible";
+			//this.optionContainer.style.visibility = "visible";
+			//this.selectContainer.style.visibility = "visible";
+			this.selectContainer.style.display = null;
 		};
 
 		this.createQuote = e => {
 			var form = e.target.closest("form");
-			if (form.checkValidity()) {
+			if (form.checkValidity() && this.checkChosenOptions()) {
 				var self = this;
 				makeCall("POST", "CreateQuote1?productCode=" + self.selectedProduct, form,
-					function(req) {
+					req => {
 						if (req.readyState == 4) {
 							var message = req.responseText;
 							if (req.status == 200) {
-								self.warning.textContent = "you have correctly requested a quote";
+								self.warning.textContent = "";
 								quotesList.show(true, false);
 							} else if (req.status == 403) {
 								window.location.href = req.getResponseHeader("Location");
@@ -110,7 +112,25 @@
 			this.reset();
 			createQuoteForm.getDropdownBtn().textContent = "";
 		};
+
+		this.checkChosenOptions = () => {
+			var x = document.getElementById("id_selectOptions");
+			if (x.length <= 0) {
+				this.warning.textContent="Invalid chosen options";
+				return false;
+			}
+			for (index = 0; index < x.length; index++) {
+				if (x.options[index] == null) 
+				{
+					this.warning.textContent="Invalid chosen options";
+					return false;
+				}
+			}
+			return true;
+		};
 	}
+
+
 
 	function CreateQuoteForm(_warning, _formContainer, _productContainer, _dropdownBtn) {
 		this.warning = _warning;
@@ -134,9 +154,9 @@
 						var message = req.responseText;
 						if (req.status == 200) {
 							var productsToShow = JSON.parse(req.responseText);
-							self.update(productsToShow); // self visible by closure
+							self.update(productsToShow);
 							if (selectedProduct)
-								next(); // show the default element of the list if present
+								next();
 
 						} else {
 							self.warning.textContent = message;
@@ -333,7 +353,7 @@
 
 
 		this.updateDetails = (quote, product, options, clientUsername, panel) => {
-			
+
 			let card, card_title, card_data, b1, b2, b3, br, form, d1;
 			while (panel.firstChild) {
 				panel.firstChild.remove();
@@ -427,7 +447,7 @@
 				b3.textContent = "Update";
 				b3.id = "id_updatePriceBtn";
 				b3.addEventListener("click", e => {
-					this.updatePrice(e,quote);
+					this.updatePrice(e, quote);
 				}, false);
 				d1.appendChild(b1);
 				d1.appendChild(b2);
@@ -449,7 +469,7 @@
 			}
 		};
 
-		this.updatePrice = (e,quote) => {
+		this.updatePrice = (e, quote) => {
 			var form = e.target.closest("form");
 			var self = this;
 			if (form.checkValidity()) {
@@ -459,12 +479,12 @@
 							var message = req.responseText;
 							var elem;
 							if (req.status == 200) {
-								self.warning.textContent = "you have correctly priced a quote";
+								//self.warning.textContent = "you have correctly priced a quote";
 								quotesList.clear();
 								quotesList.show(false, false);
-								elem=document.getElementById((String)(quote.id)).nextElementSibling;
+								elem = document.getElementById((String)(quote.id)).nextElementSibling;
 								unmanagedQuotesList.quotesContainer.removeChild(elem);
-								elem=document.getElementById((String)(quote.id));
+								elem = document.getElementById((String)(quote.id));
 								unmanagedQuotesList.quotesContainer.removeChild(elem);
 							} else if (req.status == 403) {
 								window.location.href = req.getResponseHeader("Location");
@@ -530,6 +550,7 @@
 
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
 				window.sessionStorage.removeItem('username');
+				window.sessionStorage.removeItem('role');
 			});
 		};
 	}

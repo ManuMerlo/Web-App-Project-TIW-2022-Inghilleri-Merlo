@@ -82,6 +82,11 @@ public class Register extends HttpServlet {
 			// response.getWriter().println(usrn);
 		}
 	}
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doPost(request,response);
+	}
 
 	public void destroy() {
 		try {

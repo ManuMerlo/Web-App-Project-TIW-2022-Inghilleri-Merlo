@@ -12,7 +12,7 @@
 	//var passwordInput = loginButton.closest("form").querySelector('input[name="password"]');
 	//var repeatPasswordInput = loginButton.closest("form").querySelector('input[name="repeatPassword"]');
 
-	
+
 
 	loginButton.addEventListener('click', e => {
 		//var form = e.target.closest("form");
@@ -29,7 +29,8 @@
 									sessionStorage.setItem('role', data.role);
 									if (data.role === "client")
 										window.location.href = "ClientHome.html";
-									else if (data.role === "worker")
+									else if (
+										data.role === "worker")
 										window.location.href = "WorkerHome.html";
 									break;
 								case 400: // bad request
@@ -83,13 +84,17 @@
 		title.textContent = "Insert your credentials to Login";
 		loginButton.textContent = "Login";
 		warning.textContent = "";
-		form.removeChild(document.getElementById("username"));
-		form.removeChild(document.getElementById("repeatPwd"));
+		document.getElementById("username").style.display = "none";
+		document.getElementById("usernameInput").required=false;
+		document.getElementById("repeatPwd").style.display = "none";
+		document.getElementById("repeatPasswrodInput").required=false;
+		//form.removeChild(document.getElementById("username"));
+		//form.removeChild(document.getElementById("repeatPwd"));
 	}
 
 	function checkEmail(email) {
 		// recupero il valore della email indicata nel form
-		var email = form.email.value;
+		var email = form.emailInput.value;
 		// se non ho inserito nulla nel campo
 		if (email == '' || !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
 			warning.textContent = "Invalid email";
@@ -104,7 +109,7 @@
 			e.target.textContent = "Go to login";
 			title.textContent = "Insert your credentials to Register";
 			loginButton.textContent = "Register";
-			const usernameDiv = document.createElement("div");
+			/*const usernameDiv = document.createElement("div");
 			usernameDiv.id = "username";
 			usernameDiv.className = "form-group";
 			var label = document.createElement("Label");
@@ -135,7 +140,11 @@
 			input.required = true;
 			repeatPwdDiv.appendChild(input);
 			currentDiv = document.getElementById("password");
-			insertAfter(repeatPwdDiv, currentDiv);
+			insertAfter(repeatPwdDiv, currentDiv);*/
+			document.getElementById("username").style.display = null;
+			document.getElementById("usernameInput").required=true;
+			document.getElementById("repeatPwd").style.display = null;
+			document.getElementById("repeatPasswrodInput").required=true;
 		} else {
 			e.target.textContent = "Register Now";
 			returnToLogin();
