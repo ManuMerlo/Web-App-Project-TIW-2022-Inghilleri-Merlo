@@ -78,8 +78,8 @@ body{
     color: #006587;
 }
 
-/* Add a color to the active/current link */
-.topnav a.active {
+/* Add a color to the activeLink/current link */
+.topnav a.activeLink {
     background-color: #004055;
     color: white;
 }

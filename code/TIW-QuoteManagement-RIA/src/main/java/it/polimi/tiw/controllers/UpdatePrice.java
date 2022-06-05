@@ -17,13 +17,13 @@ import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.QuoteDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
 
-@WebServlet("/UpdatePrice1")
+@WebServlet("/UpdatePrice")
 @MultipartConfig
-public class UpdatePrice1 extends HttpServlet {
+public class UpdatePrice extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 
-	public UpdatePrice1() {
+	public UpdatePrice() {
 		super();
 	}
 
@@ -60,7 +60,7 @@ public class UpdatePrice1 extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Not possible to recover the quote");
 			return;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Invalid Quote Id");
 			return;

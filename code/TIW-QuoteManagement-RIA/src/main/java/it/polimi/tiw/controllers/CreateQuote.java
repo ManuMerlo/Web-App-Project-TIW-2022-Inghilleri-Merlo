@@ -21,13 +21,13 @@ import it.polimi.tiw.dao.ProductDAO;
 import it.polimi.tiw.dao.QuoteDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
 
-@WebServlet("/CreateQuote1")
+@WebServlet("/CreateQuote")
 @MultipartConfig
-public class CreateQuote1 extends HttpServlet {
+public class CreateQuote extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 
-	public CreateQuote1() {
+	public CreateQuote() {
 		super();
 	}
 

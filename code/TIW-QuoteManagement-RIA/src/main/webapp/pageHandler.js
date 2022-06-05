@@ -31,6 +31,7 @@
 		this.requestQuoteBtn = _requestQuoteBtn;
 		this.selectedProduct = -1;
 
+
 		this.reset = () => {
 			//this.selectContainer.style.visibility = "hidden";
 			this.selectContainer.style.display = "none";
@@ -46,10 +47,10 @@
 			}))
 		};
 
-		this.show = (selectedProduct) => {
-			var self = this;
+		this.show = (selectedProduct, options) => {
+
 			this.selectedProduct = selectedProduct;
-			makeCall("GET", "GetOptionsData?productCode=" + selectedProduct, null,
+			/*makeCall("GET", "GetOptionsData?productCode=" + selectedProduct, null,
 				req => {
 					if (req.readyState == 4) {
 						var message = req.responseText;
@@ -61,10 +62,23 @@
 						}
 					}
 				}
-			);
+			);*/
+			var elem;
+			var self = this;
+			options.forEach(option => {
+				elem = document.createElement("option");
+				elem.textContent = option.name;
+				elem.setAttribute("value", option.code);
+				self.optionContainer.appendChild(elem);
+			});
+			this.requestQuoteBtn.addEventListener("click", e => {
+				this.createQuote(e);
+			}, false);
+
+			this.selectContainer.style.display = null;
 		};
 
-
+		/*
 		this.update = options => {
 			var elem;
 			// build updated list
@@ -83,13 +97,13 @@
 			//this.optionContainer.style.visibility = "visible";
 			//this.selectContainer.style.visibility = "visible";
 			this.selectContainer.style.display = null;
-		};
+		};*/
 
 		this.createQuote = e => {
 			var form = e.target.closest("form");
 			if (form.checkValidity() && this.checkChosenOptions()) {
 				var self = this;
-				makeCall("POST", "CreateQuote1?productCode=" + self.selectedProduct, form,
+				makeCall("POST", "CreateQuote?productCode=" + self.selectedProduct, form,
 					req => {
 						if (req.readyState == 4) {
 							var message = req.responseText;
@@ -116,21 +130,18 @@
 		this.checkChosenOptions = () => {
 			var x = document.getElementById("id_selectOptions");
 			if (x.length <= 0) {
-				this.warning.textContent="Invalid chosen options";
+				this.warning.textContent = "Invalid chosen options";
 				return false;
 			}
 			for (index = 0; index < x.length; index++) {
-				if (x.options[index] == null) 
-				{
-					this.warning.textContent="Invalid chosen options";
+				if (x.options[index] == null) {
+					this.warning.textContent = "Invalid chosen options";
 					return false;
 				}
 			}
 			return true;
 		};
 	}
-
-
 
 	function CreateQuoteForm(_warning, _formContainer, _productContainer, _dropdownBtn) {
 		this.warning = _warning;
@@ -155,9 +166,8 @@
 						if (req.status == 200) {
 							var productsToShow = JSON.parse(req.responseText);
 							self.update(productsToShow);
-							if (selectedProduct)
-								next();
-
+							/*if (selectedProduct)
+								next();*/
 						} else {
 							self.warning.textContent = message;
 						}
@@ -166,19 +176,20 @@
 			);
 		};
 
-		this.update = products => {
+		this.update = objects => {
 			var anchor;
 			var self = this;
-			products.forEach(product => {
+			objects.forEach(object => {
 				anchor = document.createElement("a");
-				linkText = document.createTextNode(product.name);
+				linkText = document.createTextNode(object.product.name);
 				anchor.appendChild(linkText);
-				anchor.setAttribute('productCode', product.code);
-				anchor.setAttribute('productName', product.name);
-				anchor.addEventListener("click", (e) => {
-					self.dropdownBtn.textContent = e.target.getAttribute("productName")
+				anchor.setAttribute('productCode', object.product.code);
+				anchor.setAttribute('productName', object.product.name);
+				anchor.addEventListener("click", e => {
+					self.dropdownBtn.textContent = e.target.getAttribute("productName");
 					optionsList.clear();
-					optionsList.show(e.target.getAttribute("productCode"));
+					//optionsList.show(e.target.getAttribute("productCode"));
+					optionsList.show(object.product.code, object.options);
 				}, false);
 				anchor.href = "#";
 
@@ -440,6 +451,7 @@
 				b2.placeholder = "Enter a price";
 				b2.required = "true";
 				b2.name = "price";
+				b2.id = quote.id + "_price";
 
 				b3 = document.createElement("button");
 				b3.className = "btn btn-large btn-blue";
@@ -457,6 +469,12 @@
 			}
 
 			card.appendChild(card_data);
+			d1= document.createElement("div");
+			d1.className = "warning-message";
+			sp = document.createElement("span");
+			sp.id = quote.id + "_warning";
+			d1.appendChild(sp);
+			card.appendChild(d1);
 			br = document.createElement("br");
 			card.appendChild(br);
 			panel.appendChild(card);
@@ -465,15 +483,15 @@
 			if (panel.style.maxHeight) {
 				panel.style.maxHeight = null;
 			} else {
-				panel.style.maxHeight = panel.scrollHeight + "px"
+				panel.style.maxHeight = panel.scrollHeight + "px";
 			}
 		};
 
 		this.updatePrice = (e, quote) => {
 			var form = e.target.closest("form");
 			var self = this;
-			if (form.checkValidity()) {
-				makeCall("POST", "UpdatePrice1?quoteId=" + quote.id, form,
+			if (form.checkValidity() && this.checkCorrectPrice(quote.id)) {
+				makeCall("POST", "UpdatePrice?quoteId=" + quote.id, form,
 					req => {
 						if (req.readyState == 4) {
 							var message = req.responseText;
@@ -491,7 +509,7 @@
 								window.sessionStorage.removeItem('username');
 							}
 							else {
-								self.warning.textContent = message;
+								document.getElementById(quote.id + "_warning").textContent = message;
 							}
 						}
 					}
@@ -500,6 +518,12 @@
 				form.reportValidity();
 			}
 			//this.reset();
+		};
+
+		this.checkCorrectPrice = quoteId => {
+			var price = document.getElementById(quoteId + "_price");
+			if (price == null || price <= 0) return false;
+			return true;
 		};
 
 		this.clear = () => {
