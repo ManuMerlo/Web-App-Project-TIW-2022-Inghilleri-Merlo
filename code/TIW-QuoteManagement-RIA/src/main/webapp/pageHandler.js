@@ -3,12 +3,12 @@
 	// page components
 	let personalMessage, createQuoteForm, quotesList, optionsList, unmanagedQuotesList,
 		pageHandler = new PageHandler(); // main controller
-
+		
 	window.addEventListener("load", () => {
 		if (sessionStorage.getItem("username") == null) {
 			window.location.href = "Login.html";
 		} else {
-			pageHandler.start(); // initialize the components
+			pageHandler.start();
 		}
 	}, false);
 
@@ -168,6 +168,9 @@
 							self.update(productsToShow);
 							/*if (selectedProduct)
 								next();*/
+						} else if (req.status == 403) {
+							window.location.href = req.getResponseHeader("Location");
+							window.sessionStorage.removeItem('username');
 						} else {
 							self.warning.textContent = message;
 						}
@@ -317,6 +320,9 @@
 								}
 								self.quotesContainer.style.visibility = "visible";
 							}
+						} else if (req.status == 403) {
+							window.location.href = req.getResponseHeader("Location");
+							window.sessionStorage.removeItem('username');
 						}
 						else {
 							self.warning.textContent = message;
@@ -354,6 +360,9 @@
 						if (req.status == 200) {
 							var data = JSON.parse(req.responseText)
 							self.updateDetails(data.quote, data.product, data.options, data.clientUsername, panel); // self visible by closure
+						} else if (req.status == 403) {
+							window.location.href = req.getResponseHeader("Location");
+							window.sessionStorage.removeItem('username');
 						} else {
 							self.warning.textContent = message;
 						}
@@ -469,7 +478,7 @@
 			}
 
 			card.appendChild(card_data);
-			d1= document.createElement("div");
+			d1 = document.createElement("div");
 			d1.className = "warning-message";
 			sp = document.createElement("span");
 			sp.id = quote.id + "_warning";
