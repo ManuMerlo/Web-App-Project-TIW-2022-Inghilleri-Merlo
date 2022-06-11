@@ -37,7 +37,7 @@
 
 %Serve per avere l'indice cliccabile. Con questi parametri inoltre non spuntano i riquadri rossi di default
 %TODO Non dimenticare di togliere il commento su hyperref quando finisco la relazione
-%\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black]{hyperref}
+\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black]{hyperref}
 
 % Impostazioni di pagina e margini
 \usepackage[a4paper, margin=2.54cm]{geometry}
@@ -66,14 +66,14 @@ Un’applicazione web consente la gestione di richieste di preventivi per prodot
 
 \noindent \textbf{\textcolor{red}{Entities}, \textcolor{myGreen}{attributes}, \textcolor{myBlue}{relationships}}
 \newpage
-\subsection{Database Design}
+\subsection{Database Design} \label{sub:databaseDesign}
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=1\textwidth]{PureHTML_images/quotemanagementdesign.png}
 	\caption{Database Desing}
 	\label{figure:database_design}
 \end{figure}
-\subsection{Local Database schema}
+\subsection{Local Database schema}  \label{sub:localDatabaseSchema}
 \begin{lstlisting}[language=SQL]
 CREATE TABLE `user` (
 `id` int AUTO_INCREMENT,
@@ -393,7 +393,9 @@ Si realizzi un’applicazione client server web che modifica le specifiche prece
 \end{itemize}
 \noindent \textbf{\textcolor{red}{Entities}, \textcolor{myGreen}{attributes}, \textcolor{myBlue}{relationships}}
 \subsection{Database Design}
+Vedi subsection \ref{sub:databaseDesign}
 \subsection{Local Database schema}
+Vedi subsection \ref{sub:localDatabaseSchema}
 \subsection{Analisi dei dati per i requisiti dell'applicazione}
 Si realizzi un’applicazione client server web che modifica le specifiche precedenti (subsection \ref{sub: Analisi dei dati per i requisiti dell'applicazione}) come segue:
 \begin{itemize}
@@ -407,6 +409,14 @@ Si realizzi un’applicazione client server web che modifica le specifiche prece
 \end{itemize}
 \noindent \textbf{\textcolor{red}{Pages(views)}, \textcolor{myGreen}{views components}, \textcolor{myBlue}{events}, \textcolor{myBrown}{actions}}
 \subsection{Completamento delle specifiche}
+\begin{itemize}
+	\item La pagina di default contiene la form di login;
+	\item L'email e la password non possono essere nulli;
+	\item Un client e un worker possono avere lo stesso username, due client o due worker invece no;
+	\item Il prezzo non può essere negativo;
+	\item \'E permesso al client di richiedere preventivi dello stesso prodotto con le stesse opzioni;
+	\item Nel caso di riapertura del sito da parte di un utente che precedentemente non ha effettuato il logout, non viene richiesta una nuova autenticazione e viene aperta direttamente la sua home page.
+\end{itemize}
 \subsection{Sommario}
 \subsubsection{Viste e componenti}
 \begin{itemize}
@@ -499,28 +509,34 @@ Si realizzi un’applicazione client server web che modifica le specifiche prece
 		\hline
 		\textbf{Evento} & \textbf{Azione} & \textbf{Evento} & \textbf{Azione} \\
 		\hline
-		login -> login form -> submit \vspace{2mm} & Controllo dati \vspace{2mm} & POST email, password e ruolo \vspace{2mm} &  Controllo credenziali \vspace{2mm}\\
+		login -> login form -> submit \vspace{2mm} & Controllo dati \vspace{2mm} & POST email, password e ruolo \vspace{2mm} &  Controllo validità credenziali \vspace{2mm}\\
 		\hline
-		login -> register form -> submit \vspace{2mm} & Controllo dati \vspace{2mm} & POST username, email, password e ruolo \vspace{2mm} & Controllo validità credenziali \vspace{2mm} \\
+		login -> register form -> submit \vspace{2mm} & Controllo dati \vspace{2mm} & POST username, email, password e ruolo \vspace{2mm} & Controllo validità credenziali + Registrazione Account\vspace{2mm} \\
 		\hline
 		Client Page -> load \vspace{2mm} & Aggiorna view con elenco dei prodotti e lista dei preventivi del cliente \vspace{2mm} & GET \vspace{2mm} & Estrazione dei prodotti, delle rispettive opzioni e dei preventivi \vspace{2mm} \\
 		\hline
 		Client Page -> scelta prodotto \vspace{2mm} & Mostra le opzioni disponibili per il prodotto scelto \vspace{2mm} & & \\
 		\hline
-		Client Page -> richiedi preventivo \vspace{2mm} & Controllo validità dati \vspace{2mm} & POST  prodotto e opzioni \vspace{2mm} & Creazione preventivo e inserimento nel db \vspace{2mm}\\
+		Client Page -> richiedi preventivo \vspace{2mm} & Controllo validità dati \vspace{2mm} & POST  prodotto e opzioni \vspace{2mm} & Creazione preventivo \vspace{2mm}\\
 		\hline
-		Client Page -> elenco preventivi -> click \vspace{2mm} & Mostra dettagli del preventivo \vspace{2mm} & & \\
+		Client Page -> elenco preventivi -> click \vspace{2mm} & Mostra dettagli del preventivo \vspace{2mm} &GET quote id & Estrazione dettagli preventivo \\
 		\hline
 		Worker Page -> load \vspace{2mm} & Aggiorna view con la lista dei preventivi gestiti dal worker e la lista dei preventivi non ancora gestiti \vspace{2mm} & GET \vspace{2mm} & Estrazione dei preventivi \vspace{2mm}\\
 		\hline
 		Worker Page -> update price \vspace{2mm} & Controlla la validità del prezzo \vspace{2mm} & POST preventivo e prezzo \vspace{2mm} & Aggiornamento del prezzo del preventivo \vspace{2mm}\\
 		\hline
-		Worker Page -> elenco preventivi -> click \vspace{2mm} & Mostra dettagli del preventivo \vspace{2mm} & & \\
+		Worker Page -> elenco preventivi -> click \vspace{2mm} & Mostra dettagli del preventivo \vspace{2mm} &GET quote id & Estrazione dettagli preventivo\\
 		\hline
 		Logout \vspace{2mm} & & GET \vspace{2mm} & Terminazione della sessione \vspace{2mm}\\
 		\hline
 	\end{tabu}
 \end{table}
+\noindent\textbf{NOTA:} La chiamata lato server per la visualizzazione dei dettagli, viene inoltrata solo se:
+\begin{enumerate}
+	\item è la prima visualizzazione dei dettagli
+	\item lo stato del preevntivo è in waiting, quindi potrebbe essere stato aggiornato.
+\end{enumerate}
+\newpage
 \subsection{Controller and Event Handler}
 \begin{table}[h!]  
 	\centering
@@ -657,20 +673,53 @@ Si realizzi un’applicazione client server web che modifica le specifiche prece
 		\end{itemize}
 	\end{itemize}
 \end{itemize}
+\newpage
 \subsection{Events}
 \subsubsection{Login}
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1\textwidth]{RIA_images/LoginEvent.png}
+	\includegraphics[width=0.9\textwidth]{RIA_images/LoginEvent.png}
 	\caption{Event - Login}
 	\label{figure:LoginRIA}
 \end{figure}
+\newpage
 \subsubsection{Register}
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1\textwidth]{RIA_images/RegisterEvent.png}
+	\includegraphics[width=0.9\textwidth]{RIA_images/RegisterEvent.png}
 	\caption{Event - Register}
 	\label{figure:RegisterRIA}
+\end{figure}
+\newpage
+\subsubsection{ClientHome Load}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.9\textwidth]{RIA_images/ClientHomeLoad.png}
+	\caption{Event - ClientHome Load}
+	\label{figure:ClientHomeLoadRIA}
+\end{figure}
+\subsubsection{WorkerHome Load}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.9\textwidth]{RIA_images/WorkerHomeLoad.png}
+	\caption{Event - WorkerHome Load}
+	\label{figure:WorkerHomeLoadRIA}
+\end{figure}
+\newpage
+\subsubsection{Event - QuotesList Show}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.9\textwidth]{RIA_images/QuoteListShow.png}
+	\caption{Event - QuotesList Show}
+	\label{figure:QuotesListShowRIA}
+\end{figure}
+\newpage
+\subsubsection{CreaQuoteForm Show}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.9\textwidth]{RIA_images/CreateQuoteFormShow.png}
+	\caption{Event - CreaQuoteForm Show}
+	\label{figure:CreaQuoteFormShowRIA}
 \end{figure}
 \subsubsection{View Options}
 \begin{figure}[h!]
@@ -679,17 +728,19 @@ Si realizzi un’applicazione client server web che modifica le specifiche prece
 	\caption{Event - View Options}
 	\label{figure:ViewOptionsRIA}
 \end{figure}
+\newpage
 \subsubsection{Create Quote}
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1\textwidth]{RIA_images/CreateQuote.png}
+	\includegraphics[width=0.9\textwidth]{RIA_images/CreateQuote.png}
 	\caption{Event - Create Quote}
 	\label{figure:CreateQuoteRIA}
 \end{figure}
+\newpage
 \subsubsection{Update Price}
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1\textwidth]{RIA_images/UpdatePrice.png}
+	\includegraphics[width=0.9\textwidth]{RIA_images/UpdatePrice.png}
 	\caption{Event - Update Price}
 	\label{figure:UpdatePriceRIA}
 \end{figure}
