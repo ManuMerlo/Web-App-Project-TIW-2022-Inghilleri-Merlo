@@ -3,7 +3,7 @@
 	// page components
 	let personalMessage, createQuoteForm, quotesList, optionsList, unmanagedQuotesList,
 		pageHandler = new PageHandler(); // main controller
-		
+
 	window.addEventListener("load", () => {
 		if (sessionStorage.getItem("username") == null) {
 			window.location.href = "Login.html";
@@ -50,19 +50,6 @@
 		this.show = (selectedProduct, options) => {
 
 			this.selectedProduct = selectedProduct;
-			/*makeCall("GET", "GetOptionsData?productCode=" + selectedProduct, null,
-				req => {
-					if (req.readyState == 4) {
-						var message = req.responseText;
-						if (req.status == 200) {
-							var optionsToShow = JSON.parse(req.responseText);
-							self.update(optionsToShow); // self visible by closure
-						} else {
-							self.warning.textContent = message;
-						}
-					}
-				}
-			);*/
 			var elem;
 			var self = this;
 			options.forEach(option => {
@@ -77,27 +64,6 @@
 
 			this.selectContainer.style.display = null;
 		};
-
-		/*
-		this.update = options => {
-			var elem;
-			// build updated list
-			var self = this;
-			options.forEach(option => {
-				elem = document.createElement("option");
-				elem.textContent = option.name;
-				elem.setAttribute("value", option.code);
-				self.optionContainer.appendChild(elem);
-			});
-			//this.requestQuoteBtn.style.visibility = "visible";
-			this.requestQuoteBtn.addEventListener("click", e => {
-				this.createQuote(e);
-			}, false);
-
-			//this.optionContainer.style.visibility = "visible";
-			//this.selectContainer.style.visibility = "visible";
-			this.selectContainer.style.display = null;
-		};*/
 
 		this.createQuote = e => {
 			var form = e.target.closest("form");
@@ -120,11 +86,12 @@
 						}
 					}
 				);
+				this.reset();
+				createQuoteForm.getDropdownBtn().textContent = "";
 			} else {
 				form.reportValidity();
 			}
-			this.reset();
-			createQuoteForm.getDropdownBtn().textContent = "";
+
 		};
 
 		this.checkChosenOptions = () => {
@@ -343,9 +310,17 @@
 			panel.className = "panel";
 			quotesContainer.appendChild(panel);
 			button.addEventListener("click", e => {
+				//add/remove active
+				var status=document.getElementById(quote.id+"_status")
 				e.target.classList.toggle("active");
 				panel = e.target.nextElementSibling;
-				self.addDetails(panel, e.target.getAttribute("quoteId"));
+				if (e.target.classList.contains("active")){
+					if(status!=null && status.textContent=="processed")
+						panel.style.maxHeight = panel.scrollHeight + "px";
+					else self.addDetails(panel, e.target.getAttribute("quoteId"));
+				}
+					
+				else panel.style.maxHeight = null;
 			});
 		};
 
@@ -372,7 +347,7 @@
 
 		this.updateDetails = (quote, product, options, clientUsername, panel) => {
 
-			let card, card_title, card_data, b1, b2, b3, br, form, d1;
+			let card, card_title, card_data, b1, b2, b3, br, form, d1,span;
 			while (panel.firstChild) {
 				panel.firstChild.remove();
 			}
@@ -432,7 +407,10 @@
 			b2 = document.createElement("b");
 			b2.textContent = "Status: ";
 			card_data.appendChild(b2);
-			card_data.appendChild(document.createTextNode(quote.workerId === 0 ? "waiting" : "processed"));
+			span= document.createElement("span");
+			span.textContent=(quote.workerId === 0 ? "waiting" : "processed");
+			span.id=quote.id+"_status";
+			card_data.appendChild(span);
 
 			if (quote.workerId !== 0) {
 				br = document.createElement("br");
@@ -486,12 +464,8 @@
 			card.appendChild(br);
 			panel.appendChild(card);
 
+			panel.style.maxHeight = panel.scrollHeight + "px";
 
-			if (panel.style.maxHeight) {
-				panel.style.maxHeight = null;
-			} else {
-				panel.style.maxHeight = panel.scrollHeight + "px";
-			}
 		};
 
 		this.updatePrice = (e, quote) => {

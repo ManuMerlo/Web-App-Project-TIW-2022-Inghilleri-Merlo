@@ -52,12 +52,12 @@ public class CreateQuote extends HttpServlet {
 				throw new Exception();
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Not possible to recover Quotes");
 			return;
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Invalid Quote Id");
 			return;
@@ -71,7 +71,7 @@ public class CreateQuote extends HttpServlet {
 				chosenOptions.add(Integer.parseInt(s));
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Invalid Options");
 			return;
@@ -82,7 +82,7 @@ public class CreateQuote extends HttpServlet {
 				optionDAO.insertOption(quoteId, optionCode);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Not possible to insert Quote");
 		}
