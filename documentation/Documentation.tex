@@ -56,7 +56,7 @@
 \tableofcontents
 \newpage
 \section{Gestione Preventivi - Pure HTML}
-\subsection{Analisi dei dati per il database}
+\subsection{Analisi dei dati per il database} \label{sub: Analisi dei dati per il database}
 Un’applicazione web consente la gestione di richieste di preventivi per prodotti personalizzati. L’applicazione supporta registrazione e login di \textbf{\textcolor{red}{clienti}} e \textbf{\textcolor{red}{impiegati}} mediante una pagina pubblica con opportune form. La registrazione controlla l’unicità dello \textbf{\textcolor{myGreen}{username}}. Un \textbf{\textcolor{red}{preventivo}} \textbf{\textcolor{myBlue}{è associato a un}} \textbf{\textcolor{red}{prodotto}}, \textbf{\textcolor{myBlue}{al cliente che l’ha richiesto}} e \textbf{\textcolor{myBlue}{all’impiegato che l’ha gestito}}. Il preventivo \textbf{\textcolor{myBlue}{comprende una o più} \textcolor{red}{opzioni} \textcolor{myBlue}{per il prodotto a cui è associato}}, che devono essere tra quelle disponibili per il prodotto. Un prodotto ha un \textbf{\textcolor{myGreen}{codice}}, un’\textbf{\textcolor{myGreen}{immagine}} e un \textbf{\textcolor{myGreen}{nome}}. Un’opzione ha un \textbf{\textcolor{myGreen}{codice}}, un \textbf{\textcolor{myGreen}{tipo}} (“normale”, “in offerta”) e un \textbf{\textcolor{myGreen}{nome}}. Un preventivo ha un \textbf{\textcolor{myGreen}{prezzo}}, definito dall’impiegato. Quando l’utente (cliente o impiegato) accede all’applicazione, appare una LOGIN PAGE, mediante la quale l’utente si autentica con username e \textbf{\textcolor{myGreen}{password}}. Quando un cliente fa login, accede a una pagina HOME PAGE CLIENTE che contiene una form per creare un preventivo e l’elenco dei preventivi creati dal cliente. Selezionando uno dei preventivi il cliente ne visualizza i dettagli. Mediante la form di creazione di un preventivo l’utente per prima cosa sceglie il prodotto; scelto il prodotto, la form mostra le opzioni di quel prodotto. L’utente sceglie le opzioni (almeno una) e conferma l’invio del preventivo mediante il bottone INVIA PREVENTIVO. Quando un impiegato effettua il login, accede a una pagina HOME PAGE IMPIEGATO che contiene l’elenco dei preventivi gestiti da lui in precedenza e quello dei preventivi non ancora associati a nessun impiegato. Quando l’impiegato seleziona un elemento dall’elenco dei preventivi non ancora associati a nessuno, compare una pagina PREZZA PREVENTIVO che mostra i dati del cliente (username) e del preventivo e una form per inserire il prezzo del preventivo. Quando l’impiegato inserisce il prezzo e invia i dati con il bottone INVIA PREZZO, compare di nuovo la pagina HOME PAGE IMPIEGATO con gli elenchi dei preventivi aggiornati. Il prezzo definito dall’impiegato risulta visibile al cliente quando questi accede all’elenco dei propri preventivi e visualizza i dettagli del preventivo. La pagina PREZZA PREVENTIVO contiene anche un collegamento per tornare alla HOME PAGE IMPIEGATO. L’applicazione consente il logout dell’utente.\\
 
 \noindent \textbf{\textcolor{red}{Entities}, \textcolor{myGreen}{attributes}, \textcolor{myBlue}{relationships}}
@@ -130,7 +130,7 @@ REFERENCES `quote` (`id`) ON DELETE CASCADE,
 CONSTRAINT `selectedoption` FOREIGN KEY (`optionCode`) 
 REFERENCES `option` (`code`) ON DELETE CASCADE)
 \end{lstlisting}
-\subsection{Analisi dei dati per i requisiti dell'applicazione}
+\subsection{Analisi dei dati per i requisiti dell'applicazione} \label{sub: Analisi dei dati per i requisiti dell'applicazione}
 Un’applicazione web consente la gestione di richieste di preventivi per prodotti personalizzati. L’applicazione supporta \textbf{\textcolor{myBrown}{registrazione}} e \textbf{\textcolor{myBrown}{login}} di clienti e impiegati mediante una pagina pubblica con opportune \textbf{\textcolor{myGreen}{form}}. La registrazione controlla l’unicità dello username. Un preventivo è associato a un prodotto, al cliente che l’ha richiesto e all’impiegato che l’ha gestito. Il preventivo comprende una o più opzioni per il prodotto a cui è associato, che devono essere tra quelle disponibili per il prodotto. Un prodotto ha un codice, un’immagine e un nome. Un’opzione ha un codice, un tipo (“normale”, “in offerta”) e un nome. Un preventivo ha un prezzo, definito dall’impiegato. Quando l’utente (cliente o impiegato) \textbf{\textcolor{myBlue}{accede all’applicazione}}, \textbf{\textcolor{myBrown}{appare}} una \textbf{\textcolor{red}{LOGIN PAGE}}, mediante la quale \textbf{\textcolor{myBlue}{l’utente si autentica}} con username e password. Quando un cliente fa login, accede a una pagina \textbf{\textcolor{red}{HOME PAGE CLIENTE}} che contiene una \textbf{\textcolor{myGreen}{form}} \textbf{\textcolor{myBrown}{per creare un preventivo}} e \textbf{\textcolor{myGreen}{l’elenco dei preventivi}} creati dal cliente. \textbf{\textcolor{myBlue}{Selezionando uno dei preventivi}} il cliente ne \textbf{\textcolor{myGreen}{visualizza i dettagli}}. Mediante la form di creazione di un preventivo l’utente per prima cosa sceglie il prodotto; \textbf{\textcolor{myBlue}{scelto il prodotto}}, la form mostra \textbf{\textcolor{myGreen}{le opzioni di quel prodotto}}. L’utente sceglie le opzioni (almeno una) e \textbf{\textcolor{myBlue}{conferma l’invio}} del preventivo mediante il \textbf{\textcolor{myGreen}{bottone INVIA PREVENTIVO}}. Quando un impiegato effettua il login, accede a una pagina \textbf{\textcolor{red}{HOME PAGE IMPIEGATO}} che contiene l’\textbf{\textcolor{myGreen}{elenco dei preventivi}} gestiti da lui in precedenza e \textbf{\textcolor{myGreen}{quello dei preventivi non ancora associati}} a nessun impiegato. Quando l’impiegato \textbf{\textcolor{myBlue}{seleziona un elemento}} dall’elenco dei preventivi non ancora associati a nessuno, compare una \textbf{\textcolor{red}{pagina PREZZA PREVENTIVO}} che mostra \textbf{\textcolor{myGreen}{i dati del cliente (username) e del preventivo}} e una \textbf{\textcolor{myGreen}{form}} \textbf{\textcolor{myBrown}{per inserire il prezzo del preventivo}}. Quando l’impiegato \textbf{\textcolor{myBlue}{inserisce il prezzo e invia i dati}} con il \textbf{\textcolor{myGreen}{bottone INVIA PREZZO}}, compare di nuovo la pagina HOME PAGE IMPIEGATO con gli elenchi dei preventivi aggiornati. Il prezzo definito dall’impiegato risulta visibile al cliente quando questi \textbf{\textcolor{myBlue}{accede all’elenco dei propri preventivi}} e visualizza i dettagli del preventivo. La pagina PREZZA PREVENTIVO contiene anche un collegamento per tornare alla HOME PAGE IMPIEGATO. L’applicazione consente il \textbf{\textcolor{myBrown}{logout}} dell’utente.\\
 
 \noindent \textbf{\textcolor{red}{Pages(views)}, \textcolor{myGreen}{views components}, \textcolor{myBlue}{events}, \textcolor{myBrown}{actions}}
@@ -375,5 +375,253 @@ disponibile per il prodotto selezionato.
 
 \newpage
 \section{Gestione Preventivi - RIA}
-
+\subsection{Analisi dei dati per il database}
+Si realizzi un’applicazione client server web che modifica le specifiche precedenti (subsection \ref{sub: Analisi dei dati per il database}) come segue:
+\begin{itemize}
+\item La registrazione controlla la validità sintattica dell’indirizzo di \textbf{\textcolor{myGreen}{email}} e l’uguaglianza tra i campi “password” e “ripeti password”, anche a lato client.
+\item Dopo il login, l’intera applicazione è realizzata con un’unica pagina per ciascuno dei ruoli: una pagina singola per il ruolo di cliente e una pagina singola per il ruolo di impiegato.
+\item Ogni interazione dell’utente è gestita senza ricaricare completamente la pagina, ma produce l’invocazione asincrona del server e l’eventuale modifica del contenuto da aggiornare a seguito dell’evento.
+\item Nella pagina del cliente, la scelta del prodotto comporta la successiva visualizzazione delle opzioni senza produrre un’ulteriore chiamata al server.
+\item L’invio del preventivo da parte del cliente deve produrre la verifica dei dati anche a lato client (almeno un’opzione scelta).
+\item Nella pagina dell’impiegato, il controllo del prezzo (non nullo e maggiore di zero) deve essere fatto anche a lato client.
+\item Eventuali errori a lato server devono essere segnalati mediante un messaggio di allerta all’interno della pagina del cliente o dell’impiegato.\\
+\end{itemize}
+\noindent \textbf{\textcolor{red}{Entities}, \textcolor{myGreen}{attributes}, \textcolor{myBlue}{relationships}}
+\subsection{Database Design}
+\subsection{Local Database schema}
+\subsection{Analisi dei dati per i requisiti dell'applicazione}
+Si realizzi un’applicazione client server web che modifica le specifiche precedenti (subsection \ref{sub: Analisi dei dati per i requisiti dell'applicazione}) come segue:
+\begin{itemize}
+\item La registrazione controlla la validità sintattica dell’indirizzo di email e l’uguaglianza tra \textbf{\textcolor{myGreen}{i campi “password” e “ripeti password”}}, anche a lato client.
+\item Dopo il \textbf{\textcolor{red}{login}}, l’intera applicazione è realizzata con un’unica pagina per ciascuno dei ruoli: \textbf{\textcolor{red}{una pagina singola per il ruolo di cliente}} e \textbf{\textcolor{red}{una pagina singola per il ruolo di impiegato}}.
+\item Ogni interazione dell’utente è gestita senza ricaricare completamente la pagina, ma produce l’invocazione asincrona del server e l’eventuale modifica del contenuto da aggiornare a seguito dell’evento.
+\item Nella pagina del cliente, \textbf{\textcolor{myBlue}{la scelta del prodotto}} comporta la successiva \textbf{\textcolor{myBrown}{visualizzazione delle opzioni}} senza produrre un’ulteriore chiamata al server.
+\item \textbf{\textcolor{myBlue}{L’invio del preventivo}} da parte del cliente deve produrre la \textbf{\textcolor{myBrown}{verifica dei dati}} anche a lato client (almeno un’opzione scelta).
+\item Nella pagina dell’impiegato, il controllo del prezzo (non nullo e maggiore di zero) deve essere fatto anche a lato client.
+\item Eventuali errori a lato server devono essere segnalati mediante un messaggio di allerta all’interno della pagina del cliente o dell’impiegato.\\
+\end{itemize}
+\noindent \textbf{\textcolor{red}{Pages(views)}, \textcolor{myGreen}{views components}, \textcolor{myBlue}{events}, \textcolor{myBrown}{actions}}
+\subsection{Completamento delle specifiche}
+\subsection{Sommario: Viste e componenti}
+\begin{itemize}
+	\item \textbf{Login Page}
+	\begin{itemize}
+		\item \textbf{Login Form}
+		\begin{itemize}
+			\item Email Input
+			\item Password Input
+			\item Login Button
+			\item Register Now Anchor
+		\end{itemize}
+		\item \textbf{Register Form}
+		\begin{itemize}
+			\item Username Input
+			\item Email Input
+			\item Password Input
+			\item Repeat Password Input
+			\item Login Button
+			\item Go to Login Anchor
+		\end{itemize}
+	\end{itemize}
+	\item \textbf{Client Page}
+	\begin{itemize}
+		\item \textbf{CreateQuoteForm}
+		\begin{itemize}
+			\item Products List
+			\item Options List
+			\item Request Quote Button
+		\end{itemize}
+		\item \textbf{QuotesList}
+		\begin{itemize}
+			\item Quote Details
+		\end{itemize}
+		\item \textbf{Logout Button}
+	\end{itemize}
+	\item \textbf{Worker Page}
+	\begin{itemize}
+	\item \textbf{Managed Quotes List}
+	\begin{itemize}
+		\item Quote Details
+	\end{itemize}
+	\item \textbf{Unmanaged Quotes List}
+	\begin{itemize}
+		\item Quote Details
+		\item Price Input
+		\item Update Price Button
+	\end{itemize}
+		\item \textbf{Logout Button}
+	\end{itemize}
+\end{itemize}
+\subsection{Application Desing}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{RIA_images/ifmlRIA.png}
+	\caption{Event - IFML Diagram}
+	\label{figure:ifmlRIA}
+\end{figure}
+\subsection{Eventi e azioni}
+\begin{table}[h!]
+	\centering
+	\begin{tabularx}{1\textwidth}{|c|c|c|C|} %TODO riprovare tabularx per fare la tabella larga quanto tutta la pagina
+		\toprule
+		Indirizzo di memoria & Valore binario & Valore decimale & Commento \\
+		\midrule
+		0 & 00000011 & 3 & Numero di parole in ingresso and and and and and and \\
+		\midrule
+		1 & 01110000 & 112 & Prima parola da codificare \\
+		2 & 10100100 & 164 & Seconda parola da codificare \\
+		3 & 00101101 & 45 & Terza parola da codificare \\
+		$[...]$ &  &  &   \\
+		1000 & 00111001 & 57 & Codifica 1 della prima parola \\
+		1001 & 10110000 & 176 & Codifica 2 della prima parola \\
+		1002 & 11010001 & 209 & Codifica 1 della seconda parola \\
+		1003 & 11110111 & 247 & Codifica 2 della seconda parola \\
+		1004 & 00001101 & 13 & Codifica 1 della terza parola \\
+		1005 & 00101000 & 40 & Codifica 2 della terza parola \\
+		\bottomrule
+	\end{tabularx}
+	\caption{Descrizione della memoria}
+	\label{table:memoria}
+\end{table}
+\subsection{Server Side: DAO \& Model Object}
+\begin{itemize}
+	\item \textbf{Model Objects (Beans)}
+	\begin{itemize}
+		\item Option
+		\item Product
+		\item Quote
+		\item User
+	\end{itemize}
+	\item \textbf{Data Access Objects (Classes)}
+	\begin{itemize}
+		\item \textbf{OptionDAO}
+		\begin{itemize}
+			\item boolean hasOptionByCode(int productCode, int optionCode);
+			\item List<Option> findOptionsByProductCode(int productCode);
+			\item List<Option> findOptionsByQuoteId(int quoteId);
+			\item void insertOption(int quoteId, int optionCode);
+		\end{itemize}
+		\item \textbf{ProductDAO}
+		\begin{itemize}
+			\item List<Product> findAllProducts();
+			\item Product findProductByCode(int code);
+		\end{itemize}
+		\item \textbf{QuoteDAO}
+		\begin{itemize}
+			\item List<Quote> findQuotesByUserId(int userId, String role);
+			\item Quote findQuoteById(int quoteId);
+			\item List<Quote> findUnmanagedQuotes();
+			\item int insertQuote(int clientId, int productCode);
+			\item void updateQuote(int quoteId, int workerId, int price);
+		\end{itemize}
+		\item \textbf{UserDAO}
+		\begin{itemize}
+			\item User findUser(String email, String password, String role);
+			\item User findUserToRegister(String username, String email, String role);
+			\item User findClientById(int clientId);
+			\item void registerUser(String username, String password, String role);
+		\end{itemize}
+	\end{itemize}
+	\item \textbf{Controllers (Servlets)}
+	\begin{itemize}
+		\item GotoLogin
+		\item CheckLogin
+		\item Register
+		\item GetProductsData
+		\item GetQuotesData
+		\item CreateQuote
+		\item GetQuoteDetails
+		\item UpdatePrice
+		\item Logout
+	\end{itemize}
+	\item \textbf{Filters}
+	\begin{itemize}
+		\item SessionChecker
+		\item ClientChecker
+		\item WorkerChecker
+	\end{itemize}
+	\item \textbf{Views (Templates)}
+	\begin{itemize}
+		\item Login.html
+		\item ClientHome.html
+		\item WorkerHome.html
+	\end{itemize}
+\end{itemize}
+\subsection{Client Side: view \& view components}
+\begin{itemize}
+	\item \textbf{LoginManagement.js}
+	\begin{itemize}
+	\item returnToLogin(): modifica gli elementi della form per passare dalla Register form alla Login form;
+	\item checkEmail(email): verifica validità email;
+	\item loginButton.addEventListener
+	\item openRegister.addEventListener
+	\end{itemize}
+	\item \textbf{PageHandler.js}
+	\begin{itemize}
+		\item \textbf{OptionsList}
+		\begin{itemize}
+		\item reset(): rende invisibile le opzioni;
+		\item clear(): toglie dalla select tutte le options;
+		\item show(): visualizza le opzioni relative al prodotto selezionato;
+		\item createQuote(): verifica la validità degli input della form - registra il preventivo;
+		\item checkChosenOptions (): verifica validità opzioni scelte;
+		\end{itemize}
+		\item \textbf{CreateQuoteForm}
+		\begin{itemize}
+		\item getDropDownButton(): restituisce il bottone che gestisce la scelta dei prodotti;
+		\item show(): richiede al server i prodotti disponibili;
+		\item update(): aggiorna la lista dei prodotti da visualizzare;
+		\end{itemize}
+		\item \textbf{QuoteList}
+		\begin{itemize}
+			\item show(): richiede al server la lista dei preventivi richiesti dal client/gestiti dal Worker/non gestiti;
+			\item update(): aggiorna la lista dei preventivi;
+			\item addDetails(): richiede al server i dettagli del preventivo selezionato;
+			\item updateDetails(): visualizza i dettagli del preventivo;
+			\item updatePrice(): verifica la validità dell'input - aggiorna il prezzo del preventivo;
+			\item checkCorrectPrice(): verifica l'input - mostra un warning in caso di errore;
+			\item clear(): rimuove tutti i preventivi dalla lista;
+		\end{itemize}
+		\item \textbf{PageHandler}
+		\begin{itemize}
+			\item start(): crea e inizializza i componenti dell'interfaccia;
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+\subsection{Events}
+\subsubsection{Login}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{RIA_images/LoginEvent.png}
+	\caption{Event - Login}
+	\label{figure:LoginRIA}
+\end{figure}
+\subsubsection{Register}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{RIA_images/RegisterEvent.png}
+	\caption{Event - Register}
+	\label{figure:RegisterRIA}
+\end{figure}
+\subsubsection{View Options}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.5\textwidth]{RIA_images/ViewOptionsEvent.png}
+	\caption{Event - View Options}
+	\label{figure:ViewOptionsRIA}
+\end{figure}
+\subsubsection{Create Quote}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{RIA_images/CreateQuote.png}
+	\caption{Event - Create Quote}
+	\label{figure:CreateQuoteRIA}
+\end{figure}
+\subsubsection{Update Price}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{RIA_images/UpdatePrice.png}
+	\caption{Event - Update Price}
+	\label{figure:UpdatePriceRIA}
+\end{figure}
 \end{document}
