@@ -157,7 +157,7 @@
 			return this.dropdownBtn;
 		}
 
-		this.show = selectedProduct => {
+		this.show = () => {
 			var self = this;
 			makeCall("GET", "GetProductsData", null,
 				req => {
@@ -166,8 +166,6 @@
 						if (req.status == 200) {
 							var productsToShow = JSON.parse(req.responseText);
 							self.update(productsToShow);
-							/*if (selectedProduct)
-								next();*/
 						} else if (req.status == 403) {
 							window.location.href = req.getResponseHeader("Location");
 							window.sessionStorage.removeItem('username');

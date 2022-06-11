@@ -53,18 +53,18 @@ public class GetQuoteDetails extends HttpServlet {
 		Product product = null;
 		Quote quote = null;
 		User user = (User) session.getAttribute("currentUser");
-		User client=null;
-		
+		User client = null;
+
 		try {
 			quoteId = Integer.parseInt(request.getParameter("quoteId"));
 			quote = quoteDAO.findQuoteById(quoteId);
 			if (quote == null || (user.getRole().equalsIgnoreCase("client") && user.getId() != quote.getClientId())
 					|| (user.getRole().equalsIgnoreCase("worker") && quote.getWorkerId() != 0
-					&& user.getId() != quote.getWorkerId()))
+							&& user.getId() != quote.getWorkerId()))
 				throw new Exception();
 			product = productDAO.findProductByCode(quote.getProductCode());
 			options = optionDAO.findOptionsByQuoteId(quoteId);
-			client= userDAO.findClientById(quote.getClientId());
+			client = userDAO.findClientById(quote.getClientId());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return;
@@ -74,8 +74,8 @@ public class GetQuoteDetails extends HttpServlet {
 			return;
 		}
 
-		String json = new Gson().toJson(new QuoteDetails(quote,product,options,client.getUsername()));
-		
+		String json = new Gson().toJson(new QuoteDetails(quote, product, options, client.getUsername()));
+
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(json);

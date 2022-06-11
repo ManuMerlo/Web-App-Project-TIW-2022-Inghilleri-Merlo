@@ -29,6 +29,11 @@
 %Tabelle
 \usepackage{tabularx}
 \usepackage{booktabs}
+\usepackage{tabu}
+\usepackage{caption} 
+\captionsetup[table]{skip=2pt}
+\setlength\arrayrulewidth{1pt}
+
 
 %Serve per avere l'indice cliccabile. Con questi parametri inoltre non spuntano i riquadri rossi di default
 %TODO Non dimenticare di togliere il commento su hyperref quando finisco la relazione
@@ -402,7 +407,8 @@ Si realizzi un’applicazione client server web che modifica le specifiche prece
 \end{itemize}
 \noindent \textbf{\textcolor{red}{Pages(views)}, \textcolor{myGreen}{views components}, \textcolor{myBlue}{events}, \textcolor{myBrown}{actions}}
 \subsection{Completamento delle specifiche}
-\subsection{Sommario: Viste e componenti}
+\subsection{Sommario}
+\subsubsection{Viste e componenti}
 \begin{itemize}
 	\item \textbf{Login Page}
 	\begin{itemize}
@@ -452,6 +458,31 @@ Si realizzi un’applicazione client server web che modifica le specifiche prece
 		\item \textbf{Logout Button}
 	\end{itemize}
 \end{itemize}
+\subsubsection{Eventi e azioni}
+\begin{itemize}
+	\item \textbf{Login Page}
+	\begin{itemize}
+		\item Click LoginButton -> verifica delle credenziali - apertura Client/WorkerPage
+		\item RegisterNow -> visualizzazione form con i campi per la registrazione
+		\item Click RegiaterButton -> verifica validità degli input - creazione account dello User - ritorno alla form di login
+		\item Click GotoLogin -> ritorno alla form di login
+	\end{itemize}
+	\item \textbf{Client Page}
+	\begin{itemize}
+		\item Click su un prodotto -> visualizzazione senza ricaricamento della pagine delle opzioni relative al prodotto scelto
+		\item Click sul bottone RequestQuote -> verifica validità degli input / aggiunta del prevetivo alla lista 
+		\item Click sul preventivo -> visualizzazione/chiusura dettagli del preventivo
+		\item Click LogoutButton -> logout
+	\end{itemize}
+	\item \textbf{Worker Page}
+	\begin{itemize}
+		\item Click preventivo non gestito -> visualizzazione dettagli preventivo - visualizzazione input per inserimento prezzo / chiusura dettagli input 
+		\item Click UpdatePriceButton -> verifica validità input - aggiornamento prezzo del preventivo 
+		\item Click preventivo gestito -> visualizzazione / chiusura dettagli del preventivo selezionato 
+		\item Logout -> logout 
+	\end{itemize}
+\end{itemize}
+\newpage
 \subsection{Application Desing}
 \begin{figure}[h!]
 	\centering
@@ -460,28 +491,66 @@ Si realizzi un’applicazione client server web che modifica le specifiche prece
 	\label{figure:ifmlRIA}
 \end{figure}
 \subsection{Eventi e azioni}
-\begin{table}[h!]
+\begin{table}[h!]  
 	\centering
-	\begin{tabularx}{1\textwidth}{|c|c|c|C|} %TODO riprovare tabularx per fare la tabella larga quanto tutta la pagina
-		\toprule
-		Indirizzo di memoria & Valore binario & Valore decimale & Commento \\
-		\midrule
-		0 & 00000011 & 3 & Numero di parole in ingresso and and and and and and \\
-		\midrule
-		1 & 01110000 & 112 & Prima parola da codificare \\
-		2 & 10100100 & 164 & Seconda parola da codificare \\
-		3 & 00101101 & 45 & Terza parola da codificare \\
-		$[...]$ &  &  &   \\
-		1000 & 00111001 & 57 & Codifica 1 della prima parola \\
-		1001 & 10110000 & 176 & Codifica 2 della prima parola \\
-		1002 & 11010001 & 209 & Codifica 1 della seconda parola \\
-		1003 & 11110111 & 247 & Codifica 2 della seconda parola \\
-		1004 & 00001101 & 13 & Codifica 1 della terza parola \\
-		1005 & 00101000 & 40 & Codifica 2 della terza parola \\
-		\bottomrule
-	\end{tabularx}
-	\caption{Descrizione della memoria}
-	\label{table:memoria}
+	\begin{tabu} to 1.0\textwidth {|X[c]|X[c]|X[c]|X[c]|}
+		\hline
+		\multicolumn{2}{|c|}{\textbf{Client Side}} & \multicolumn{2}{c|}{\textbf{Server Side}} \\
+		\hline
+		\textbf{Evento} & \textbf{Azione} & \textbf{Evento} & \textbf{Azione} \\
+		\hline
+		login -> login form -> submit \vspace{2mm} & Controllo dati \vspace{2mm} & POST email, password e ruolo \vspace{2mm} &  Controllo credenziali \vspace{2mm}\\
+		\hline
+		login -> register form -> submit \vspace{2mm} & Controllo dati \vspace{2mm} & POST username, email, password e ruolo \vspace{2mm} & Controllo validità credenziali \vspace{2mm} \\
+		\hline
+		Client Page -> load \vspace{2mm} & Aggiorna view con elenco dei prodotti e lista dei preventivi del cliente \vspace{2mm} & GET \vspace{2mm} & Estrazione dei prodotti, delle rispettive opzioni e dei preventivi \vspace{2mm} \\
+		\hline
+		Client Page -> scelta prodotto \vspace{2mm} & Mostra le opzioni disponibili per il prodotto scelto \vspace{2mm} & & \\
+		\hline
+		Client Page -> richiedi preventivo \vspace{2mm} & Controllo validità dati \vspace{2mm} & POST  prodotto e opzioni \vspace{2mm} & Creazione preventivo e inserimento nel db \vspace{2mm}\\
+		\hline
+		Client Page -> elenco preventivi -> click \vspace{2mm} & Mostra dettagli del preventivo \vspace{2mm} & & \\
+		\hline
+		Worker Page -> load \vspace{2mm} & Aggiorna view con la lista dei preventivi gestiti dal worker e la lista dei preventivi non ancora gestiti \vspace{2mm} & GET \vspace{2mm} & Estrazione dei preventivi \vspace{2mm}\\
+		\hline
+		Worker Page -> update price \vspace{2mm} & Controlla la validità del prezzo \vspace{2mm} & POST preventivo e prezzo \vspace{2mm} & Aggiornamento del prezzo del preventivo \vspace{2mm}\\
+		\hline
+		Worker Page -> elenco preventivi -> click \vspace{2mm} & Mostra dettagli del preventivo \vspace{2mm} & & \\
+		\hline
+		Logout \vspace{2mm} & & GET \vspace{2mm} & Terminazione della sessione \vspace{2mm}\\
+		\hline
+	\end{tabu}
+\end{table}
+\subsection{Controller and Event Handler}
+\begin{table}[h!]  
+	\centering
+	\begin{tabu} to 1.0\textwidth {|X[c]|X[c]|X[c]|X[c]|}
+		\hline
+		\multicolumn{2}{|c|}{\textbf{Client Side}} & \multicolumn{2}{c|}{\textbf{Server Side}} \\
+		\hline
+		\textbf{Evento} & \textbf{Controllore} & \textbf{Evento} & \textbf{Controllore} \\
+		\hline
+		login -> login form -> submit \vspace{2mm} & Function makeCall \vspace{2mm} & POST email, password e ruolo \vspace{2mm} &  CheckLogin \vspace{2mm}\\
+		\hline
+		login -> register form -> submit \vspace{2mm} & Function makeCall \vspace{2mm} & POST username, email, password e ruolo \vspace{2mm} & Register \vspace{2mm} \\
+		\hline
+		Client Page -> load \vspace{2mm} & Function PageHandler \vspace{2mm} & GET \vspace{2mm} & GetProductsData and GetQuotesData \vspace{2mm} \\
+		\hline
+		Client Page -> scelta prodotto \vspace{2mm} & Function OptionsList.show \vspace{2mm} & & \\
+		\hline
+		Client Page -> richiedi preventivo \vspace{2mm} & Function OptionsList.createQuote \vspace{2mm} & POST  prodotto e opzioni \vspace{2mm} & CreateQuote \vspace{2mm}\\
+		\hline
+		Client Page -> elenco preventivi -> click \vspace{2mm} & Function QuotesList.addDetails \vspace{2mm} & GET quote id & GetQuoteDetails\\
+		\hline
+		Worker Page -> load \vspace{2mm} & Function PageHandler \vspace{2mm} & GET \vspace{2mm} & GetQuotesData\vspace{2mm}\\
+		\hline
+		Worker Page -> update price \vspace{2mm} & Function QuotesList.updatePrice \vspace{2mm} & POST preventivo e prezzo \vspace{2mm} & UpdatePrice \vspace{2mm}\\
+		\hline
+		Worker Page -> elenco preventivi -> click \vspace{2mm} & Function QuotesList.addDetails \vspace{2mm} & GET quote id & GetQuoteDetails\\
+		\hline
+		Logout \vspace{2mm} & & GET \vspace{2mm} & Logout(servlet) \vspace{2mm}\\
+		\hline
+	\end{tabu}
 \end{table}
 \subsection{Server Side: DAO \& Model Object}
 \begin{itemize}
