@@ -28,6 +28,7 @@
 			Quote # <span th:text="${quote.id}"></span>
 		</div>
 		<div class="card-data">
+			<img alt="product_image" th:src="@{${product.image}}">
 			<div>
 				<b>Product Name: </b><span th:text="${product.name}">Product
 					Name</span>
@@ -39,8 +40,6 @@
 			<div th:if="${client}">
 				<b>Client username: </b><span th:text="${client.username}"></span>
 			</div>
-
-
 			<div th:switch="${quote.workerId}">
 				<div th:case="0">
 					<b>Status:</b> Waiting
@@ -50,16 +49,11 @@
 				</div>
 			</div>
 		</div>
-		<!-- <img alt="product_image" src="${product.image}"> -->
 		<div th:remove="all-but-first">
 			<div th:each="option:${options}">
 				<div class="card-data">
 					<div>
-						<b>Option name: </b><span th:text="${option.name}"></span>
-					</div>
-				</div>
-				<div class="card-data">
-					<div>
+						<b>Option name: </b><span th:text="${option.name} "></span>
 						<b>Type: </b><span th:text="${option.type}"></span>
 					</div>
 				</div>

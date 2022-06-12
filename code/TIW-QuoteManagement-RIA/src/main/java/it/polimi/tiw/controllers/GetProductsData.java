@@ -45,7 +45,6 @@ public class GetProductsData extends HttpServlet {
 		OptionDAO optionDAO = new OptionDAO(connection);
 		List<Product> products = new ArrayList<Product>();
 		List<Option> options = new ArrayList<Option>();
-		//Map<Product,List<Option>> productsOptions= new HashMap<Product,List<Option>>();
 		List<ProductOptions> productsOptions= new ArrayList<ProductOptions>();
 		try {
 			products = productDAO.findAllProducts();

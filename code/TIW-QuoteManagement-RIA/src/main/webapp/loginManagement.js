@@ -9,13 +9,10 @@
 		form = document.getElementById("f1"),
 		loginButton = document.getElementById("loginButton"),
 		warning = document.getElementById("warning");
-	//var passwordInput = loginButton.closest("form").querySelector('input[name="password"]');
-	//var repeatPasswordInput = loginButton.closest("form").querySelector('input[name="repeatPassword"]');
 
 
 
 	loginButton.addEventListener('click', e => {
-		//var form = e.target.closest("form");
 		if (form.checkValidity() && checkEmail(document.getElementById("emailInput").textContent)) {
 			if (loginButton.textContent === "Login") {
 				makeCall("POST", 'CheckLogin', e.target.closest("form"),
@@ -88,8 +85,6 @@
 		document.getElementById("usernameInput").required=false;
 		document.getElementById("repeatPwd").style.display = "none";
 		document.getElementById("repeatPasswrodInput").required=false;
-		//form.removeChild(document.getElementById("username"));
-		//form.removeChild(document.getElementById("repeatPwd"));
 	}
 
 	function checkEmail(email) {
@@ -109,38 +104,6 @@
 			e.target.textContent = "Go to login";
 			title.textContent = "Insert your credentials to Register";
 			loginButton.textContent = "Register";
-			/*const usernameDiv = document.createElement("div");
-			usernameDiv.id = "username";
-			usernameDiv.className = "form-group";
-			var label = document.createElement("Label");
-			label.setAttribute("for", "usernameInput");
-			label.textContent = "Username";
-			usernameDiv.appendChild(label);
-			var input = document.createElement("input");
-			input.name = "usernameInput";
-			input.id="usernameInput";
-			input.type = "text";
-			input.placeholder = "Enter your username";
-			input.required = true;
-			usernameDiv.appendChild(input);
-			var currentDiv = document.getElementById("email");
-			form.insertBefore(usernameDiv, currentDiv);
-			const repeatPwdDiv = document.createElement("div");
-			repeatPwdDiv.id = "repeatPwd";
-			repeatPwdDiv.className = "form-group";
-			label = document.createElement("Label");
-			label.setAttribute("for", "repeatPasswordInput");
-			label.textContent = "Repeat Password";
-			repeatPwdDiv.appendChild(label);
-			input = document.createElement("input");
-			input.name = "repeatPasswordInput";
-			input.id = "repeatPasswordInput";
-			input.type = "password";
-			input.placeholder = "Repeat your password";
-			input.required = true;
-			repeatPwdDiv.appendChild(input);
-			currentDiv = document.getElementById("password");
-			insertAfter(repeatPwdDiv, currentDiv);*/
 			document.getElementById("username").style.display = null;
 			document.getElementById("usernameInput").required=true;
 			document.getElementById("repeatPwd").style.display = null;
@@ -148,11 +111,6 @@
 		} else {
 			e.target.textContent = "Register Now";
 			returnToLogin();
-			//title.textContent = "Insert your credentials to Login";
-			//loginButton.textContent = "Login";
-			//form.removeChild(document.getElementById("username"));
-			//form.removeChild(document.getElementById("repeatPwd"));
-
 		}
 	});
 

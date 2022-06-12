@@ -82,8 +82,6 @@ public class GotoLogin extends HttpServlet {
 				path = getServletContext().getContextPath() + "/GotoWorkerHome";
 			response.sendRedirect(path);
 		} else {
-			/*path = getServletContext().getContextPath() +  "/WEB-INF/Login.html";
-			response.sendRedirect(path);*/
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			templateEngine.process("/WEB-INF/Login.html", ctx, response.getWriter());

@@ -69,7 +69,7 @@ Un’applicazione web consente la gestione di richieste di preventivi per prodot
 \subsection{Database Design} \label{sub:databaseDesign}
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1\textwidth]{PureHTML_images/quotemanagementdesign.png}
+	\includegraphics[width=1\textwidth]{PureHTML_images/quotemanagementdesign1.png}
 	\caption{Database Desing}
 	\label{figure:database_design}
 \end{figure}
@@ -435,7 +435,7 @@ Si realizzi un’applicazione client server web che modifica le specifiche prece
 			\item Email Input
 			\item Password Input
 			\item Repeat Password Input
-			\item Login Button
+			\item Register Button
 			\item Go to Login Anchor
 		\end{itemize}
 	\end{itemize}
@@ -472,24 +472,25 @@ Si realizzi un’applicazione client server web che modifica le specifiche prece
 \begin{itemize}
 	\item \textbf{Login Page}
 	\begin{itemize}
-		\item Click LoginButton -> verifica delle credenziali - apertura Client/WorkerPage
-		\item RegisterNow -> visualizzazione form con i campi per la registrazione
-		\item Click RegiaterButton -> verifica validità degli input - creazione account dello User - ritorno alla form di login
-		\item Click GotoLogin -> ritorno alla form di login
+		\item Click LoginButton $\rightarrow$ verifica delle credenziali - apertura Client/WorkerPage
+		\item RegisterNow $\rightarrow$ visualizzazione form con i campi per la registrazione
+		\item Click RegisterButton $\rightarrow$ verifica validità degli input - creazione account dello User - ritorno alla form di login
+		\item Click GotoLogin $\rightarrow$ ritorno alla form di login
 	\end{itemize}
 	\item \textbf{Client Page}
 	\begin{itemize}
-		\item Click su un prodotto -> visualizzazione senza ricaricamento della pagine delle opzioni relative al prodotto scelto
-		\item Click sul bottone RequestQuote -> verifica validità degli input / aggiunta del prevetivo alla lista 
-		\item Click sul preventivo -> visualizzazione/chiusura dettagli del preventivo
-		\item Click LogoutButton -> logout
+		\item Click su un prodotto $\rightarrow$ visualizzazione senza ricaricamento della pagina delle opzioni relative al prodotto scelto
+		\item Click sul bottone RequestQuote $\rightarrow$ verifica validità degli input / aggiunta del preventivo alla lista 
+		\item Click sul preventivo $\rightarrow$ visualizzazione/chiusura dettagli del preventivo
+		\item Click LogoutButton $\rightarrow$ logout
 	\end{itemize}
+	\newpage
 	\item \textbf{Worker Page}
 	\begin{itemize}
-		\item Click preventivo non gestito -> visualizzazione dettagli preventivo - visualizzazione input per inserimento prezzo / chiusura dettagli input 
-		\item Click UpdatePriceButton -> verifica validità input - aggiornamento prezzo del preventivo 
-		\item Click preventivo gestito -> visualizzazione / chiusura dettagli del preventivo selezionato 
-		\item Logout -> logout 
+		\item Click preventivo non gestito $\rightarrow$ visualizzazione dettagli preventivo - visualizzazione input per inserimento prezzo / chiusura dettagli input 
+		\item Click UpdatePriceButton $\rightarrow$ verifica validità input - aggiornamento prezzo del preventivo 
+		\item Click preventivo gestito $\rightarrow$ visualizzazione / chiusura dettagli del preventivo selezionato 
+		\item Logout $\rightarrow$ logout 
 	\end{itemize}
 \end{itemize}
 \newpage
@@ -509,31 +510,31 @@ Si realizzi un’applicazione client server web che modifica le specifiche prece
 		\hline
 		\textbf{Evento} & \textbf{Azione} & \textbf{Evento} & \textbf{Azione} \\
 		\hline
-		login -> login form -> submit \vspace{2mm} & Controllo dati \vspace{2mm} & POST email, password e ruolo \vspace{2mm} &  Controllo validità credenziali \vspace{2mm}\\
+		login $\rightarrow$ login form $\rightarrow$ submit \vspace{2mm} & Controllo dati \vspace{2mm} & POST email, password e ruolo \vspace{2mm} &  Controllo validità credenziali \vspace{2mm}\\
 		\hline
-		login -> register form -> submit \vspace{2mm} & Controllo dati \vspace{2mm} & POST username, email, password e ruolo \vspace{2mm} & Controllo validità credenziali + Registrazione Account\vspace{2mm} \\
+		login $\rightarrow$ register form $\rightarrow$ submit \vspace{2mm} & Controllo dati \vspace{2mm} & POST username, email, password e ruolo \vspace{2mm} & Controllo validità credenziali + Registrazione Account\vspace{2mm} \\
 		\hline
-		Client Page -> load \vspace{2mm} & Aggiorna view con elenco dei prodotti e lista dei preventivi del cliente \vspace{2mm} & GET \vspace{2mm} & Estrazione dei prodotti, delle rispettive opzioni e dei preventivi \vspace{2mm} \\
+		Client Page $\rightarrow$ load \vspace{2mm} & Aggiornamento view con elenco dei prodotti e lista dei preventivi del cliente \vspace{2mm} & GET \vspace{2mm} & Estrazione dei prodotti, delle rispettive opzioni e dei preventivi \vspace{2mm} \\
 		\hline
-		Client Page -> scelta prodotto \vspace{2mm} & Mostra le opzioni disponibili per il prodotto scelto \vspace{2mm} & & \\
+		Client Page $\rightarrow$ scelta prodotto \vspace{2mm} & Visualizzazione dele opzioni disponibili per il prodotto scelto \vspace{2mm} & & \\
 		\hline
-		Client Page -> richiedi preventivo \vspace{2mm} & Controllo validità dati \vspace{2mm} & POST  prodotto e opzioni \vspace{2mm} & Creazione preventivo \vspace{2mm}\\
+		Client Page $\rightarrow$ richiedi preventivo \vspace{2mm} & Controllo validità dati \vspace{2mm} & POST  prodotto e opzioni \vspace{2mm} & Creazione preventivo \vspace{2mm}\\
 		\hline
-		Client Page -> elenco preventivi -> click \vspace{2mm} & Mostra dettagli del preventivo \vspace{2mm} &GET quote id & Estrazione dettagli preventivo \\
+		Client Page $\rightarrow$ elenco preventivi $\rightarrow$ click \vspace{2mm} & Visualizzazione dettagli del preventivo \vspace{2mm} &GET quote id & Estrazione dettagli preventivo \\
 		\hline
-		Worker Page -> load \vspace{2mm} & Aggiorna view con la lista dei preventivi gestiti dal worker e la lista dei preventivi non ancora gestiti \vspace{2mm} & GET \vspace{2mm} & Estrazione dei preventivi \vspace{2mm}\\
+		Worker Page $\rightarrow$ load \vspace{2mm} & Aggiornamento view con la lista dei preventivi gestiti dal worker e la lista dei preventivi non ancora gestiti \vspace{2mm} & GET \vspace{2mm} & Estrazione dei preventivi \vspace{2mm}\\
 		\hline
-		Worker Page -> update price \vspace{2mm} & Controlla la validità del prezzo \vspace{2mm} & POST preventivo e prezzo \vspace{2mm} & Aggiornamento del prezzo del preventivo \vspace{2mm}\\
+		Worker Page $\rightarrow$ update price \vspace{2mm} & Controllo validità del prezzo \vspace{2mm} & POST preventivo e prezzo \vspace{2mm} & Aggiornamento del prezzo del preventivo \vspace{2mm}\\
 		\hline
-		Worker Page -> elenco preventivi -> click \vspace{2mm} & Mostra dettagli del preventivo \vspace{2mm} &GET quote id & Estrazione dettagli preventivo\\
+		Worker Page $\rightarrow$ elenco preventivi $\rightarrow$ click \vspace{2mm} & Visualizzazione dettagli del preventivo \vspace{2mm} &GET quote id & Estrazione dettagli preventivo\\
 		\hline
-		Logout \vspace{2mm} & & GET \vspace{2mm} & Terminazione della sessione \vspace{2mm}\\
+		Logout \vspace{2mm} & Pulizia SessionStorage& GET \vspace{2mm} & Terminazione della sessione \vspace{2mm}\\
 		\hline
 	\end{tabu}
 \end{table}
 \noindent\textbf{NOTA:} La chiamata lato server per la visualizzazione dei dettagli, viene inoltrata solo se:
 \begin{enumerate}
-	\item è la prima visualizzazione dei dettagli
+	\item è la prima visualizzazione dei dettagli;
 	\item lo stato del preevntivo è in waiting, quindi potrebbe essere stato aggiornato.
 \end{enumerate}
 \newpage
@@ -546,23 +547,23 @@ Si realizzi un’applicazione client server web che modifica le specifiche prece
 		\hline
 		\textbf{Evento} & \textbf{Controllore} & \textbf{Evento} & \textbf{Controllore} \\
 		\hline
-		login -> login form -> submit \vspace{2mm} & Function makeCall \vspace{2mm} & POST email, password e ruolo \vspace{2mm} &  CheckLogin \vspace{2mm}\\
+		login $\rightarrow$ login form $\rightarrow$ submit \vspace{2mm} & Function makeCall \vspace{2mm} & POST email, password e ruolo \vspace{2mm} &  CheckLogin \vspace{2mm}\\
 		\hline
-		login -> register form -> submit \vspace{2mm} & Function makeCall \vspace{2mm} & POST username, email, password e ruolo \vspace{2mm} & Register \vspace{2mm} \\
+		login $\rightarrow$ register form $\rightarrow$ submit \vspace{2mm} & Function makeCall \vspace{2mm} & POST username, email, password e ruolo \vspace{2mm} & Register \vspace{2mm} \\
 		\hline
-		Client Page -> load \vspace{2mm} & Function PageHandler \vspace{2mm} & GET \vspace{2mm} & GetProductsData and GetQuotesData \vspace{2mm} \\
+		Client Page $\rightarrow$ load \vspace{2mm} & Function PageHandler.start \vspace{2mm} & GET \vspace{2mm} & GetProductsData and GetQuotesData \vspace{2mm} \\
 		\hline
-		Client Page -> scelta prodotto \vspace{2mm} & Function OptionsList.show \vspace{2mm} & & \\
+		Client Page $\rightarrow$ scelta prodotto \vspace{2mm} & Function OptionsList.show \vspace{2mm} & & \\
 		\hline
-		Client Page -> richiedi preventivo \vspace{2mm} & Function OptionsList.createQuote \vspace{2mm} & POST  prodotto e opzioni \vspace{2mm} & CreateQuote \vspace{2mm}\\
+		Client Page $\rightarrow$ richiedi preventivo \vspace{2mm} & Function OptionsList.createQuote \vspace{2mm} & POST  prodotto e opzioni \vspace{2mm} & CreateQuote \vspace{2mm}\\
 		\hline
-		Client Page -> elenco preventivi -> click \vspace{2mm} & Function QuotesList.addDetails \vspace{2mm} & GET quote id & GetQuoteDetails\\
+		Client Page $\rightarrow$ elenco preventivi $\rightarrow$ click \vspace{2mm} & Function QuotesList.addDetails \vspace{2mm} & GET quote id & GetQuoteDetails\\
 		\hline
-		Worker Page -> load \vspace{2mm} & Function PageHandler \vspace{2mm} & GET \vspace{2mm} & GetQuotesData\vspace{2mm}\\
+		Worker Page $\rightarrow$ load \vspace{2mm} & Function PageHandler.start \vspace{2mm} & GET \vspace{2mm} & GetQuotesData\vspace{2mm}\\
 		\hline
-		Worker Page -> update price \vspace{2mm} & Function QuotesList.updatePrice \vspace{2mm} & POST preventivo e prezzo \vspace{2mm} & UpdatePrice \vspace{2mm}\\
+		Worker Page $\rightarrow$ update price \vspace{2mm} & Function QuotesList.updatePrice \vspace{2mm} & POST preventivo e prezzo \vspace{2mm} & UpdatePrice \vspace{2mm}\\
 		\hline
-		Worker Page -> elenco preventivi -> click \vspace{2mm} & Function QuotesList.addDetails \vspace{2mm} & GET quote id & GetQuoteDetails\\
+		Worker Page $\rightarrow$ elenco preventivi $\rightarrow$ click \vspace{2mm} & Function QuotesList.addDetails \vspace{2mm} & GET quote id & GetQuoteDetails\\
 		\hline
 		Logout \vspace{2mm} & & GET \vspace{2mm} & Logout(servlet) \vspace{2mm}\\
 		\hline
@@ -604,7 +605,7 @@ Si realizzi un’applicazione client server web che modifica le specifiche prece
 			\item User findUser(String email, String password, String role);
 			\item User findUserToRegister(String username, String email, String role);
 			\item User findClientById(int clientId);
-			\item void registerUser(String username, String password, String role);
+			\item void registerUser(String username, String email, String password, String role);
 		\end{itemize}
 	\end{itemize}
 	\item \textbf{Controllers (Servlets)}
@@ -675,6 +676,11 @@ Si realizzi un’applicazione client server web che modifica le specifiche prece
 \end{itemize}
 \newpage
 \subsection{Events}
+Per la lettura dei sequence diagrams:
+\begin{itemize}
+	\item Oggetti ClientSide: visualizzati in bianco. 
+	\item Oggetti ServerSide: visualizzati in azzurro. 
+\end{itemize}
 \subsubsection{Login}
 \begin{figure}[h!]
 	\centering
@@ -705,7 +711,7 @@ Si realizzi un’applicazione client server web che modifica le specifiche prece
 	\caption{Event - WorkerHome Load}
 	\label{figure:WorkerHomeLoadRIA}
 \end{figure}
-\newpage
+\noindent\textbf{NOTA:} per una migliore visualizzazione, gli eventi inerenti al caricamento della pagina sono stati suddivisi in molteplici sequence diagrams.
 \subsubsection{Event - QuotesList Show}
 \begin{figure}[h!]
 	\centering

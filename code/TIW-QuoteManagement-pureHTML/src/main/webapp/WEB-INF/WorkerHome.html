@@ -34,18 +34,12 @@
 						Quote #<span th:text="${quote.id}"></span>
 					</div>
 					<div class="card-data">
-						<!--<div>
-						  <b>Client: </b><span th:text="${quote.clientId}"></span>
-					</div>-->
 						<div>
 							<b>Product: </b><span th:text="${quote.product.name}"></span>
 						</div>
 						<div>
 							<b>Price: </b><span th:text="${quote.price}"></span>
 						</div>
-						<!-- <div>
-							<b>Status: </b><span th:text="${quote.status}"></span>
-						</div>-->
 					</div>
 					<a class="btn btn-blue btn-small btn-primary"
 						th:href="@{/GotoQuoteDetails(quoteId=${quote.id})}">View
@@ -58,7 +52,6 @@
 							<b>Product: </b><span>prodotto</span>
 						</div>
 					</div>
-					<!-- <a class="btn btn-blue btn-small btn-primary">View Details</a> -->
 				</div>
 			</div>
 		</div>
@@ -76,9 +69,6 @@
 					<div class="card-title">
 						Quote #<span th:text="${quote.id}"></span>
 					</div>
-					<!--<div>
-						<b>Client: </b><span th:text="${quote.clientId}"></span>
-					</div>-->
 					<div class="card-data">
 						<div>
 							<b>Product: </b><span th:text="${quote.product.name}"></span>

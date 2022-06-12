@@ -49,6 +49,12 @@ a {
     cursor: pointer;
     text-decoration: none;
 }
+
+img{
+	width:320px;
+	height:240px
+}
+
 hr{
     margin-top: 1rem;
     margin-bottom: 1rem;

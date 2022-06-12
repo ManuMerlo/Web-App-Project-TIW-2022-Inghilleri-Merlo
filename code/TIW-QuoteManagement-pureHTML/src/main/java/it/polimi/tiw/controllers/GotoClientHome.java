@@ -112,8 +112,6 @@ public class GotoClientHome extends HttpServlet {
 			e.printStackTrace();
 			return;
 		}
-		// request.setAttribute("products", products);
-		// request.setAttribute("quotes", quotes);
 		ctx.setVariable("products", products);
 		ctx.setVariable("quotes", quotes);
 		templateEngine.process("/WEB-INF/ClientHome.html", ctx, response.getWriter());

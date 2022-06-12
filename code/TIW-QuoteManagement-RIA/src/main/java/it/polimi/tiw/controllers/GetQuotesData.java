@@ -46,7 +46,7 @@ public class GetQuotesData extends HttpServlet {
 		try {
 			if(request.getParameter("workerId")!=null && request.getParameter("workerId")!="")
 				workerId=Integer.parseInt(request.getParameter("workerId"));
-			if(workerId==0) {
+			if(workerId==0 && user.getRole().equalsIgnoreCase("worker")) {
 				quotes = QuoteDAO.findUnmanagedQuotes();
 			} else quotes = QuoteDAO.findQuotesByUserId(user.getId(),user.getRole());
 		} catch (SQLException e) {
@@ -55,8 +55,6 @@ public class GetQuotesData extends HttpServlet {
 			response.getWriter().println("Not possible to recover Quotes");
 			return;
 		}
-
-		// Redirect to the Home page and add missions to the parameters
 	
 		String json = new Gson().toJson(quotes);
 		

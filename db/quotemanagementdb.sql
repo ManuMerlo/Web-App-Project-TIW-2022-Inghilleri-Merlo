@@ -29,10 +29,10 @@ CREATE TABLE `product` (
   `image` varchar(45) NOT NULL,
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `product` WRITE;
-INSERT INTO `product` VALUES (1,'product1','Zaino'),(2,'product2','Auto'),(3,'product3','Moto'),(4,'product4','Bici');
+INSERT INTO `product` VALUES (1,'/images/mercedesa45s.png','Mercedes A45s'),(2,'/images/audirs3.png','Audi RS3'),(3,'/images/aventador.png','Lamborghini Aventador'),(4,'/images/urus.png','Lamborghini Urus'),(5,'/images/ferrari.png','Ferrari 488'),(6,'/images/cbr1000.png','Honda cbr 1000 rr'),(7,'/images/f4.png','Yamaha MV Augusta F4'),(8,'/images/ninja.png','Kawasaki Ninja');
 UNLOCK TABLES;
 
 CREATE TABLE `option` (
@@ -40,10 +40,10 @@ CREATE TABLE `option` (
   `type` varchar(45) NOT NULL,
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `option` WRITE;
-INSERT INTO `option` VALUES (1,'normal','cerchi in lega'),(2,'on sale','porta bottiglie'),(3,'on sale','fari led');
+INSERT INTO `option` VALUES (1,'normal','Cerchi in lega'),(2,'on sale','Sistema infotainment'),(3,'on sale','Fari full LED'),(4,'normal','Cruise control adattivo'),(5,'normal','Sensori di parcheggio'),(6,'normal','Sedili riscaldabili'),(7,'on sale','Sistema keyless'),(8,'on sale','ABS'),(9,'normal','Sospensioni elettroniche'),(10,'normal','Fendinebbia'),(11,'normal','Manopole riscaldate'),(12,'on sale','Bauletti posteriori'),(13,'normal','Scarico Arrow');
 UNLOCK TABLES;
 
 CREATE TABLE `quote` (
@@ -71,7 +71,7 @@ CREATE TABLE `productoptions`(
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `productoptions` WRITE;
-INSERT INTO `productoptions` VALUES (1,2),(2,1),(2,2),(2,3),(3,1),(4,2);
+INSERT INTO `productoptions` VALUES (1,1),(1,2),(1,3),(2,3),(2,4),(2,5),(2,6),(3,1),(3,2),(3,7),(4,1),(4,2),(5,1),(5,3),(5,5),(6,8),(6,9),(6,10),(6,11),(7,11),(7,8),(7,9),(7,13),(8,10),(8,11),(8,12);
 UNLOCK TABLES;
 
 CREATE TABLE `quoteoptions`(

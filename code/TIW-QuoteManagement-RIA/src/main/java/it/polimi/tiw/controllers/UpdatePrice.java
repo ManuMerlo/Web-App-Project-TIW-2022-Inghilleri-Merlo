@@ -46,10 +46,6 @@ public class UpdatePrice extends HttpServlet {
 		int quoteId = -1;
 		int price = -1;
 		try {
-			/*if (request.getParameter("quoteId") == null || request.getParameter("quoteId").equals("")) {
-				path = "/GotoWorkerHome";
-				throw new Exception();
-			}*/
 			quoteId = Integer.parseInt(request.getParameter("quoteId"));
 			quote = quoteDAO.findQuoteById(quoteId);
 			if(quote==null) {
@@ -73,8 +69,6 @@ public class UpdatePrice extends HttpServlet {
 		}
 
 		try {
-			// if(request.getParameter("price")==null)
-			//path = "/GotoQuoteDetails";
 			price = Integer.parseInt(request.getParameter("price"));
 			if (price <= 0)
 				throw new Exception();
@@ -96,7 +90,6 @@ public class UpdatePrice extends HttpServlet {
 			response.getWriter().println("Not possible to update the quote's price");
 		}
 
-		//response.sendRedirect(getServletContext().getContextPath() + "/GotoWorkerHome");
 	}
 
 	public void destroy() {

@@ -13,8 +13,6 @@
 	}, false);
 
 
-	// Constructors of view components
-
 	class PersonalMessage {
 		constructor(_username, usernameText) {
 			this.username = _username;
@@ -33,10 +31,7 @@
 
 
 		this.reset = () => {
-			//this.selectContainer.style.visibility = "hidden";
 			this.selectContainer.style.display = "none";
-			//this.optionContainer.style.visibility = "hidden";
-			//this.requestQuoteBtn.style.visibility = "hidden";
 		};
 
 		this.clear = () => {
@@ -82,6 +77,7 @@
 							}
 							else {
 								self.warning.textContent = message;
+								window.alert(message);
 							}
 						}
 					}
@@ -138,6 +134,7 @@
 							window.sessionStorage.removeItem('username');
 						} else {
 							self.warning.textContent = message;
+							window.alert(message);
 						}
 					}
 				}
@@ -156,7 +153,6 @@
 				anchor.addEventListener("click", e => {
 					self.dropdownBtn.textContent = e.target.getAttribute("productName");
 					optionsList.clear();
-					//optionsList.show(e.target.getAttribute("productCode"));
 					optionsList.show(object.product.code, object.options);
 				}, false);
 				anchor.href = "#";
@@ -166,15 +162,6 @@
 			this.productContainer.style.visibility = "visible";
 
 		};
-
-		/*this.autoclick = function(productCode) {
-			var e = new Event("click");
-			var selector = "a[productCode='" + productCode + "']";
-			var anchorToClick = // the first product or the selectedProduct
-				(productCode) ? document.querySelector(selector) : this.productContainer.querySelectorAll("a")[0];
-			if (anchorToClick)
-				anchorToClick.dispatchEvent(e);
-		};*/
 	}
 
 
@@ -183,79 +170,7 @@
 		this.warning = _warning;
 		this.quotesContainer = _quotesContainer;
 		this.noQuotes = _noQuotes;
-		//this.i = 0;
-
-		/*this.show = () => {
-			var self = this;
-			var card, card_title, card_data, text, b1, b1, viewBtn;
-			this.clear;
-			makeCall("GET", "GetQuotesData", null,
-				function(req) {
-					if (req.readyState == 4) {
-						var message = req.responseText;
-						if (req.status == 200) {
-							var quotes = JSON.parse(req.responseText);
-							if (quotes.length === 0)
-								self.noQuotes.style.visibility = "visible";
-							else {
-								self.noQuotes.style.visibility = "hidden";
-								quotes.forEach(function(quote) {
-									card = document.createElement("div");
-									card.className = "card card-blue";
-									if (self.i % 2 === 0)
-										card.className += " even";
-									card_title = document.createElement("div");
-									card_title.className = "card-title";
-									card_title.textContent = "Quote #" + quote.id;
-									card.appendChild(card_title);
-									card_data = document.createElement("div");
-									card_data.className = "card-data";
-
-									b1 = document.createElement("b");
-									b1.textContent = "Product: " + quote.productCode;
-									card_data.appendChild(b1);
-
-
-									br = document.createElement("br");
-									card_data.appendChild(br);
-
-									b2 = document.createElement("b");
-									b2.textContent = "Status: " + text;
-									text = quote.workerId === 0 ? "waiting" : "processed";
-									card_data.appendChild(b2);
-
-
-									card.appendChild(card_data);
-									viewBtn = document.createElement("a");
-									viewBtn.className = "btn btn-purple btn-small btn-primary";
-									viewBtn.textContent = "ViewDetails";
-									viewBtn.setAttribute('quoteId', quote.id);
-									viewBtn.addEventListener("click", (e) => {
-										if (e.target.textContent === "ViewDetails") {
-											e.target.textContent = "Hide";
-											//quotesList.showDetails(e.target.getAttribute("quoteId"));
-										} else {
-											e.target.textContent = "ViewDetails";
-											//quotesList.hide(e.target.getAttribute("quoteId");
-										}
-									});
-									card.appendChild(viewBtn);
-									self.quotesContainer.appendChild(card);
-									self.i++;
-								});
-								self.quotesContainer.style.display = "block";
-							}
-							self.quotesContainer.style.visibility = "visible";
-						}
-						else {
-							self.warning.textContent = message;
-
-						}
-					}
-				}
-			);
-		};*/
-
+		
 		this.show = (update, unmanaged) => {
 			var self = this;
 			this.clear;
@@ -271,11 +186,9 @@
 							var quotes = JSON.parse(req.responseText);
 							if (quotes.length === 0) {
 								self.noQuotes.textContent = "There are no quotes";
-								//self.noQuotes.style.visibility = "visible";
 							}
 							else {
 								self.noQuotes.textContent = "";
-								//self.noQuotes.style.visibility = "hidden";
 								if (update)
 									self.update(self.quotesContainer, quotes[quotes.length - 1]);
 								else {
@@ -291,6 +204,7 @@
 						}
 						else {
 							self.warning.textContent = message;
+							window.alert(message);
 						}
 					}
 				}
@@ -332,12 +246,13 @@
 						var message = req.responseText;
 						if (req.status == 200) {
 							var data = JSON.parse(req.responseText)
-							self.updateDetails(data.quote, data.product, data.options, data.clientUsername, panel); // self visible by closure
+							self.updateDetails(data.quote, data.product, data.options, data.clientUsername, panel);
 						} else if (req.status == 403) {
 							window.location.href = req.getResponseHeader("Location");
 							window.sessionStorage.removeItem('username');
 						} else {
 							self.warning.textContent = message;
+							window.alert(message);
 						}
 					}
 				}
@@ -347,21 +262,22 @@
 
 		this.updateDetails = (quote, product, options, clientUsername, panel) => {
 
-			let card, card_title, card_data, b1, b2, b3, br, form, d1,span;
+			let card, card_title, card_data, b1, b2, b3, br, form, d1,span,image;
 			while (panel.firstChild) {
 				panel.firstChild.remove();
 			}
-			/*var details = panel.querySelectorAll("div");
-			if (details.length > 0) {
-				details.forEach((function(detail) {
-					panel.removeChild(detail);
-				}))
-			}*/
-			card = document.createElement("div");
 
+			card = document.createElement("div");
+			
 			br = document.createElement("br");
 			card.appendChild(br);
 
+			image =document.createElement("img");
+			image.alt="product_image";
+			image.src=product.image.substring(1);
+			card.appendChild(image);
+			card.appendChild(br);
+			
 			card_title = document.createElement("div");
 			card_title.className = "card-title";
 			card_title.textContent = product.name;
@@ -390,10 +306,10 @@
 				b1 = document.createElement("b");
 				b1.textContent = "Option: ";
 				card_data.appendChild(b1);
-				card_data.appendChild(document.createTextNode(option.name));
+				card_data.appendChild(document.createTextNode(option.name+" "));
 
-				br = document.createElement("br");
-				card_data.appendChild(br);
+				//br = document.createElement("br");
+				//card_data.appendChild(br);
 
 				b2 = document.createElement("b");
 				b2.textContent = "Type: ";
@@ -470,7 +386,7 @@
 
 		this.updatePrice = (e, quote) => {
 			var form = e.target.closest("form");
-			var self = this;
+			//var self = this;
 			if (form.checkValidity() && this.checkCorrectPrice(quote.id)) {
 				makeCall("POST", "UpdatePrice?quoteId=" + quote.id, form,
 					req => {
@@ -478,7 +394,6 @@
 							var message = req.responseText;
 							var elem;
 							if (req.status == 200) {
-								//self.warning.textContent = "you have correctly priced a quote";
 								quotesList.clear();
 								quotesList.show(false, false);
 								elem = document.getElementById((String)(quote.id)).nextElementSibling;
@@ -491,6 +406,7 @@
 							}
 							else {
 								document.getElementById(quote.id + "_warning").textContent = message;
+								window.alert(message);
 							}
 						}
 					}
@@ -498,7 +414,6 @@
 			} else {
 				form.reportValidity();
 			}
-			//this.reset();
 		};
 
 		this.checkCorrectPrice = quoteId => {

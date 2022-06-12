@@ -77,8 +77,6 @@ public class CreateQuote extends HttpServlet {
 		int clientId = currentUser.getId();
 		Integer productCode = null;
 		try {
-			/*if (request.getParameter("productCode") == null || request.getParameter("productCode").equals(""))
-				throw new Exception();*/
 			productCode = Integer.parseInt(request.getParameter("productCode"));
 			if (productCode==null || productDAO.findProductByCode(productCode) == null) {
 				throw new Exception();
@@ -122,11 +120,6 @@ public class CreateQuote extends HttpServlet {
 	private void warning(HttpServletRequest request, HttpServletResponse response, String warning) throws ServletException, IOException {
 		request.setAttribute("warning", warning);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/GotoClientHome");
-		dispatcher.forward(request, response);
-		/*ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("warning", "Incorrect username or password");
-		response.sendRedirect(getServletContext().getContextPath() + "/GotoClientHome");*/
-		
+		dispatcher.forward(request, response);		
 	}
 }
