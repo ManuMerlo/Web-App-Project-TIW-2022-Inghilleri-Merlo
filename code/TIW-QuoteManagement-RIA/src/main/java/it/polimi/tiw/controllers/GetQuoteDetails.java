@@ -67,10 +67,12 @@ public class GetQuoteDetails extends HttpServlet {
 			client = userDAO.findClientById(quote.getClientId());
 		} catch (SQLException e) {
 			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Not possible to find the quote");
 			return;
 		} catch (Exception e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().println("Invalid quote Id");
+			response.getWriter().write("Invalid quote Id");
 			return;
 		}
 

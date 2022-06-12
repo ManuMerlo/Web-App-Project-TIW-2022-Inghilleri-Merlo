@@ -71,15 +71,17 @@
 							if (req.status == 200) {
 								self.warning.textContent = "";
 								quotesList.show(true, false);
-								localStorage.setItem('reloadPage',Date.now());
+								localStorage.setItem('reloadPage', Date.now());
 								localStorage.removeItem('reloadPage');
+								swal("Good job!", "You have requested the quote", "success");
 							} else if (req.status == 403) {
 								window.location.href = req.getResponseHeader("Location");
 								window.sessionStorage.removeItem('username');
 							}
 							else {
 								self.warning.textContent = message;
-								window.alert(message);
+								//window.alert(message);
+								swal("Error!", message, "error");
 							}
 						}
 					}
@@ -96,11 +98,13 @@
 			var x = document.getElementById("id_selectOptions");
 			if (x.length <= 0) {
 				this.warning.textContent = "Invalid chosen options";
+				swal("Error!", "Invalid chosen options", "error");
 				return false;
 			}
 			for (index = 0; index < x.length; index++) {
 				if (x.options[index] == null) {
 					this.warning.textContent = "Invalid chosen options";
+					swal("Error!", "Invalid chosen options", "error");
 					return false;
 				}
 			}
@@ -136,7 +140,8 @@
 							window.sessionStorage.removeItem('username');
 						} else {
 							self.warning.textContent = message;
-							window.alert(message);
+							//window.alert(message);
+							swal("Error!", message, "error");
 						}
 					}
 				}
@@ -172,7 +177,7 @@
 		this.warning = _warning;
 		this.quotesContainer = _quotesContainer;
 		this.noQuotes = _noQuotes;
-		
+
 		this.show = (update, unmanaged) => {
 			var self = this;
 			this.clear;
@@ -206,7 +211,8 @@
 						}
 						else {
 							self.warning.textContent = message;
-							window.alert(message);
+							//window.alert(message);
+							swal("Error!", message, "error");
 						}
 					}
 				}
@@ -220,22 +226,22 @@
 			button.textContent = "Quote #" + quote.id;
 			button.className = "accordion";
 			button.id = quote.id;
-			button.setAttribute("quoteid", quote.id);
+			//button.setAttribute("quoteid", quote.id);
 			this.quotesContainer.appendChild(button);
 			panel = document.createElement("div");
 			panel.className = "panel";
 			this.quotesContainer.appendChild(panel);
 			button.addEventListener("click", e => {
 				//add/remove active
-				var status=document.getElementById(quote.id+"_status")
+				var status = document.getElementById(quote.id + "_status")
 				e.target.classList.toggle("active");
 				panel = e.target.nextElementSibling;
-				if (e.target.classList.contains("active")){
-					if(status!=null && (status.textContent=="processed" || (status.textContent=="waiting" && sessionStorage.role=="worker")))
+				if (e.target.classList.contains("active")) {
+					if (status != null && (status.textContent == "processed" || (status.textContent == "waiting" && sessionStorage.role == "worker")))
 						panel.style.maxHeight = panel.scrollHeight + "px";
-					else self.addDetails(panel, e.target.getAttribute("quoteId"));
+					else self.addDetails(panel,e.target.id /*e.target.getAttribute("quoteId")*/);
 				}
-					
+
 				else panel.style.maxHeight = null;
 			});
 		};
@@ -254,7 +260,8 @@
 							window.sessionStorage.removeItem('username');
 						} else {
 							self.warning.textContent = message;
-							window.alert(message);
+							//window.alert(message);
+							swal("Error!", message, "error");
 						}
 					}
 				}
@@ -264,22 +271,22 @@
 
 		this.updateDetails = (quote, product, options, clientUsername, panel) => {
 
-			let card, card_title, card_data, b1, b2, b3, br, form, d1,span,image;
+			let card, card_title, card_data, b1, b2, b3, br, form, d1, span, image;
 			while (panel.firstChild) {
 				panel.firstChild.remove();
 			}
 
 			card = document.createElement("div");
-			
+
 			br = document.createElement("br");
 			card.appendChild(br);
 
-			image =document.createElement("img");
-			image.alt="product_image";
-			image.src=product.image.substring(1);
+			image = document.createElement("img");
+			image.alt = "product_image";
+			image.src = product.image.substring(1);
 			card.appendChild(image);
 			card.appendChild(br);
-			
+
 			card_title = document.createElement("div");
 			card_title.className = "card-title";
 			card_title.textContent = product.name;
@@ -308,7 +315,7 @@
 				b1 = document.createElement("b");
 				b1.textContent = "Option: ";
 				card_data.appendChild(b1);
-				card_data.appendChild(document.createTextNode(option.name+" "));
+				card_data.appendChild(document.createTextNode(option.name + " "));
 
 				//br = document.createElement("br");
 				//card_data.appendChild(br);
@@ -325,9 +332,9 @@
 			b2 = document.createElement("b");
 			b2.textContent = "Status: ";
 			card_data.appendChild(b2);
-			span= document.createElement("span");
-			span.textContent=(quote.workerId === 0 ? "waiting" : "processed");
-			span.id=quote.id+"_status";
+			span = document.createElement("span");
+			span.textContent = (quote.workerId === 0 ? "Waiting" : "Processed");
+			span.id = quote.id + "_status";
 			card_data.appendChild(span);
 
 			if (quote.workerId !== 0) {
@@ -395,7 +402,7 @@
 						if (req.readyState == 4) {
 							var message = req.responseText;
 							var elem;
-							if (req.status == 200) {							
+							if (req.status == 200) {
 								elem = document.getElementById((String)(quote.id)).nextElementSibling;
 								unmanagedQuotesList.quotesContainer.removeChild(elem);
 								elem = document.getElementById((String)(quote.id));
@@ -403,15 +410,17 @@
 								//quotesList.clear();
 								//quotesList.show(false, false);
 								quotesList.update(JSON.parse(message));
-								localStorage.setItem('reloadPage',Date.now());
-								localStorage.removeItem('reloadPage');	
+								localStorage.setItem('reloadPage', Date.now());
+								localStorage.removeItem('reloadPage');
+								swal("Good Job!", "You have correctly priced the quote", "success");
 							} else if (req.status == 403) {
 								window.location.href = req.getResponseHeader("Location");
 								window.sessionStorage.removeItem('username');
 							}
 							else {
 								document.getElementById(quote.id + "_warning").textContent = message;
-								window.alert(message);
+								//window.alert(message);
+								swal("Error!", message, "error");
 							}
 						}
 					}
@@ -423,7 +432,9 @@
 
 		this.checkCorrectPrice = quoteId => {
 			var price = document.getElementById(quoteId + "_price");
-			if (price == null || price <= 0) return false;
+			if (price == null || price <= 0) {
+				swal("Error!", "Invalid Price", "error");
+				return false;}
 			return true;
 		};
 
@@ -443,7 +454,6 @@
 
 	function PageHandler() {
 		var warningContainer = document.getElementById("id_warning");
-
 		this.start = () => {
 			personalMessage = new PersonalMessage(sessionStorage.getItem('username'), document.getElementById("id_username"));
 			personalMessage.show();
@@ -476,7 +486,7 @@
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
 				window.sessionStorage.removeItem('username');
 				window.sessionStorage.removeItem('role');
-				localStorage.setItem('reloadPage',Date.now());
+				localStorage.setItem('reloadPage', Date.now());
 				localStorage.removeItem('reloadPage');
 			});
 		};

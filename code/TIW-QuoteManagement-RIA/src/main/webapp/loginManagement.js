@@ -73,10 +73,6 @@
 		}
 	});
 
-	function insertAfter(newNode, existingNode) {
-		existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
-	}
-
 	function returnToLogin() {
 		title.textContent = "Insert your credentials to Login";
 		loginButton.textContent = "Login";
@@ -92,7 +88,8 @@
 		var email = form.emailInput.value;
 		// se non ho inserito nulla nel campo
 		if (email == '' || !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
-			warning.textContent = "Invalid email";
+			warning.textContent = "Invalid email format";
+			swal("Error!", "Invalid email format", "error");
 			return false;
 		}
 
