@@ -12,9 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
+
 import it.polimi.tiw.beans.Quote;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.QuoteDAO;
+import it.polimi.tiw.packets.QuoteDetails;
 import it.polimi.tiw.utils.ConnectionHandler;
 
 @WebServlet("/UpdatePrice")
@@ -84,11 +87,18 @@ public class UpdatePrice extends HttpServlet {
 
 		try {
 			quoteDAO.updateQuote(quoteId, currentUser.getId(), price);
+			quote=quoteDAO.findQuoteById(quoteId);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Not possible to update the quote's price");
+			return;
 		}
+		String json = new Gson().toJson(quote);
+
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(json);
 
 	}
 

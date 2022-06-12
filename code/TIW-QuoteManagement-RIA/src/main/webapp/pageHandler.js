@@ -71,6 +71,8 @@
 							if (req.status == 200) {
 								self.warning.textContent = "";
 								quotesList.show(true, false);
+								localStorage.setItem('reloadPage',Date.now());
+								localStorage.removeItem('reloadPage');
 							} else if (req.status == 403) {
 								window.location.href = req.getResponseHeader("Location");
 								window.sessionStorage.removeItem('username');
@@ -190,10 +192,10 @@
 							else {
 								self.noQuotes.textContent = "";
 								if (update)
-									self.update(self.quotesContainer, quotes[quotes.length - 1]);
+									self.update(/*self.quotesContainer,*/ quotes[quotes.length - 1]);
 								else {
 									quotes.forEach(quote => {
-										self.update(self.quotesContainer, quote);
+										self.update(/*self.quotesContainer, */quote);
 									});
 								}
 								self.quotesContainer.style.visibility = "visible";
@@ -211,7 +213,7 @@
 			);
 		};
 
-		this.update = (quotesContainer, quote) => {
+		this.update = (/*quotesContainer, */quote) => {
 			self = this;
 			var button, panel;
 			button = document.createElement("button");
@@ -219,17 +221,17 @@
 			button.className = "accordion";
 			button.id = quote.id;
 			button.setAttribute("quoteid", quote.id);
-			quotesContainer.appendChild(button);
+			this.quotesContainer.appendChild(button);
 			panel = document.createElement("div");
 			panel.className = "panel";
-			quotesContainer.appendChild(panel);
+			this.quotesContainer.appendChild(panel);
 			button.addEventListener("click", e => {
 				//add/remove active
 				var status=document.getElementById(quote.id+"_status")
 				e.target.classList.toggle("active");
 				panel = e.target.nextElementSibling;
 				if (e.target.classList.contains("active")){
-					if(status!=null && status.textContent=="processed")
+					if(status!=null && (status.textContent=="processed" || (status.textContent=="waiting" && sessionStorage.role=="worker")))
 						panel.style.maxHeight = panel.scrollHeight + "px";
 					else self.addDetails(panel, e.target.getAttribute("quoteId"));
 				}
@@ -393,13 +395,16 @@
 						if (req.readyState == 4) {
 							var message = req.responseText;
 							var elem;
-							if (req.status == 200) {
-								quotesList.clear();
-								quotesList.show(false, false);
+							if (req.status == 200) {							
 								elem = document.getElementById((String)(quote.id)).nextElementSibling;
 								unmanagedQuotesList.quotesContainer.removeChild(elem);
 								elem = document.getElementById((String)(quote.id));
 								unmanagedQuotesList.quotesContainer.removeChild(elem);
+								//quotesList.clear();
+								//quotesList.show(false, false);
+								quotesList.update(JSON.parse(message));
+								localStorage.setItem('reloadPage',Date.now());
+								localStorage.removeItem('reloadPage');	
 							} else if (req.status == 403) {
 								window.location.href = req.getResponseHeader("Location");
 								window.sessionStorage.removeItem('username');
@@ -471,6 +476,8 @@
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
 				window.sessionStorage.removeItem('username');
 				window.sessionStorage.removeItem('role');
+				localStorage.setItem('reloadPage',Date.now());
+				localStorage.removeItem('reloadPage');
 			});
 		};
 	}
