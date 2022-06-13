@@ -80,6 +80,7 @@ public class Register extends HttpServlet {
 		if (username == null || password == null || role == null
 				|| (!role.equalsIgnoreCase("client") && !role.equalsIgnoreCase("worker")) || username.isEmpty()
 				|| password.isEmpty()) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			warning(request, response, "Null username, password or role. Please try again.");
 			return;
 		}
@@ -88,7 +89,8 @@ public class Register extends HttpServlet {
 		try {
 			user = userDAO.findUser(username, role);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error");
 		}
 		if (user != null) {
 			warning(request, response, "This username is not available. Please try again.");
@@ -96,7 +98,8 @@ public class Register extends HttpServlet {
 			try {
 				userDAO.registerUser(username, password, role);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not Possible to register the user");
 			}
 			response.sendRedirect(getServletContext().getContextPath() + "/GotoLogin");
 		}

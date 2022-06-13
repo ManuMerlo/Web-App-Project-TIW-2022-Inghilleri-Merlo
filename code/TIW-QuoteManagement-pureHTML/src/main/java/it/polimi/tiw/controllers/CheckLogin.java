@@ -85,6 +85,7 @@ public class CheckLogin extends HttpServlet {
 				throw new Exception();
 			}
 		} catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			warning(request, response, "Null username, password or role");
 			return;
 		}
@@ -93,9 +94,11 @@ public class CheckLogin extends HttpServlet {
 		try {
 			user = userDAO.findUser(username, password, role);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not Possible to check credentials");
 		}
 		if (user == null) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			warning(request, response, "Incorrect username or password");
 		} else {
 			HttpSession session = request.getSession();

@@ -10,7 +10,14 @@
 		loginButton = document.getElementById("loginButton"),
 		warning = document.getElementById("warning");
 
-
+	window.addEventListener("load", () => {
+		if (sessionStorage.getItem("username") != null) {
+			if (sessionStorage.getItem("role") == "client")
+				window.location.href = "ClientHome.html";
+			else if (sessionStorage.getItem("role") == "worker")
+				window.location.href = "WorkerHome.html";
+		}
+	}, false);
 
 	loginButton.addEventListener('click', e => {
 		if (form.checkValidity() && checkEmail(document.getElementById("emailInput").textContent)) {
@@ -24,12 +31,15 @@
 									data = JSON.parse(x.responseText)
 									sessionStorage.setItem('username', data.username);
 									sessionStorage.setItem('role', data.role);
+									localStorage.setItem('reloadPage', Date.now());
+									localStorage.removeItem('reloadPage');
 									if (data.role === "client")
 										window.location.href = "ClientHome.html";
 									else if (
 										data.role === "worker")
 										window.location.href = "WorkerHome.html";
 									break;
+									
 								case 400: // bad request
 								case 401: // unauthorized
 								case 500: // server error
@@ -78,9 +88,9 @@
 		loginButton.textContent = "Login";
 		warning.textContent = "";
 		document.getElementById("username").style.display = "none";
-		document.getElementById("usernameInput").required=false;
+		document.getElementById("usernameInput").required = false;
 		document.getElementById("repeatPwd").style.display = "none";
-		document.getElementById("repeatPasswrodInput").required=false;
+		document.getElementById("repeatPasswrodInput").required = false;
 	}
 
 	function checkEmail(email) {
@@ -102,9 +112,9 @@
 			title.textContent = "Insert your credentials to Register";
 			loginButton.textContent = "Register";
 			document.getElementById("username").style.display = null;
-			document.getElementById("usernameInput").required=true;
+			document.getElementById("usernameInput").required = true;
 			document.getElementById("repeatPwd").style.display = null;
-			document.getElementById("repeatPasswrodInput").required=true;
+			document.getElementById("repeatPasswrodInput").required = true;
 		} else {
 			e.target.textContent = "Register Now";
 			returnToLogin();

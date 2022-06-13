@@ -95,7 +95,8 @@ public class GotoClientHome extends HttpServlet {
 				ctx.setVariable("visibilityOptions", true);
 				ctx.setVariable("options", options);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not Possible to load the Client page");
 				return;
 			} catch (Exception e) {
 				ctx.setVariable("warning", "Invalid Product");
@@ -109,7 +110,8 @@ public class GotoClientHome extends HttpServlet {
 			}
 			products = productDAO.findAllProducts();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not Possible to load the Client page");
 			return;
 		}
 		ctx.setVariable("products", products);

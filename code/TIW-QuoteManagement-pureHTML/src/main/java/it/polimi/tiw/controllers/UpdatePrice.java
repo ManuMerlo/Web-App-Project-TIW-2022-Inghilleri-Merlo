@@ -88,14 +88,17 @@ public class UpdatePrice extends HttpServlet {
 				throw new Exception();
 			}
 		} catch(SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not Possible to update the price");
 		}catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			path = "/GotoWorkerHome";
 			warning(request, response, "Incorrect quote id", path);
 			return;
 		}
 		
 		if (quote.getWorkerId() != 0) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			path = "/GotoQuoteDetails";
 			warning(request, response, "This quote is already priced", path);
 			return;
@@ -107,9 +110,11 @@ public class UpdatePrice extends HttpServlet {
 			if (price <= 0)
 				throw new Exception();
 		} catch (NumberFormatException e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			warning(request, response, "Invalid format! Please insert number", path);
 			return;
 		} catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			warning(request, response, "Please insert a correct price", path);
 			return;
 		}
@@ -117,7 +122,8 @@ public class UpdatePrice extends HttpServlet {
 		try {
 			quoteDAO.updateQuote(quoteId, currentUser.getId(), price);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not Possible to update the price");
 		}
 
 		response.sendRedirect(getServletContext().getContextPath() + "/GotoWorkerHome");

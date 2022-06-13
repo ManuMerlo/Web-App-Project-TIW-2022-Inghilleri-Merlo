@@ -85,7 +85,8 @@ public class GotoWorkerHome extends HttpServlet {
 				q.setProduct(productDAO.findProductByCode(q.getProductCode()));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not Possible to load the Worker page");
 			return;
 		}
 		ctx.setVariable("managedQuotes", managedQuotes);

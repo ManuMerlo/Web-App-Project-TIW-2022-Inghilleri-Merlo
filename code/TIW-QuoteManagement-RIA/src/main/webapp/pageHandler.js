@@ -486,8 +486,8 @@
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
 				window.sessionStorage.removeItem('username');
 				window.sessionStorage.removeItem('role');
-				localStorage.setItem('reloadPage', Date.now());
-				localStorage.removeItem('reloadPage');
+				localStorage.setItem('clearSessionStorage', Date.now());
+				localStorage.removeItem('clearSessionStorage');
 			});
 		};
 	}

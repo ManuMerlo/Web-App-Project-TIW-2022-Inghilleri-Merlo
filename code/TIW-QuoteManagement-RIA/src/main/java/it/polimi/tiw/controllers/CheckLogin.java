@@ -13,6 +13,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
@@ -36,6 +37,18 @@ public class CheckLogin extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		HttpSession session = request.getSession(false);
+		//sarebbe la gotologin, forse meglio un filtro
+		if (session != null && !session.isNew() && session.getAttribute("currentUser") != null) {
+			User currentUser = (User) session.getAttribute("currentUser");
+			response.setStatus(HttpServletResponse.SC_OK);
+			String json = new Gson().toJson(currentUser);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(json);
+			return;
+		}
 
 		String email = null;
 		String password = null;
@@ -48,7 +61,7 @@ public class CheckLogin extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Null email, password or role");
 			return;
-		} else if(!checkEmail(email)) {
+		} else if (!checkEmail(email)) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Invalid email");
 			return;

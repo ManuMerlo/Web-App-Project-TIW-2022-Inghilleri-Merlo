@@ -82,6 +82,7 @@ public class CreateQuote extends HttpServlet {
 				throw new Exception();
 			}
 		} catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			warning(request,response,"Invalid product");
 			return;
 		}
@@ -94,6 +95,7 @@ public class CreateQuote extends HttpServlet {
 				chosenOptions.add(Integer.parseInt(s));
 			}
 		} catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			warning(request,response,"Invalid options");
 			return;
 		}
@@ -103,7 +105,8 @@ public class CreateQuote extends HttpServlet {
 				optionDAO.insertOption(quoteId, optionCode);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not Possible to request the quote");
 		}
 		response.sendRedirect(getServletContext().getContextPath() + "/GotoClientHome");
 	}
@@ -118,6 +121,7 @@ public class CreateQuote extends HttpServlet {
 	}
 	
 	private void warning(HttpServletRequest request, HttpServletResponse response, String warning) throws ServletException, IOException {
+		//Serve per comunicare l'attributo warning alla servlet GotoClientHome
 		request.setAttribute("warning", warning);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/GotoClientHome");
 		dispatcher.forward(request, response);		

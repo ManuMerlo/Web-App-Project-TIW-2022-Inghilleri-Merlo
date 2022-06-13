@@ -98,6 +98,7 @@ public class GotoQuoteDetails extends HttpServlet {
 			e.printStackTrace();
 			return;
 		} catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			warning(request, response, user.getRole(), "Invalid quote id");
 			return;
 		}
@@ -108,7 +109,8 @@ public class GotoQuoteDetails extends HttpServlet {
 				User client = userDAO.findClientById(quote.getClientId());
 				ctx.setVariable("client", client);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not Possible to load the quote details");
 				return;
 			}
 		}

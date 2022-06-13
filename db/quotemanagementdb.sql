@@ -43,7 +43,7 @@ CREATE TABLE `option` (
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `option` WRITE;
-INSERT INTO `option` VALUES (1,'normal','Cerchi in lega'),(2,'on sale','Sistema infotainment'),(3,'on sale','Fari full LED'),(4,'normal','Cruise control adattivo'),(5,'normal','Sensori di parcheggio'),(6,'normal','Sedili riscaldabili'),(7,'on sale','Sistema keyless'),(8,'on sale','ABS'),(9,'normal','Sospensioni elettroniche'),(10,'normal','Fendinebbia'),(11,'normal','Manopole riscaldate'),(12,'on sale','Bauletti posteriori'),(13,'normal','Scarico Arrow');
+INSERT INTO `option` VALUES (1,'Normal','Cerchi in lega'),(2,'On sale','Sistema infotainment'),(3,'On sale','Fari full LED'),(4,'Normal','Cruise control adattivo'),(5,'Normal','Sensori di parcheggio'),(6,'Normal','Sedili riscaldabili'),(7,'On sale','Sistema keyless'),(8,'On sale','ABS'),(9,'Normal','Sospensioni elettroniche'),(10,'Normal','Fendinebbia'),(11,'Normal','Manopole riscaldate'),(12,'On sale','Bauletti posteriori'),(13,'Normal','Scarico Arrow');
 UNLOCK TABLES;
 
 CREATE TABLE `quote` (
