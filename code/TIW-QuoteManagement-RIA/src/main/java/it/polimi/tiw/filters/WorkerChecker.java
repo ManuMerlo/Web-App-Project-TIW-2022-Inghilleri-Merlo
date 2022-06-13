@@ -45,10 +45,6 @@ public class WorkerChecker implements Filter {
 		User user = null;
 		user = (User) session.getAttribute("currentUser");
 		if (!user.getRole().equals("worker")) {
-			/*res.setStatus(403);
-			res.setHeader("Location", loginpath);
-			System.out.print("Worker checker FAILED...\n");
-			return;*/
 			res.sendRedirect(loginpath);
 			return;
 		}

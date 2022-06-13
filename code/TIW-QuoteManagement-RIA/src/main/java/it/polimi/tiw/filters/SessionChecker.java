@@ -9,6 +9,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,17 +42,13 @@ public class SessionChecker implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		String loginpath = req.getServletContext().getContextPath() + "/GotoLogin";
-
+		
 		HttpSession session = req.getSession();
+		
 		if (session.isNew() || session.getAttribute("currentUser") == null) {
-			/*res.setStatus(403);
-			res.setHeader("Location", loginpath);
-			System.out.print("Login checker FAILED...\n");
-			return;*/
 			res.sendRedirect(loginpath);
 			return;
 		}
-		
 		chain.doFilter(request, response);
 	}
 

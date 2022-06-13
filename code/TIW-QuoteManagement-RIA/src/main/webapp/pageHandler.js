@@ -8,6 +8,10 @@
 		if (sessionStorage.getItem("username") == null) {
 			window.location.href = "Login.html";
 		} else {
+			/*if (window.location.href == "http://localhost:8080/TIW-QuoteManagement-RIA/ClientHome.html" && sessionStorage.getItem("role") == "worker")
+				window.location.href = "WorkerHome.html";
+			else if (window.location.href == "http://localhost:8080/TIW-QuoteManagement-RIA/WorkerHome.html" && sessionStorage.getItem("role") == "client")
+				window.location.href = "ClientHome.html";*/
 			pageHandler.start();
 		}
 	}, false);
@@ -239,7 +243,7 @@
 				if (e.target.classList.contains("active")) {
 					if (status != null && (status.textContent == "processed" || (status.textContent == "waiting" && sessionStorage.role == "worker")))
 						panel.style.maxHeight = panel.scrollHeight + "px";
-					else self.addDetails(panel,e.target.id /*e.target.getAttribute("quoteId")*/);
+					else self.addDetails(panel, e.target.id /*e.target.getAttribute("quoteId")*/);
 				}
 
 				else panel.style.maxHeight = null;
@@ -434,7 +438,8 @@
 			var price = document.getElementById(quoteId + "_price");
 			if (price == null || price <= 0) {
 				swal("Error!", "Invalid Price", "error");
-				return false;}
+				return false;
+			}
 			return true;
 		};
 

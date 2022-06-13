@@ -59,7 +59,7 @@ public class CreateQuote extends HttpServlet {
 		} catch (Exception e) {
 			//e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().println("Invalid Quote Id");
+			response.getWriter().println("Invalid product Code");
 			return;
 		}
 		try {

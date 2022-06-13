@@ -28,7 +28,7 @@
 							var data;
 							switch (x.status) {
 								case 200:
-									data = JSON.parse(x.responseText)
+									data = JSON.parse(x.responseText);
 									sessionStorage.setItem('username', data.username);
 									sessionStorage.setItem('role', data.role);
 									localStorage.setItem('reloadPage', Date.now());

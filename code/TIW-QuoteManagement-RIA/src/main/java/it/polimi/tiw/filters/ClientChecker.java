@@ -45,10 +45,6 @@ public class ClientChecker implements Filter {
 		User user = null;
 		user = (User) session.getAttribute("currentUser");
 		if (!user.getRole().equals("client")) {
-			/*res.setStatus(403);
-			res.setHeader("Location", loginpath);
-			System.out.print("Client checker FAILED...\n");
-			return;*/
 			res.sendRedirect(loginpath);
 			return;
 		}
