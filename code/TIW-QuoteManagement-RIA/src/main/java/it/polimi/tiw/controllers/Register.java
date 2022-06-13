@@ -68,7 +68,7 @@ public class Register extends HttpServlet {
 
 		if (user != null) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			response.getWriter().println("This username and this email are not available");
+			response.getWriter().println("Username or email not available");
 		} else {
 			try {
 				userDAO.registerUser(username, email, password, role);

@@ -142,15 +142,9 @@ public class QuoteDAO {
 	public int insertQuote(int clientId, int productCode) throws SQLException {
 		String performedAction = " inserting quote";
 		String insert_quote_query = "INSERT INTO quotemanagement.quote (clientId,productCode) VALUES (?,?)";
-		// String id_quote_query = "SELECT COUNT(*) AS quoteId FROM
-		// quotemanagement.quote";
-		// String id_quote_query = "SELECT * FROM quotemanagement.quote WHERE clientId=?
-		// AND productCode=?";
-		// String insert_option_query="INSERT INTO quotemanagement.quoteoptions
-		// (quoteId,optionCode) VALUES (?,?)";
+
 		PreparedStatement preparedStatement1 = null;
-		// PreparedStatement preparedStatement2 = null;
-		// PreparedStatement preparedStatement3 = null;
+
 		connection.setAutoCommit(false);
 		ResultSet resultSet = null;
 		int quoteId = -1;
@@ -162,21 +156,6 @@ public class QuoteDAO {
 			resultSet = preparedStatement1.getGeneratedKeys();
 			while (resultSet.next())
 				quoteId = resultSet.getInt(1);
-			/*
-			 * preparedStatement1 = connection.prepareStatement(insert_quote_query);
-			 * preparedStatement1.setInt(1, clientId); preparedStatement1.setInt(2,
-			 * productCode); preparedStatement1.executeUpdate(); preparedStatement2 =
-			 * connection.prepareStatement(id_quote_query); resultSet =
-			 * preparedStatement2.executeQuery(); while(resultSet.next()) quoteId =
-			 * resultSet.getInt("quoteId");
-			 */
-			/*
-			 * preparedStatement3 = connection.prepareStatement(insert_option_query);
-			 * 
-			 * for(String s : chosenOptions) { preparedStatement3.setInt(1,quoteId);
-			 * preparedStatement3.setInt(2,Integer.parseInt(s));
-			 * preparedStatement3.executeUpdate(); }
-			 */
 			connection.commit();
 		} catch (SQLException e) {
 			throw new SQLException("Error accessing the DB when" + performedAction);
@@ -189,8 +168,6 @@ public class QuoteDAO {
 			}
 			try {
 				preparedStatement1.close();
-				//preparedStatement2.close();
-				// preparedStatement3.close();
 			} catch (Exception e) {
 				throw new SQLException("Error closing the statement when" + performedAction);
 			}
