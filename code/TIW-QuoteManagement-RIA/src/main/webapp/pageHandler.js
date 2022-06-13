@@ -41,13 +41,12 @@
 		this.clear = () => {
 			var self = this;
 			var links = this.optionContainer.querySelectorAll("option");
-			links.forEach((link => {
+			links.forEach(link => {
 				self.optionContainer.removeChild(link);
-			}))
+			});
 		};
 
 		this.show = (selectedProduct, options) => {
-
 			this.selectedProduct = selectedProduct;
 			var elem;
 			var self = this;
@@ -58,7 +57,7 @@
 				self.optionContainer.appendChild(elem);
 			});
 			this.requestQuoteBtn.addEventListener("click", e => {
-				this.createQuote(e);
+				self.createQuote(e);
 			}, false);
 
 			this.selectContainer.style.display = null;
@@ -122,9 +121,9 @@
 		this.productContainer = _productContainer;
 		this.dropdownBtn = _dropdownBtn;
 
-		this.reset = function() {
+		/*this.reset = function() {
 			this.formContainer.style.visibility = "hidden";
-		};
+		};*/
 
 		this.getDropdownBtn = () => {
 			return this.dropdownBtn;
@@ -167,7 +166,6 @@
 					optionsList.show(object.product.code, object.options);
 				}, false);
 				anchor.href = "#";
-
 				self.productContainer.appendChild(anchor);
 			});
 			this.productContainer.style.visibility = "visible";
@@ -201,10 +199,10 @@
 							else {
 								self.noQuotes.textContent = "";
 								if (update)
-									self.update(/*self.quotesContainer,*/ quotes[quotes.length - 1]);
+									self.update(quotes[quotes.length - 1]);
 								else {
 									quotes.forEach(quote => {
-										self.update(/*self.quotesContainer, */quote);
+										self.update(quote);
 									});
 								}
 								self.quotesContainer.style.visibility = "visible";
@@ -223,8 +221,8 @@
 			);
 		};
 
-		this.update = (/*quotesContainer, */quote) => {
-			self = this;
+		this.update = quote => {
+			var self =this;
 			var button, panel;
 			button = document.createElement("button");
 			button.textContent = "Quote #" + quote.id;
@@ -241,17 +239,18 @@
 				e.target.classList.toggle("active");
 				panel = e.target.nextElementSibling;
 				if (e.target.classList.contains("active")) {
-					if (status != null && (status.textContent == "processed" || (status.textContent == "waiting" && sessionStorage.role == "worker")))
+					if (status != null && (status.textContent == "Processed" || (status.textContent == "Waiting" && sessionStorage.role == "worker")))
 						panel.style.maxHeight = panel.scrollHeight + "px";
-					else self.addDetails(panel, e.target.id /*e.target.getAttribute("quoteId")*/);
+					else self.addDetails(panel, e.target.id /*e.target.getAttribute("quoteId")*/); //CHANGED
 				}
 
 				else panel.style.maxHeight = null;
 			});
 		};
 
+		//i this dentro la makecall dovrebbero essere tutti self
 		this.addDetails = (panel, quoteId) => {
-			self = this;
+			var self = this;
 			makeCall("GET", "GetQuoteDetails?quoteId=" + quoteId, null,
 				req => {
 					if (req.readyState == 4) {

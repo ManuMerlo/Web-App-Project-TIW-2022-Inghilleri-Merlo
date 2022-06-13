@@ -32,27 +32,37 @@
 		<filter-name>WorkerChecker</filter-name>
 		<filter-class>it.polimi.tiw.filters.WorkerChecker</filter-class>
 	</filter>
+	  <filter> 
+      <filter-name>NoCacher</filter-name>
+      <filter-class>it.polimi.tiw.filters.NoCacher</filter-class> 
+ </filter> 
+  <filter-mapping> 
+    <filter-name>NoCacher</filter-name> 
+    <url-pattern>/ClientHome.html</url-pattern> 
+    <url-pattern>/WorkerHome.html</url-pattern> 
+ </filter-mapping> 
 	<filter-mapping>
 		<filter-name>SessionChecker</filter-name>
+		<url-pattern>/ClientHome.html</url-pattern> 
+		<url-pattern>/WorkerHome.html</url-pattern> 
 		<url-pattern>/GetProductsData</url-pattern>
 		<url-pattern>/GetQuoteDetails</url-pattern>
 		<url-pattern>/GetQuotesData</url-pattern>
 		<url-pattern>/CreateQuote</url-pattern>
 		<url-pattern>/UpdatePrice</url-pattern>
 		<url-pattern>/Logout</url-pattern>
-		<url-pattern>/ClientHome.html</url-pattern> 
-		<url-pattern>/WorkerHome.html</url-pattern> 
 	</filter-mapping>
+	
 	<filter-mapping>
 		<filter-name>ClientChecker</filter-name>
+		<url-pattern>/ClientHome.html</url-pattern> 
 		<url-pattern>/GetProductsData</url-pattern>
 		<url-pattern>/CreateQuote</url-pattern>
-		<url-pattern>/ClientHome.html</url-pattern> 
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>WorkerChecker</filter-name>
-		<url-pattern>/UpdatePrice</url-pattern>
 		<url-pattern>/WorkerHome.html</url-pattern> 
+		<url-pattern>/UpdatePrice</url-pattern>
 	</filter-mapping>
 	<welcome-file-list>
 		<welcome-file>GotoLogin</welcome-file>
