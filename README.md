@@ -26,32 +26,35 @@ The final version includes:
 ## Frameworks
 ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-%23005C0F.svg?style=for-the-badge&logo=Thymeleaf&logoColor=white)
 
+## Markup Language
+![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?&style=for-the-badge&logo=markdown&logoColor=white)
 ![Latex](https://img.shields.io/badge/latex%20-%23008080.svg?&style=for-the-badge&logo=latex&logoColor=white)
 
-## Software used
-**Draw.io** - DataBase Schema and sequence diagrams
+## Software Used
 
-**Power point** - Application Design models
+**Eclipse** -- main IDE
 
-**Eclipse** - main IDE
+**Apache Tomcat** -- Java Web Application Server
 
-**MySQL Workbench** - DataBase
+**MySQL Workbench** -- DataBase
 
-**Apache Tomcat** - Java Web Application Server
+**Draw.io** -- DataBase schema & Sequence Diagrams
+
+**Power point** -- Application Design models
 
 # Photos
 ## Pure HTML
 - Login screen
-![](screen_TIW//login_html.jpeg) 
+![](screen_Tiw//login_html.jpeg) 
 
 - Client Home screen 
-![](screen_TIW//home_client_HTML.jpeg) 
+![](screen_Tiw//home_client_HTML.jpeg) 
 
 - Details page 
-![](screen_TIW//quote_details_HTML.jpeg)  
+![](screen_Tiw//quote_details_HTML.jpeg)  
 
 - Update Price Page
-![](screen_TIW//update_price_HTML.jpeg)  
+![](screen_Tiw//update_price_HTML.jpeg)  
 
 ## One page RIA
 Most of the graphics used for the html version were reused for the RIA version.
@@ -59,15 +62,15 @@ Most of the graphics used for the html version were reused for the RIA version.
 The main changes concern the display of details of a quote and the price update that is made on the home page.
  
 - Details page 
-![](screen_TIW//quote_details_RIA.jpeg)  
+![](screen_Tiw//quote_details_RIA.jpeg)  
 
 - Update Price Page
-![](screen_TIW//update_price_RIA.jpeg)  
+![](screen_Tiw//update_price_RIA.jpeg)  
 
 Through the use of Javascript, we inserted animations to communicate successful operations and errors.
 
 - Successful operation
-![](screen_TIW//successful_create_quote.jpeg)  
+![](screen_Tiw//successful_create_quote.jpeg)  
 
 
 ## Copyright and license
