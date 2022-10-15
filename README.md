@@ -75,8 +75,8 @@ Through the use of Javascript, we inserted animations to communicate successful 
 
 ## Copyright and license
 
-Licensed under the **[MIT License](https://github.com/riccardoinghilleri/ing-sw-2022-inghilleri-maftei-merlo/blob/main/LICENSE)**;
+Licensed under the **[MIT License](https://github.com/ManuMerlo/Web-App-Project-TIW-2022-Inghilleri-Merlo/blob/main/LICENSE)**;
 you may not use this software except in compliance with the License.
 
-[license]: https://github.com/riccardoinghilleri/ing-sw-2022-inghilleri-maftei-merlo/blob/main/LICENSE
+[license]: https://github.com/ManuMerlo/Web-App-Project-TIW-2022-Inghilleri-Merlo/blob/main/LICENSE
 [license-image]: https://img.shields.io/badge/License-MIT-blue.svg
