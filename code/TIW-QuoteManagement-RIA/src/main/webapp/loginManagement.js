@@ -90,7 +90,7 @@
 		document.getElementById("username").style.display = "none";
 		document.getElementById("usernameInput").required = false;
 		document.getElementById("repeatPwd").style.display = "none";
-		document.getElementById("repeatPasswrodInput").required = false;
+		document.getElementById("repeatPasswordInput").required = false;
 	}
 
 	function checkEmail(email) {
@@ -114,7 +114,7 @@
 			document.getElementById("username").style.display = null;
 			document.getElementById("usernameInput").required = true;
 			document.getElementById("repeatPwd").style.display = null;
-			document.getElementById("repeatPasswrodInput").required = true;
+			document.getElementById("repeatPasswordInput").required = true;
 		} else {
 			e.target.textContent = "Register Now";
 			returnToLogin();

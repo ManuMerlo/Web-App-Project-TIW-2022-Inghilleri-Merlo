@@ -45,19 +45,18 @@ public class CreateQuote extends HttpServlet {
 		List<Integer> chosenOptions = new ArrayList<>();
 		int clientId = currentUser.getId();
 		Integer productCode = null;
-
 		try {
 			productCode = Integer.parseInt(request.getParameter("productCode"));
 			if (productCode == null || productDAO.findProductByCode(productCode) == null) {
 				throw new Exception();
 			}
 		} catch (SQLException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Not possible to recover Quotes");
 			return;
 		} catch (Exception e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Invalid product Code");
 			return;
@@ -71,20 +70,33 @@ public class CreateQuote extends HttpServlet {
 				chosenOptions.add(Integer.parseInt(s));
 			}
 		} catch (Exception e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Invalid Options");
 			return;
 		}
 		try {
+			connection.setAutoCommit(false);
 			int quoteId = quoteDAO.insertQuote(clientId, productCode);
 			for (Integer optionCode : chosenOptions) {
 				optionDAO.insertOption(quoteId, optionCode);
 			}
+			connection.commit();
 		} catch (SQLException e) {
-			//e.printStackTrace();
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Not possible to insert Quote");
+			// e.printStackTrace();
+			try {
+				connection.rollback();
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.getWriter().println("Not possible to insert Quote");
+			} catch (SQLException e1) {
+				// e1.printStackTrace();
+			}
+		} finally {
+			try {
+				connection.setAutoCommit(true);
+			} catch (SQLException e) {
+				// e.printStackTrace();
+			}
 		}
 	}
 

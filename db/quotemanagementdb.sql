@@ -56,10 +56,10 @@ CREATE TABLE `quote` (
   CONSTRAINT `asstoclient` FOREIGN KEY (`clientId`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `asstoworker` FOREIGN KEY (`workerId`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `asstoproduct` FOREIGN KEY (`productCode`) REFERENCES `product` (`code`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
  
 LOCK TABLES `quote` WRITE;
-INSERT INTO `quote` VALUES (1,1,10,1,1000),(2,1,null,2,null),(3,3,10,2,3000),(4,3,null,1,null);
+INSERT INTO `quote` VALUES (1,1,10,1,1000),(2,1,null,2,null),(3,3,10,2,3000),(4,3,null,1,null),(5,7,10,1,30000),(6,7,null,1,null);
 UNLOCK TABLES;
 
 CREATE TABLE `productoptions`(
@@ -83,5 +83,5 @@ CREATE TABLE `quoteoptions`(
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `quoteoptions` WRITE;
-INSERT INTO `quoteoptions` VALUES (1,2),(2,1),(2,2),(3,2),(4,2);
+INSERT INTO `quoteoptions` VALUES (1,2),(2,1),(2,2),(3,2),(4,2),(5,2),(6,1);
 UNLOCK TABLES;

@@ -3,6 +3,7 @@ package it.polimi.tiw.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +77,7 @@ public class CreateQuote extends HttpServlet {
 		List<Integer> chosenOptions = new ArrayList<>();
 		int clientId = currentUser.getId();
 		Integer productCode = null;
+		boolean error=false;
 		try {
 			productCode = Integer.parseInt(request.getParameter("productCode"));
 			if (productCode==null || productDAO.findProductByCode(productCode) == null) {
@@ -100,14 +102,30 @@ public class CreateQuote extends HttpServlet {
 			return;
 		}
 		try {
+			connection.setAutoCommit(false);
 			int quoteId = quoteDAO.insertQuote(clientId, productCode);
 			for (Integer optionCode : chosenOptions) {
 				optionDAO.insertOption(quoteId, optionCode);
 			}
+			connection.commit();
 		} catch (SQLException e) {
 			//e.printStackTrace();
+			try {
+				connection.rollback();
+				error=true;
+			} catch (SQLException e1) {
+				//e1.printStackTrace();
+			}
+		} finally {
+			try {
+				connection.setAutoCommit(true);
+			} catch (SQLException e) {
+				//e.printStackTrace();
+			} 
+			}
+		if(error)
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not Possible to request the quote");
-		}
+		else
 		response.sendRedirect(getServletContext().getContextPath() + "/GotoClientHome");
 	}
 
